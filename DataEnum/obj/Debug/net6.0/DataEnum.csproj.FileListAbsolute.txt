@@ -1,0 +1,13 @@
+C:\Users\gjeje\source\repos\NecManager\DataEnum\bin\Debug\net6.0\DataEnum.deps.json
+C:\Users\gjeje\source\repos\NecManager\DataEnum\bin\Debug\net6.0\DataEnum.dll
+C:\Users\gjeje\source\repos\NecManager\DataEnum\bin\Debug\net6.0\ref\DataEnum.dll
+C:\Users\gjeje\source\repos\NecManager\DataEnum\bin\Debug\net6.0\DataEnum.pdb
+C:\Users\gjeje\source\repos\NecManager\DataEnum\obj\Debug\net6.0\DataEnum.Identity.RoleResource.resources
+C:\Users\gjeje\source\repos\NecManager\DataEnum\obj\Debug\net6.0\DataEnum.csproj.GenerateResource.cache
+C:\Users\gjeje\source\repos\NecManager\DataEnum\obj\Debug\net6.0\DataEnum.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\gjeje\source\repos\NecManager\DataEnum\obj\Debug\net6.0\DataEnum.AssemblyInfoInputs.cache
+C:\Users\gjeje\source\repos\NecManager\DataEnum\obj\Debug\net6.0\DataEnum.AssemblyInfo.cs
+C:\Users\gjeje\source\repos\NecManager\DataEnum\obj\Debug\net6.0\DataEnum.csproj.CoreCompileInputs.cache
+C:\Users\gjeje\source\repos\NecManager\DataEnum\obj\Debug\net6.0\DataEnum.dll
+C:\Users\gjeje\source\repos\NecManager\DataEnum\obj\Debug\net6.0\ref\DataEnum.dll
+C:\Users\gjeje\source\repos\NecManager\DataEnum\obj\Debug\net6.0\DataEnum.pdb
