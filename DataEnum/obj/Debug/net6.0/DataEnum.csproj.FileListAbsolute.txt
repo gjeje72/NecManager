@@ -11,3 +11,4 @@ C:\Users\gjeje\source\repos\NecManager\DataEnum\obj\Debug\net6.0\DataEnum.csproj
 C:\Users\gjeje\source\repos\NecManager\DataEnum\obj\Debug\net6.0\DataEnum.dll
 C:\Users\gjeje\source\repos\NecManager\DataEnum\obj\Debug\net6.0\ref\DataEnum.dll
 C:\Users\gjeje\source\repos\NecManager\DataEnum\obj\Debug\net6.0\DataEnum.pdb
+C:\Users\gjeje\source\repos\NecManager\DataEnum\obj\Debug\net6.0\DataEnum.csproj.AssemblyReference.cache

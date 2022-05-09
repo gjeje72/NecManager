@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NecManager_DAL.EntityLayer.AccessLayer;
@@ -19,33 +20,20 @@ public static class DataServiceExtension
     /// <param name="services">Collection of the available services for the app.</param>
     /// <param name="dbcontextBuilder">The database context options builder.</param>
     /// <returns>Returns edited services collection.</returns>
-    public static IServiceCollection AddData(this IServiceCollection services, Action<DbContextOptionsBuilder> dbcontextBuilder, IHostEnvironment environment)
+    public static IServiceCollection AddData(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<AppDbContext, SqlServerDbContext>(dbcontextBuilder);
+        //services.AddDbContext<AppDbContext, SqlServerDbContext>(dbcontextBuilder);
+        services.AddDbContext<AppDbContext>(option =>
+            option.UseSqlServer(configuration.GetConnectionString("AppDbContext"), opt => opt.MigrationsAssembly("NecManager-DAL"))
+            );
         services.AddIdentityCore<User>(options =>
         {
             options.User.RequireUniqueEmail = false;
         })
         .AddEntityFrameworkStores<AppDbContext>();
 
-        //services.AddHostedService<InitializeDb>();
-        //services.AddScoped<UserSeeder>();
-
         services.AddTransient<StudentAccessLayer>();
 
-
         return services;
-    }
-
-    /// <summary>
-    ///     Extension method use to initialize data access.
-    /// </summary>
-    /// <param name="services">Collection of the available services for the app.</param>
-    /// <param name="builder">The database context options builder.</param>
-    public static void AddReportData(this IServiceCollection services, Action<DbContextOptionsBuilder> builder)
-    {
-        services.AddDbContext<AppDbContext>(builder);
-
-
     }
 }

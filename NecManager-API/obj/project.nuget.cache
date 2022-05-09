@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "0SRMG2UAMl6z+iwRRkxLpjRenwbw8qYq23CCtCQZUcZuaizojJRDuuvA8LwPqqmxnBVy6trG/9UOgvtJeWcfAw==",
+  "dgSpecHash": "hEOaiXx/X68+U6l6HSfqPj8544cml2X4KUlRYHGQ4gTA5rbVgqj7dBSiAWRYM+ppTGndbVkmYLlpwa/8ELf/Aw==",
   "success": true,
   "projectFilePath": "C:\\Users\\gjeje\\source\\repos\\NecManager\\NecManager-API\\NecManager-API.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\gjeje\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
     "C:\\Users\\gjeje\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\gjeje\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",
     "C:\\Users\\gjeje\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
@@ -23,7 +24,7 @@
     "C:\\Users\\gjeje\\.nuget\\packages\\microsoft.aspnetcore.identity\\2.2.0\\microsoft.aspnetcore.identity.2.2.0.nupkg.sha512",
     "C:\\Users\\gjeje\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\6.0.4\\microsoft.aspnetcore.identity.entityframeworkcore.6.0.4.nupkg.sha512",
     "C:\\Users\\gjeje\\.nuget\\packages\\microsoft.aspnetcore.webutilities\\2.2.0\\microsoft.aspnetcore.webutilities.2.2.0.nupkg.sha512",
-    "C:\\Users\\gjeje\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\gjeje\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\gjeje\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.4\\microsoft.data.sqlclient.2.1.4.nupkg.sha512",
     "C:\\Users\\gjeje\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\2.1.1\\microsoft.data.sqlclient.sni.runtime.2.1.1.nupkg.sha512",
     "C:\\Users\\gjeje\\.nuget\\packages\\microsoft.entityframeworkcore\\6.0.4\\microsoft.entityframeworkcore.6.0.4.nupkg.sha512",

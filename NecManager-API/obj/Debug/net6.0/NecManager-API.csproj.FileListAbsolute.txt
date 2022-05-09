@@ -69,3 +69,4 @@ C:\Users\gjeje\source\repos\NecManager\NecManager-API\obj\Debug\net6.0\NecManage
 C:\Users\gjeje\source\repos\NecManager\NecManager-API\obj\Debug\net6.0\ref\NecManager-API.dll
 C:\Users\gjeje\source\repos\NecManager\NecManager-API\obj\Debug\net6.0\NecManager-API.pdb
 C:\Users\gjeje\source\repos\NecManager\NecManager-API\obj\Debug\net6.0\NecManager-API.genruntimeconfig.cache
+C:\Users\gjeje\source\repos\NecManager\NecManager-API\bin\Debug\net6.0\AutoMapper.dll
