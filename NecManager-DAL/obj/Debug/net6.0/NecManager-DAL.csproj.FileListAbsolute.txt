@@ -1,0 +1,15 @@
+C:\Users\gjeje\source\repos\NecManager\NecManager-DAL\bin\Debug\net6.0\NecManager-DAL.deps.json
+C:\Users\gjeje\source\repos\NecManager\NecManager-DAL\bin\Debug\net6.0\NecManager-DAL.dll
+C:\Users\gjeje\source\repos\NecManager\NecManager-DAL\bin\Debug\net6.0\ref\NecManager-DAL.dll
+C:\Users\gjeje\source\repos\NecManager\NecManager-DAL\bin\Debug\net6.0\NecManager-DAL.pdb
+C:\Users\gjeje\source\repos\NecManager\NecManager-DAL\bin\Debug\net6.0\DataEnum.dll
+C:\Users\gjeje\source\repos\NecManager\NecManager-DAL\bin\Debug\net6.0\DataEnum.pdb
+C:\Users\gjeje\source\repos\NecManager\NecManager-DAL\obj\Debug\net6.0\NecManager-DAL.csproj.AssemblyReference.cache
+C:\Users\gjeje\source\repos\NecManager\NecManager-DAL\obj\Debug\net6.0\NecManager-DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\gjeje\source\repos\NecManager\NecManager-DAL\obj\Debug\net6.0\NecManager-DAL.AssemblyInfoInputs.cache
+C:\Users\gjeje\source\repos\NecManager\NecManager-DAL\obj\Debug\net6.0\NecManager-DAL.AssemblyInfo.cs
+C:\Users\gjeje\source\repos\NecManager\NecManager-DAL\obj\Debug\net6.0\NecManager-DAL.csproj.CoreCompileInputs.cache
+C:\Users\gjeje\source\repos\NecManager\NecManager-DAL\obj\Debug\net6.0\NecManager-DAL.csproj.CopyComplete
+C:\Users\gjeje\source\repos\NecManager\NecManager-DAL\obj\Debug\net6.0\NecManager-DAL.dll
+C:\Users\gjeje\source\repos\NecManager\NecManager-DAL\obj\Debug\net6.0\ref\NecManager-DAL.dll
+C:\Users\gjeje\source\repos\NecManager\NecManager-DAL\obj\Debug\net6.0\NecManager-DAL.pdb
