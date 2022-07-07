@@ -1,0 +1,44 @@
+﻿@typeparam TViewModel
+
+@if (this.ShowModal)
+{
+    <div class="modal modal-active fade show" aria-modal="true" role="dialog">
+        <div class="dialog-overlay" @onclick="@(this.CloseDialog)"></div>
+
+        <div class="modal-dialog" @onclick:stopPropagation="true">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">@this.Title</h4>
+                    <button type="button" class="close" @onclick="@this.CloseDialog">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="description">@this.Description</div>
+                    <div class="selector">
+                        @if (this.Items != null)
+                        {
+                            var i = 0;
+                            foreach (var item in this.Items)
+                            {
+                                var uniqId = $"selector{i++}";
+                                <div class="item">
+                                    <input type="checkbox" id="@uniqId" @bind="@item.IsSelected"/>
+                                    <label for="@uniqId">@this.ItemTemplate(item)</label>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="@this.CloseDialog">@this.CancelButtonText</button>
+                    <button type="button" class="btn btn-success" @onclick=@this.OnValidateActionClicked>@this.ValidateButtonText</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,92 @@
+﻿@page "/admin/group"
+
+@using NecManager.Common.DataEnum
+@using NecManager.Web.Components.Modal
+@using NecManager.Web.Areas.Admin.Student.ViewModel
+
+<DialogSelector TViewModel="AdminGroupSelectableCategories"
+                Title="Selection des catégories"
+                Description="Description"
+                CancelButtonText="Fermer"
+                ValidateButtonText="Valider"
+                ValidateAction="@this.AddOrRemoveCategories"
+                Items="@this.Categories"
+                @ref="categorieSelectorDialog">
+    <ItemTemplate Context="cat">
+        @cat.CategoryName
+    </ItemTemplate>
+</DialogSelector>
+
+<h3>AdminGroup</h3>
+
+@if (this.creatingInProgress)
+{
+    <button class="btn btn-outline-primary" @onclick="this.OpenCreatingForm">
+        <span class="oi oi-arrow-top">Fermer</span>
+    </button>
+    <div class="create-form">
+        <EditForm Model="this.CreateGroupModel" OnSubmit="this.HandleSubmitAsync">
+            <DataAnnotationsValidator/>
+            <div class="d-flex flex-wrap">
+                <div class="form-group col-3">
+                    <label class="form-label" for="name">Nom du groupe</label>
+                    <InputText class="form-control" id="name" @bind-Value="this.CreateGroupModel.Title"></InputText>
+                </div>
+            
+                <div class="form-group col-3">
+                    <label class="form-label" for="cat">Armes</label>
+                    <InputSelect class="form-control" @bind-Value="this.CreateGroupModel.Weapon" id="cat">
+                        @foreach(var weapon in Enum.GetValues(typeof(WeaponType)))
+                        {
+                            <option value="@weapon">@weapon</option>
+                        }
+                    </InputSelect>
+                </div>
+@*                <div class="form-group col-3">
+                    <label class="form-label" for="arme">Catégorie</label>
+                    <InputSelect class="form-control" @bind-Value="this.CreateGroupModel.Categories" id="cat">
+                        @foreach(var cat in Enum.GetValues(typeof(CategorieType)))
+                        {
+                            <option value="@cat">@cat</option>
+                        }
+                    </InputSelect>
+                </div>*@
+                <button type="button" class="btn btn-primary" @onclick="this.ShowCategoriesDialog">Catégories</button>
+            </div>
+            <button type="submit" class="btn btn-success mx-3">CREER</button>
+        </EditForm>
+</div>
+}
+else
+{
+    <button class="btn btn-primary" @onclick="this.OpenCreatingForm">
+        <span class="oi oi-plus">Ajouter un groupe</span>
+    </button>
+}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Groupe</th>
+            <th>Catégorie</th>
+            <th>Armes</th>
+            <th>Nb Eleves</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var group in this.Groups)
+        {
+            <tr>
+                <td>@group.Title</td>
+                <td>@group.Categories.Count()</td>
+                <td>@group.Weapon</td>
+                <td>@group.Users.Count</td>
+                <td>
+                    <span class="oi oi-pencil"></span>
+                    <span class="oi oi-trash"></span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
