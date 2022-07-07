@@ -14,7 +14,7 @@ public sealed class CreateGroupViewModel
 
     public WeaponType Weapon { get; set; }
 
-    public List<CreateUserViewModel> Users { get; set; } = new();
+    public List<int> UsersIds { get; set; } = new();
 
     /* TODO */
     public string? Lessons { get; set; } 

@@ -18,10 +18,23 @@ public sealed partial class AdminGroup
 
     private List<AdminGroupSelectableCategories> Categories = new();
 
+    private List<AdminGroupSelectableStudent> Students = new()
+    {
+        new AdminGroupSelectableStudent { StudentId = 1, StudentFullName = "Jerome GEORGES" },
+        new AdminGroupSelectableStudent { StudentId = 2, StudentFullName = "David BUCQUET" },
+        new AdminGroupSelectableStudent { StudentId = 3, StudentFullName = "Daniele GAROZZO" },
+        new AdminGroupSelectableStudent { StudentId = 4, StudentFullName = "Alice VOLPI" },
+    };
+
     /// <summary>
     ///     The dialog selector component used to add tasks on the timesheet.
     /// </summary>
     private DialogSelector<AdminGroupSelectableCategories> categorieSelectorDialog = new();
+
+    /// <summary>
+    ///     The dialog selector component used to add tasks on the timesheet.
+    /// </summary>
+    private DialogSelector<AdminGroupSelectableStudent> studentSelectorDialog = new();
 
     protected override void OnInitialized()
     {
@@ -45,9 +58,23 @@ public sealed partial class AdminGroup
         }
     }
 
+
+    private void AddOrRemoveStudents(List<AdminGroupSelectableStudent> studentSelected)
+    {
+        foreach(var student in studentSelected)
+        {
+            this.CreateGroupModel.UsersIds.Add(student.StudentId);
+        }
+    }
+
     private void ShowCategoriesDialog()
     {
         this.categorieSelectorDialog.ShowDialog();
+    }
+
+    private void ShowStudentDialog()
+    {
+        this.studentSelectorDialog.ShowDialog();
     }
 
     private void OpenCreatingForm()
