@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
+</PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NecManager.Common.DataEnum\NecManager.Common.DataEnum.csproj" />
+    <ProjectReference Include="..\NecManager.Common.Logger\NecManager.Common.Logger.csproj" />
+    <ProjectReference Include="..\NecManager.Common\NecManager.Common.csproj" />
+  </ItemGroup>
+
+</Project>

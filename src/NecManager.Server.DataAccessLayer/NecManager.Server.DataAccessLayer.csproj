@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>preview</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+</PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NecManager.Common.DataEnum\NecManager.Common.DataEnum.csproj" />
+    <ProjectReference Include="..\NecManager.Common.Logger\NecManager.Common.Logger.csproj" />
+    <ProjectReference Include="..\NecManager.Common\NecManager.Common.csproj" />
+  </ItemGroup>
+
+</Project>
