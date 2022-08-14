@@ -1,53 +1,31 @@
-﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
-using NecManager.Server.Api;
+﻿using NecManager.Server.Api.Modules;
 
 var builder = WebApplication.CreateBuilder(args);
 
-CreateHostBuilder(args).Build().Run();
+// Add services to the container.
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.RegisterModules<Program>();
 
-ServiceCollection(builder.Services);
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c => c.SwaggerDoc("v1", new() { Title = "NecManager.Server.Api", Version = "v1" }));
 
-var application = builder.Build();
 
-ServicePipeline(application);
+var app = builder.Build();
 
-static IHostBuilder CreateHostBuilder(string[] args) =>
-    Host.CreateDefaultBuilder(args)
-        .ConfigureWebHostDefaults(webBuilder =>
+app.UseModulesBuildActions();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
 {
-    webBuilder.UseStartup<Startup>();
-});
-
-void ServiceCollection(IServiceCollection services)
-{
-
-    // Add services to the container.
-    services.AddControllers();
-    services.AddSwaggerGen(c =>
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
     {
-        c.SwaggerDoc("v1", new() { Title = "NecManager.Server.Api", Version = "v1" });
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "NecManager.Server.Api v1");
     });
 }
 
-void ServicePipeline(WebApplication? app)
-{
-    // Configure the HTTP request pipeline.
-    if (builder.Environment.IsDevelopment())
-    {
-        app?.UseDeveloperExceptionPage();
-        app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "NecManager.Server.Api v1"));
-    }
+app.UseHttpsRedirection();
 
-    app?.UseHttpsRedirection();
+app.MapModulesEndpoints();
 
-    app?.UseAuthorization();
-
-    app?.MapControllers();
-
-    app?.Run();
-}
+app.Run();

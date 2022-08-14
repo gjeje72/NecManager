@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using NecManager.Server.DataAccessLayer.EntityLayer;
+using NecManager.Server.DataAccessLayer.EntityLayer.Abstractions;
 using NecManager.Server.DataAccessLayer.EntityLayer.AccessLayer;
 
 public static class DataServiceExtension
@@ -17,9 +18,9 @@ public static class DataServiceExtension
 
         services.AddHostedService<InitializeDb>();
 
-        services.AddTransient<GroupAccessLayer>();
+        services.AddTransient<IGroupAccessLayer, GroupAccessLayer>();
 
-        services.AddTransient<StudentAccessLayer>();
+        services.AddTransient<IStudentAccessLayer, StudentAccessLayer>();
 
         return services;
     }
