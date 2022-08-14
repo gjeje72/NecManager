@@ -1,9 +1,13 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+
+using NecManager.Server.Api;
 
 var builder = WebApplication.CreateBuilder(args);
+
+CreateHostBuilder(args).Build().Run();
 
 ServiceCollection(builder.Services);
 
@@ -11,11 +15,17 @@ var application = builder.Build();
 
 ServicePipeline(application);
 
+static IHostBuilder CreateHostBuilder(string[] args) =>
+    Host.CreateDefaultBuilder(args)
+        .ConfigureWebHostDefaults(webBuilder =>
+{
+    webBuilder.UseStartup<Startup>();
+});
+
 void ServiceCollection(IServiceCollection services)
 {
 
     // Add services to the container.
-
     services.AddControllers();
     services.AddSwaggerGen(c =>
     {
