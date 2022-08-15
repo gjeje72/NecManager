@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using NecManager.Web;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Configures WebHost
@@ -23,6 +25,7 @@ ServicePipeline(application);
 void ServiceCollection(IServiceCollection services)
 {
     // TODO builder.Host.UseCommonLogger();
+    services.AddWebServices();
 
     // Add services to the container.
     services.AddRazorPages();

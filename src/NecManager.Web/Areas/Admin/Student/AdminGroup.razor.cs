@@ -5,12 +5,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using AutoMapper;
+
+using Microsoft.AspNetCore.Components;
+
 using NecManager.Common.DataEnum;
+using NecManager.Common.DataEnum.Internal;
 using NecManager.Web.Areas.Admin.Student.ViewModel;
 using NecManager.Web.Components.Modal;
+using NecManager.Web.Service.ApiServices.Abstractions;
 
 public sealed partial class AdminGroup
 {
+    private bool IsLoading;
     private bool creatingInProgress;
     private CreateGroupViewModel CreateGroupModel { get; set; } = new();
 
@@ -18,13 +25,12 @@ public sealed partial class AdminGroup
 
     private List<AdminGroupSelectableCategories> Categories = new();
 
-    private List<AdminGroupSelectableStudent> Students = new()
-    {
-        new AdminGroupSelectableStudent { StudentId = 1, StudentFullName = "Jerome GEORGES" },
-        new AdminGroupSelectableStudent { StudentId = 2, StudentFullName = "David BUCQUET" },
-        new AdminGroupSelectableStudent { StudentId = 3, StudentFullName = "Daniele GAROZZO" },
-        new AdminGroupSelectableStudent { StudentId = 4, StudentFullName = "Alice VOLPI" },
-    };
+    private List<AdminGroupSelectableStudent> Students = new();
+    //{
+    //    new AdminGroupSelectableStudent { StudentId = 2, StudentFullName = "David BUCQUET" },
+    //    new AdminGroupSelectableStudent { StudentId = 3, StudentFullName = "Daniele GAROZZO" },
+    //    new AdminGroupSelectableStudent { StudentId = 4, StudentFullName = "Alice VOLPI" },
+    //};
 
     /// <summary>
     ///     The dialog selector component used to add tasks on the timesheet.
@@ -36,8 +42,16 @@ public sealed partial class AdminGroup
     /// </summary>
     private DialogSelector<AdminGroupSelectableStudent> studentSelectorDialog = new();
 
-    protected override void OnInitialized()
+    [Inject]
+    private IMapper Mapper { get; set; } = null!;
+
+    [Inject]
+    private IStudentServices StudentServices { get; set; } = null!;
+
+
+    protected override async Task OnInitializedAsync()
     {
+        this.IsLoading = true;
         var arrayOfCat = Enum.GetValues(typeof(CategorieType)).Cast<CategorieType>().ToArray();
         for (int i = 0; i < arrayOfCat.Count(); i++)
         {
@@ -46,7 +60,14 @@ public sealed partial class AdminGroup
             this.Categories.Add(newSelectableItem);
         }
 
-        base.OnInitialized();
+        var (success, studentsFound, _) = await this.StudentServices.GetAllStudentsAsync();
+        if (success == ServiceResultState.Success)
+        {
+            this.Students = this.Mapper.Map<List<AdminGroupSelectableStudent>>(studentsFound);
+        }
+
+        this.IsLoading = false;
+        await this.InvokeAsync(this.StateHasChanged);
     }
 
     private void AddOrRemoveCategories(List<AdminGroupSelectableCategories> categoriesSelected)

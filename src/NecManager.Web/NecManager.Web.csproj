@@ -1,25 +1,27 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <LangVersion>preview</LangVersion>
-</PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<LangVersion>preview</LangVersion>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="3BStudio.Web.Ui.Blazor.Notifications" Version="1.0.8-alpha" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="3BStudio.Web.Ui.Blazor.Notifications" Version="1.0.8-alpha" />
+		<PackageReference Include="AutoMapper" Version="11.0.0" />
+		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\NecManager.Common.DataEnum\NecManager.Common.DataEnum.csproj" />
-    <ProjectReference Include="..\NecManager.Common.Logger\NecManager.Common.Logger.csproj" />
-    <ProjectReference Include="..\NecManager.Common\NecManager.Common.csproj" />
-    <ProjectReference Include="..\NecManager.Web.Service\NecManager.Web.Service.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\NecManager.Common.DataEnum\NecManager.Common.DataEnum.csproj" />
+		<ProjectReference Include="..\NecManager.Common.Logger\NecManager.Common.Logger.csproj" />
+		<ProjectReference Include="..\NecManager.Common\NecManager.Common.csproj" />
+		<ProjectReference Include="..\NecManager.Web.Service\NecManager.Web.Service.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Areas\Master\" />
-    <Folder Include="Areas\Student\" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Areas\Master\" />
+		<Folder Include="Areas\Student\" />
+	</ItemGroup>
 
 </Project>
