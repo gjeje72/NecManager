@@ -7,7 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Resources.ResourceManager" Version="4.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\NecManager.Common.DataEnum\NecManager.Common.DataEnum.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Ressources\" />
   </ItemGroup>
 
 </Project>
