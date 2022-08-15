@@ -14,6 +14,7 @@ using NecManager.Common.DataEnum.Internal;
 using NecManager.Web.Areas.Admin.Student.ViewModel;
 using NecManager.Web.Components.Modal;
 using NecManager.Web.Service.ApiServices.Abstractions;
+using NecManager.Web.Service.Models;
 
 public sealed partial class AdminGroup
 {
@@ -26,11 +27,6 @@ public sealed partial class AdminGroup
     private List<AdminGroupSelectableCategories> Categories = new();
 
     private List<AdminGroupSelectableStudent> Students = new();
-    //{
-    //    new AdminGroupSelectableStudent { StudentId = 2, StudentFullName = "David BUCQUET" },
-    //    new AdminGroupSelectableStudent { StudentId = 3, StudentFullName = "Daniele GAROZZO" },
-    //    new AdminGroupSelectableStudent { StudentId = 4, StudentFullName = "Alice VOLPI" },
-    //};
 
     /// <summary>
     ///     The dialog selector component used to add tasks on the timesheet.
@@ -47,6 +43,9 @@ public sealed partial class AdminGroup
 
     [Inject]
     private IStudentServices StudentServices { get; set; } = null!;
+
+    [Inject]
+    private IGroupServices GroupServices { get; set; } = null!;
 
 
     protected override async Task OnInitializedAsync()
@@ -72,6 +71,7 @@ public sealed partial class AdminGroup
 
     private void AddOrRemoveCategories(List<AdminGroupSelectableCategories> categoriesSelected)
     {
+        this.CreateGroupModel.Categories = new();
         foreach(var cat in categoriesSelected)
         {
             CategorieType category = (CategorieType)cat.CategoryId;
@@ -79,9 +79,10 @@ public sealed partial class AdminGroup
         }
     }
 
-
     private void AddOrRemoveStudents(List<AdminGroupSelectableStudent> studentSelected)
     {
+        this.CreateGroupModel.UsersIds = new();
+
         foreach(var student in studentSelected)
         {
             this.CreateGroupModel.UsersIds.Add(student.StudentId);
@@ -102,10 +103,25 @@ public sealed partial class AdminGroup
     {
         this.creatingInProgress = !this.creatingInProgress;
     }
+
     private async Task HandleSubmitAsync()
     {
+        var categories = this.Categories.Select(x => (CategorieType)x.CategoryId).ToList();
+        var students = new List<StudentBase>(this.Students.Where(x => x.IsSelected == true).Select(x => new StudentBase() { Id = x.StudentId }));
+        var groupToCreate = new GroupDetails()
+        {
+            Title = this.CreateGroupModel.Title,
+            Weapon = this.CreateGroupModel.Weapon,
+            Categories = categories,
+            Students = students,
+        };
+
+        await this.GroupServices.CreateGroupAsync(groupToCreate);
+
         this.Groups.Add(this.CreateGroupModel);
         this.CreateGroupModel = new();
+
+
         await this.InvokeAsync(() => this.StateHasChanged());
     }
 }

@@ -1,18 +1,15 @@
 ﻿namespace NecManager.Web.Service.Extensions;
 
+using System;
+using System.Net.Http;
+
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using NecManager.Web.Service.Provider;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using NecManager.Web.Service.ApiServices.Abstractions;
 using NecManager.Web.Service.ApiServices;
+using NecManager.Web.Service.ApiServices.Abstractions;
+using NecManager.Web.Service.Provider;
 
 public static class ServicesExtension
 {
@@ -21,9 +18,10 @@ public static class ServicesExtension
         services.TryAddScoped<HttpClient>();
         services.TryAddTransient<RestHttpService>();
         services.AddBackendHttpClient(RestHttpService.StudentClientName, "students/");
+        services.AddBackendHttpClient(RestHttpService.GroupClientName, "groups/");
 
         services.TryAddTransient<IStudentServices, StudentServices>();
-
+        services.TryAddTransient<IGroupServices, GroupServices>();
 
         return services;
     }
