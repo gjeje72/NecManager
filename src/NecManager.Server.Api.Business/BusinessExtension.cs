@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
+using NecManager.Server.Api.Business.Modules.Group;
 using NecManager.Server.Api.Business.Modules.Student;
 using NecManager.Server.DataAccessLayer.ServiceExtension;
 
@@ -18,7 +19,7 @@ public static class BusinessExtension
     {
         services.AddData(configuration);
         services.TryAddTransient<IStudentBusinessModule, StudentBusinessModule>();
-
+        services.TryAddTransient<IGroupBusinessModule, GroupBusinessModule>();
         return services;
     }
 }
