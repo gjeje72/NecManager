@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using NecManager.Common.DataEnum;
 using NecManager.Server.DataAccessLayer.Model.Abstraction;
 
-public class Student : ADataObject
+public sealed class Student : ADataObject
 {
     /// <summary>
     ///     Gets or sets the name.
@@ -19,22 +19,28 @@ public class Student : ADataObject
     public string FirstName { get; set; } = string.Empty;
 
     /// <summary>
+    ///     Gets or sets the phone number.
+    /// </summary>
+    public string PhoneNumber { get; set; } = string.Empty;
+
+    /// <summary>
+    ///     Gets or sets the email address.
+    /// </summary>
+    [EmailAddress]
+    public string EmailAddress { get; set; } = string.Empty;
+
+    /// <summary>
     ///     Gets or sets a categorie.
     /// </summary>
-    public CategorieType Categorie { get; set; }
+    public CategoryType Category { get; set; }
+
+    /// <summary>
+    ///     Gets or sets a value indicating whether a student is a master.
+    /// </summary>
+    public bool IsMaster { get; set; }
 
     /// <summary>
     ///     Gets or sets a group id.
     /// </summary>
-    public int GroupId { get; set; }
-
-    /// <summary>
-    ///     Getse or sets a group.
-    /// </summary>
-    public Group? Group { get; set; }
-
-    /// <summary>
-    ///     Gets or sets a weapon.
-    /// </summary>
-    public WeaponType Arme { get; set; }
+    public ICollection<StudentGroup> StudentGroups { get; set; } = new HashSet<StudentGroup>();
 }

@@ -10,12 +10,9 @@ public sealed class CreateGroupViewModel
 
     public string Title { get; set; } = string.Empty;
 
-    public List<CategorieType> Categories { get; set; } = new();
+    public List<CategoryType> Categories { get; set; } = new();
 
     public WeaponType Weapon { get; set; }
 
-    public List<int> UsersIds { get; set; } = new();
-
-    /* TODO */
-    public string? Lessons { get; set; } 
+    public List<int>? UsersIds { get; set; } = new();
 }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using NecManager.Common.DataEnum;
 using NecManager.Server.Api.Business.Modules.Student.Models;
 
-public sealed class GroupInput
+public sealed class CreateGroupInput
 {
     /// <summary>
     ///     Gets or sets the title of the group.
@@ -14,7 +14,7 @@ public sealed class GroupInput
     /// <summary>
     ///     Gets or sets a collection of categories.
     /// </summary>
-    public List<CategorieType>? Categories { get; set; }
+    public List<int>? Categories { get; set; }
 
     /// <summary>
     ///     Gets or sets a weapon.

@@ -1,4 +1,5 @@
 ﻿@page "/admin/group"
+@inherits ComponentBase
 
 @using NecManager.Common.DataEnum
 @using NecManager.Web.Components.Modal
@@ -44,33 +45,43 @@ else
             <span class="oi oi-arrow-top">Fermer</span>
         </button>
         <div class="create-form">
-            <EditForm Model="this.CreateGroupModel" OnSubmit="this.HandleSubmitAsync">
+            <EditForm Model="this.ModelForm" OnSubmit="this.HandleSubmitAsync">
                 <DataAnnotationsValidator />
                 <div class="d-flex flex-wrap">
                     <div class="form-group col-3">
                         <label class="form-label" for="name">Nom du groupe</label>
-                        <InputText class="form-control" id="name" @bind-Value="this.CreateGroupModel.Title"></InputText>
+                        <InputText class="form-control" id="name" @bind-Value="this.ModelForm.Title"></InputText>
                     </div>
 
                     <div class="form-group col-3">
                         <label class="form-label" for="cat">Armes</label>
-                        <InputSelect class="form-control" @bind-Value="this.CreateGroupModel.Weapon" id="cat">
+                        <InputSelect class="form-control" @bind-Value="this.ModelForm.Weapon" id="cat">
                             @foreach (var weapon in Enum.GetValues(typeof(WeaponType)))
                             {
-                        <option value="@weapon">@weapon</option>
+                                <option value="@weapon">@weapon</option>
                             }
-                </InputSelect>
-            </div>
-            <div class="form-group col-3">
-                <button type="button" class="btn btn-primary" @onclick="this.ShowCategoriesDialog">Catégories</button>
-            </div>
-            <div class="form-group col-3">
-                <button type="button" class="btn btn-primary" @onclick="this.ShowStudentDialog">Etudiants</button>
-            </div>
+                        </InputSelect>
+                    </div>
+                    <div class="form-group col-3">
+                        <button type="button" class="btn btn-primary" @onclick="this.ShowCategoriesDialog">Catégories</button>
+                    </div>
+                    <div class="form-group col-3">
+                        <button type="button" class="btn btn-primary" @onclick="this.ShowStudentDialog">Etudiants</button>
+                    </div>
+                </div>
+                @{
+                    if (this.IsEditMode)
+                    {
+                        <button @onclick="this.ResetEditMode">BACK</button>
+                        <button type="submit" class="btn btn-success mx-3">METTRE A JOUR</button>
+                    }
+                    else
+                    {
+                        <button type="submit" class="btn btn-success mx-3">CREER</button>
+                    }
+                }
+            </EditForm>
         </div>
-        <button type="submit" class="btn btn-success mx-3">CREER</button>
-    </EditForm>
-</div>
     }
     else
     {
@@ -94,12 +105,25 @@ else
             {
                 <tr>
                     <td>@group.Title</td>
-                    <td>@group.Categories.Count()</td>
-                    <td>@group.Weapon</td>
-                    <td>@group.UsersIds.Count</td>
                     <td>
-                        <span class="oi oi-pencil"></span>
-                        <span class="oi oi-trash"></span>
+                        @{
+                            var last = group.Categories.Last();
+                            foreach (var cat in group.Categories)
+                            {
+                                <span>@(Enum.GetName(cat))</span>
+                                if (cat != last)
+                                {
+                                    <span>, </span>
+                                }
+                            }
+                        }
+                    </td>
+
+                    <td>@group.Weapon</td>
+                    <td>@(group.StudentCount)</td>
+                    <td>
+                        <span class="btn oi oi-pencil" @onclick="async() => await this.EditGroupAsync(group)"></span>
+                        <span class=" btn oi oi-trash"></span>
                     </td>
                 </tr>
             }

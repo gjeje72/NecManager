@@ -1,5 +1,6 @@
 ﻿namespace NecManager.Web.Service.ApiServices;
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using NecManager.Common;
@@ -21,5 +22,21 @@ internal sealed class GroupServices : ServiceBase, IGroupServices
         var groupClient = await this.RestHttpService.GroupClient;
         var response = await groupClient.PostAsync("", groupInput.ToStringContent()).ConfigureAwait(false);
         return await response.BuildDataServiceResultAsync<GroupBase>().ConfigureAwait(false);
+    }
+
+    /// <inheritdoc />
+    public async Task<ServiceResult<List<GroupBase>>> GetAllGroups()
+    {
+        var groupClient = await this.RestHttpService.GroupClient;
+        var response = await groupClient.GetAsync("").ConfigureAwait(false);
+        return await response.BuildDataServiceResultAsync<List<GroupBase>>().ConfigureAwait(false);
+    }
+
+    /// <inheritdoc />
+    public async Task<ServiceResult<GroupDetails>> GetGroupAsync(int groupId)
+    {
+        var groupClient = await this.RestHttpService.GroupClient;
+        var response = await groupClient.GetAsync($"{groupId}").ConfigureAwait(false);
+        return await response.BuildDataServiceResultAsync<GroupDetails>().ConfigureAwait(false);
     }
 }

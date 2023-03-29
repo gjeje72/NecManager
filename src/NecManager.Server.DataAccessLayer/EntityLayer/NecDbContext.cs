@@ -23,4 +23,24 @@ public class NecDbContext : DbContext
     ///     Gets the group set.
     /// </summary>
     public DbSet<Group> Groups => this.Set<Group>();
+
+    /// <summary>
+    ///     Gets the lesson set.
+    /// </summary>
+    public DbSet<Lesson> Lessons => this.Set<Lesson>();
+
+    /// <summary>
+    ///     Gets the training set.
+    /// </summary>
+    public DbSet<Training> Trainings => this.Set<Training>();
+
+    /// <summary>
+    ///     Gets the person training set.
+    /// </summary>
+    public DbSet<PersonTraining> PersonTrainings => this.Set<PersonTraining>();
+
+    /// <summary>
+    ///     Gets the student group set.
+    /// </summary>
+    public DbSet<StudentGroup> StudentGroups => this.Set<StudentGroup>();
 }

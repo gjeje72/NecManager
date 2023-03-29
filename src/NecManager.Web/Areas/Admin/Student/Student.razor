@@ -1,86 +1,92 @@
 ﻿@page "/admin/student"
-
+@inherits ComponentBase
 @using NecManager.Common.DataEnum
 
 <h3>Student</h3>
-
-@if (this.creatingInProgress)
+@if (this.IsLoading)
 {
-    <button class="btn btn-outline-primary" @onclick="this.OpenCreatingForm">
-        <span class="oi oi-arrow-top">Fermer</span>
-    </button>
-    <div class="create-form">
-        <EditForm Model="this.CreateUserModel" OnSubmit="this.HandleSubmitAsync">
-              <DataAnnotationsValidator/>
-            <div class="d-flex flex-wrap">
-                <div class="form-group col-3">
-                    <label class="form-label" for="name">Nom</label>
-                    <InputText class="form-control" id="name" @bind-Value="this.CreateUserModel.Name"></InputText>
-                </div>
-                <div class="form-group col-3">
-                    <label class="form-label" for="firstname">Prénom</label>
-                    <InputText class="form-control" id="firstname" @bind-Value="this.CreateUserModel.FirstName"></InputText>
-                </div>
-            
-                <div class="form-group col-3">
-                    <label class="form-label" for="cat">Catégorie</label>
-                    <InputSelect class="form-control" @bind-Value="this.CreateUserModel.Categorie" id="cat">
-                        @foreach(var categorie in Enum.GetValues(typeof(CategorieType)))
-                        {
-                            <option value="@categorie">@categorie</option>
-                        }
-                    </InputSelect>
-                </div>
-                <div class="form-group col-3">
-                    <label class="form-label" for="arme">Arme</label>
-                    <InputSelect class="form-control" @bind-Value="this.CreateUserModel.Arme" id="arme">
-                        @foreach(var weapon in Enum.GetValues(typeof(WeaponType)))
-                        {
-                            <option value="@weapon">@weapon</option>
-                        }
-                    </InputSelect>
-                </div>            
-                <div class="form-group col-3">
-                    <label class="form-label" for="group">Groupe</label>
-                    <InputText class="form-control" id="group" @bind-Value="this.CreateUserModel.Group"></InputText>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-success mx-3">CREER</button>
-        </EditForm>
-</div>
+    <span>chargement ...</span>
 }
 else
 {
-    <button class="btn btn-primary" @onclick="this.OpenCreatingForm">
-        <span class="oi oi-plus">Ajouter un étudiant</span>
-    </button>
-}
+    @if (this.creatingInProgress)
+    {
+        <button class="btn btn-outline-primary" @onclick="this.OpenCreatingForm">
+            <span class="oi oi-arrow-top">Fermer</span>
+        </button>
+        <div class="create-form">
+            <EditForm Model="this.CreateUserModel" OnSubmit="this.HandleSubmitAsync">
+                <DataAnnotationsValidator />
+                <div class="d-flex flex-wrap">
+                    <div class="form-group col-3">
+                        <label class="form-label" for="name">Nom</label>
+                        <InputText class="form-control" id="name" @bind-Value="this.CreateUserModel.LastName"></InputText>
+                    </div>
+                    <div class="form-group col-3">
+                        <label class="form-label" for="firstname">Prénom</label>
+                        <InputText class="form-control" id="firstname" @bind-Value="this.CreateUserModel.FirstName"></InputText>
+                    </div>
 
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Nom</th>
-            <th>Prenom</th>
-            <th>Armes</th>
-            <th>Categorie</th>
-            <th>Groupe</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach(var user in this.Users.OrderBy(x => x.Arme))
-        {
+                    <div class="form-group col-3">
+                        <label class="form-label" for="cat">Catégorie</label>
+                        <InputSelect class="form-control" @bind-Value="this.CreateUserModel.Categorie" id="cat">
+                            @foreach (var categorie in Enum.GetValues(typeof(CategoryType)))
+                            {
+                        <option value="@categorie">@categorie</option>
+                            }
+                </InputSelect>
+            </div>
+            <div class="form-group col-3">
+                <label class="form-label" for="arme">Arme</label>
+                <InputSelect class="form-control" @bind-Value="this.CreateUserModel.Arme" id="arme">
+                    @foreach (var weapon in Enum.GetValues(typeof(WeaponType)))
+                            {
+                        <option value="@weapon">@weapon</option>
+                            }
+                </InputSelect>
+            </div>
+            <div class="form-group col-3">
+                <label class="form-label" for="group">Groupe</label>
+                <InputText class="form-control" id="group" @bind-Value="this.CreateUserModel.GroupName"></InputText>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-success mx-3">CREER</button>
+    </EditForm>
+</div>
+    }
+    else
+    {
+        <button class="btn btn-primary" @onclick="this.OpenCreatingForm">
+            <span class="oi oi-plus">Ajouter un étudiant</span>
+        </button>
+    }
+
+    <table class="table table-hover">
+        <thead>
             <tr>
-                <td>@user.Name</td>
-                <td>@user.FirstName</td>
-                <td>@user.Arme</td>
-                <td>@user.Categorie</td>
-                <td>@user.Group</td>
-                <td>
-                    <span class="oi oi-pencil"></span>
-                    <span class="oi oi-trash"></span>
-                </td>
+                <th>Nom</th>
+                <th>Prenom</th>
+                <th>Armes</th>
+                <th>Categorie</th>
+                <th>Groupe</th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var user in this.Students.OrderBy(x => x.Arme))
+            {
+                <tr>
+                    <td>@user.LastName</td>
+                    <td>@user.FirstName</td>
+                    <td>@user.Arme</td>
+                    <td>@user.Categorie</td>
+                    <td>@user.GroupName</td>
+                    <td>
+                        <span class="oi oi-pencil"></span>
+                        <span class="oi oi-trash"></span>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

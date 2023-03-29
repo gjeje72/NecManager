@@ -10,7 +10,7 @@ public sealed class CreateUserViewModel
     /// <summary>
     ///     Gets or sets the name.
     /// </summary>
-    public string Name { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
 
     /// <summary>
     ///     Gets or sets the first name.
@@ -20,12 +20,12 @@ public sealed class CreateUserViewModel
     /// <summary>
     ///     Gets or sets a categorie.
     /// </summary>
-    public CategorieType Categorie { get; set; }
+    public CategoryType Categorie { get; set; }
 
     /// <summary>
     ///     Gets or sets a group.
     /// </summary>
-    public string Group { get; set; } = string.Empty;
+    public string? GroupName { get; set; }
 
     /// <summary>
     ///     Gets or sets a weapon.

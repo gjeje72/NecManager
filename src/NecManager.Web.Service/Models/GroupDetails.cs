@@ -6,23 +6,8 @@ using System.Collections.Generic;
 ///     Class which represents the information details for a group.
 ///     Used when group creating.
 /// </summary>
-public sealed class GroupDetails
+public sealed class GroupDetails : GroupBase
 {
-    /// <summary>
-    ///     Gets or sets a title for this group.
-    /// </summary>
-    public string Title { get; set; } = string.Empty;
-
-    /// <summary>
-    ///     Gets or sets a collection of categories.
-    /// </summary>
-    public List<CategorieType>? Categories { get; set; }
-
-    /// <summary>
-    ///     Gets or sets a weapon.
-    /// </summary>
-    public WeaponType Weapon { get; set; }
-
     /// <summary>
     ///     Gets or sets a collection of students.
     /// </summary>

@@ -10,7 +10,9 @@ public sealed class StudentBase
 
     public string FirstName { get; set; } = string.Empty;
 
-    public CategorieType Categorie { get; set; }
+    public CategoryType Categorie { get; set; }
 
     public WeaponType Arme { get; set; }
+
+    public string? GroupName { get; set; }
 }

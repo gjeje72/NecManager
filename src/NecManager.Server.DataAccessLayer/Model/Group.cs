@@ -26,5 +26,5 @@ public class Group : ADataObject
     /// <summary>
     ///     Gets or sets a collection of students.
     /// </summary>
-    public ICollection<Student>? Students { get; set; }
+    public ICollection<StudentGroup>? StudentGroups { get; set; } = new HashSet<StudentGroup>();
 }

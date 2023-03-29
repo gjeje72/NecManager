@@ -6,8 +6,21 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using NecManager.Web;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using NecManager.Web.Data;
+using NecManager.Web.Areas.Identity.Data;
+using Microsoft.Extensions.Configuration;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("NecManagerWebContextConnection") ?? throw new InvalidOperationException("Connection string 'NecManagerWebContextConnection' not found.");
+
+builder.Services.AddDbContext<NecManagerWebContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<NecManagerWebUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<NecManagerWebContext>();
 
 // Configures WebHost
 builder.WebHost.UseIISIntegration();

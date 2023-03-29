@@ -1,5 +1,7 @@
 ﻿namespace NecManager.Common.DataEnum.Internal;
 public enum RestServiceErrorCode
 {
-    CreateError,
+    CreateError = 1000,
+
+    GetError = 2000,
 }

@@ -22,6 +22,10 @@ public static class DataServiceExtension
 
         services.AddTransient<IStudentAccessLayer, StudentAccessLayer>();
 
+        services.AddTransient<ITrainingAccessLayer, TrainingAccessLayer>();
+
+        services.AddTransient<ILessonAccessLayer, LessonAccessLayer>();
+
         return services;
     }
 }
