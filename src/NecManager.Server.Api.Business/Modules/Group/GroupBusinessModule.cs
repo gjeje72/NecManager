@@ -1,7 +1,6 @@
 ﻿namespace NecManager.Server.Api.Business.Modules.Group;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
 
 using NecManager.Common;
 using NecManager.Common.DataEnum.Internal;
@@ -77,7 +76,7 @@ internal sealed class GroupBusinessModule : IGroupBusinessModule
             Title = group.Title,
             Weapon = group.Weapon,
             CategoriesIds = categories,
-            StudentCount = group.StudentGroups?.Where(sg => sg.GroupId == group.Id).Count() ?? 0
+            StudentCount = group.StudentGroups?.Count() ?? 0
         };
     }
 
@@ -91,7 +90,7 @@ internal sealed class GroupBusinessModule : IGroupBusinessModule
             Title = group.Title,
             Weapon = group.Weapon,
             CategoriesIds = categories,
-            Students = group.StudentGroups?.Where(sg => sg.GroupId == group.Id).Select(
+            Students = group.StudentGroups?.Select(
                 sg => sg.Student).Select(student => new StudentOutputBase
                 {
                     Id = student.Id,

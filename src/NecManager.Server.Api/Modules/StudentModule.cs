@@ -1,12 +1,10 @@
 ﻿namespace NecManager.Server.Api.Modules;
 
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-using NecManager.Common.Security;
 using NecManager.Server.Api.Business;
 using NecManager.Server.Api.Business.Modules.Student;
 using NecManager.Server.Api.Business.Modules.Student.Models;
@@ -33,7 +31,7 @@ public sealed class StudentModule : IModule
             .WithTags("Students");
 
         endpoints.MapPost("/students", async (ApiRequestHeaders header, [FromBody] StudentCreationInput createInput, [FromServices] IStudentBusinessModule studentService)
-            => Results.Extensions.ApiResponseEmpty(await studentService.CreateStudent(createInput,header)))
+            => Results.Extensions.ApiResponseEmpty(await studentService.CreateStudent(createInput, header)))
             .ProducesApiResponseEmpty()
             .WithName("Create a new student")
             .WithTags("Students");

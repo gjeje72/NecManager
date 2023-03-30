@@ -17,4 +17,12 @@ using NecManager.Common.DataEnum.Internal;
 public record ApiResponseError(RestServiceErrorCode ErrorCode, string ErrorMessage)
 {
     //public static readonly ApiResponseError Empty = new(RestServiceErrorCode.ApiDataUnavailable, string.Empty);
+    public static class LessonApiErrors
+    {
+        public static readonly ApiResponseError LessonNotFound = new(RestServiceErrorCode.LessonNotFound, "Lesson not found.");
+        public static readonly ApiResponseError LessonBadRequest = new(RestServiceErrorCode.LessonBadRequest, "Lesson input bad request.");
+        public static readonly ApiResponseError LessonCreationFailure = new(RestServiceErrorCode.LessonCreationFailure, "Create a new lesson failed.");
+        public static readonly ApiResponseError LessonDeletionFailure = new(RestServiceErrorCode.LessonDeletionFailure, "Delete a lesson failed.");
+        public static readonly ApiResponseError LessonUpdateFailure = new(RestServiceErrorCode.LessonUpdateFailure, "Update a lesson failed.");
+    }
 }
