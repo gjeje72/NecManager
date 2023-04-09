@@ -19,7 +19,7 @@ public sealed class LessonModule : IModule
         _ = endpoints.MapGet("/lessons",
              async (ApiRequestHeaders requestHeaders, [FromServices] ILessonBusiness lessonService, /*BindAsync*/ LessonQueryInput query)
             //[Authorize] async (ApiRequestHeaders requestHeaders, [FromServices] ILessonBusiness lessonService, /*BindAsync*/ LessonQueryInput query)
-                => Results.Extensions.ApiResponse(await lessonService.GetAllAsync(requestHeaders, query)))
+                => Results.Extensions.ApiResponse(await lessonService.SearchAsync(requestHeaders, query)))
                     .ProducesApiResponse<PageableResult<LessonBase>>()
                     .WithName("Get all lessons")
                     .WithTags("Lessons");

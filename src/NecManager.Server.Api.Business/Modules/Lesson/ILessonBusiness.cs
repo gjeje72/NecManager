@@ -7,7 +7,7 @@ using NecManager.Server.Api.Business.Modules.Lesson.Models;
 
 public interface ILessonBusiness
 {
-    Task<ApiResponse<PageableResult<LessonBase>>> GetAllAsync(ServiceMonitoringDefinition monitoringIds, LessonQueryInput query);
+    Task<ApiResponse<PageableResult<LessonBase>>> SearchAsync(ServiceMonitoringDefinition monitoringIds, LessonQueryInput query);
 
     Task<ApiResponse<LessonBase>> GetLessonByIdAsync(ServiceMonitoringDefinition monitoringIds, int lessonId);
 

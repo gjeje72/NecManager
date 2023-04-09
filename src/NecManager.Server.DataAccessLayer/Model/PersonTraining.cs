@@ -13,4 +13,6 @@ public sealed class PersonTraining : ADataObject
     public Student? Student { get; set; }
 
     public bool IsIndividual { get; set; }
+
+    public string? MasterName { get; set; }
 }

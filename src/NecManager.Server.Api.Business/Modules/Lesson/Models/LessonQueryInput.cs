@@ -1,10 +1,6 @@
 ﻿namespace NecManager.Server.Api.Business.Modules.Lesson.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Http;
@@ -13,7 +9,7 @@ using NecManager.Common;
 using NecManager.Common.DataEnum;
 
 /// <summary>
-///     Record which represent a query to filter the store collection.
+///     Record which represent a query to filter the lesson collection.
 /// </summary>
 /// <param name="PageSize">The page size.</param>
 /// <param name="CurrentPage">The current page.</param>

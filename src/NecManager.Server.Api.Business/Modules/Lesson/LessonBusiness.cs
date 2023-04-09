@@ -25,7 +25,7 @@ internal class LessonBusiness : ILessonBusiness
     }
 
     /// <inheritdoc />
-    public async Task<ApiResponse<PageableResult<LessonBase>>> GetAllAsync(ServiceMonitoringDefinition monitoringIds, LessonQueryInput query)
+    public async Task<ApiResponse<PageableResult<LessonBase>>> SearchAsync(ServiceMonitoringDefinition monitoringIds, LessonQueryInput query)
     {
         //ArgumentNullException.ThrowIfNull(monitoringIds);
 

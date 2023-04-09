@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 
+using NecManager.Common.DataEnum;
 using NecManager.Server.DataAccessLayer.Model.Abstraction;
 
 public sealed class Training : ADataObject
@@ -23,4 +24,8 @@ public sealed class Training : ADataObject
     public int LessonId { get; set; }
 
     public Lesson? Lesson { get; set; }
+
+    public int? GroupId { get; set; } = null;
+
+    public Group? Group { get; set; }
 }

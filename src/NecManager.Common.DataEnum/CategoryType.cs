@@ -1,6 +1,7 @@
 ﻿namespace NecManager.Common.DataEnum;
 public enum CategoryType
 {
+    None = 0,
     Eveil = 1,
     M7 = 2,
     M9 = 3,
