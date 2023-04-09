@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 
-using NecManager.Common.DataEnum;
 using NecManager.Server.DataAccessLayer.Model.Abstraction;
 
 public sealed class Training : ADataObject

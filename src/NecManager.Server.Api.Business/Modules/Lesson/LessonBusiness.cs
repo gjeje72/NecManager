@@ -126,7 +126,7 @@ internal class LessonBusiness : ILessonBusiness
     /// <inheritdoc />
     public async Task<ApiResponseEmpty> UpdateLessonAsync(ServiceMonitoringDefinition monitoringIds, int lessonId, LessonUpdateInput input)
     {
-       // ArgumentNullException.ThrowIfNull(monitoringIds);
+        // ArgumentNullException.ThrowIfNull(monitoringIds);
 
         if (string.IsNullOrWhiteSpace(input.Title) || string.IsNullOrWhiteSpace(input.Description) || string.IsNullOrWhiteSpace(input.Content))
             return new(monitoringIds, new(ApiResponseResultState.BadRequest, LessonApiErrors.LessonBadRequest));

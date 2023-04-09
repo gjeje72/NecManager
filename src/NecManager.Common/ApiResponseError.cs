@@ -25,4 +25,13 @@ public record ApiResponseError(RestServiceErrorCode ErrorCode, string ErrorMessa
         public static readonly ApiResponseError LessonDeletionFailure = new(RestServiceErrorCode.LessonDeletionFailure, "Delete a lesson failed.");
         public static readonly ApiResponseError LessonUpdateFailure = new(RestServiceErrorCode.LessonUpdateFailure, "Update a lesson failed.");
     }
+
+    public static class TrainingApiErrors
+    {
+        public static readonly ApiResponseError TrainingNotFound = new(RestServiceErrorCode.TrainingNotFound, "Training not found.");
+        public static readonly ApiResponseError TrainingBadRequest = new(RestServiceErrorCode.TrainingBadRequest, "Training input bad request.");
+        public static readonly ApiResponseError TrainingCreationFailure = new(RestServiceErrorCode.TrainingCreationFailure, "Create a new training failed.");
+        public static readonly ApiResponseError TrainingDeletionFailure = new(RestServiceErrorCode.TrainingDeletionFailure, "Delete a training failed.");
+        public static readonly ApiResponseError TrainingUpdateFailure = new(RestServiceErrorCode.TrainingUpdateFailure, "Update training failed.");
+    }
 }

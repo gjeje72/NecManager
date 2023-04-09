@@ -10,4 +10,10 @@ public enum RestServiceErrorCode
     LessonCreationFailure = 3002,
     LessonDeletionFailure = 3003,
     LessonUpdateFailure = 3004,
+
+    TrainingNotFound = 4000,
+    TrainingBadRequest = 4001,
+    TrainingCreationFailure = 4002,
+    TrainingDeletionFailure = 4003,
+    TrainingUpdateFailure = 4004,
 }
