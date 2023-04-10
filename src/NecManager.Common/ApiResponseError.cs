@@ -29,6 +29,7 @@ public record ApiResponseError(RestServiceErrorCode ErrorCode, string ErrorMessa
     public static class TrainingApiErrors
     {
         public static readonly ApiResponseError TrainingNotFound = new(RestServiceErrorCode.TrainingNotFound, "Training not found.");
+        public static readonly ApiResponseError TrainingStudentNotFound = new(RestServiceErrorCode.TrainingStudentNotFound, "Training student not found.");
         public static readonly ApiResponseError TrainingBadRequest = new(RestServiceErrorCode.TrainingBadRequest, "Training input bad request.");
         public static readonly ApiResponseError TrainingCreationFailure = new(RestServiceErrorCode.TrainingCreationFailure, "Create a new training failed.");
         public static readonly ApiResponseError TrainingsCreationFailure = new(RestServiceErrorCode.TrainingsCreationFailure, "Create some new trainings failed.");

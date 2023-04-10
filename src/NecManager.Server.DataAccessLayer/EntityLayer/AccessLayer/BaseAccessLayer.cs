@@ -171,6 +171,18 @@ public abstract class BaseAccessLayer<TContext, TEntity> : IBaseAccessLayer<TEnt
         => this.GetCollection(filter: o => o.Id == id).AnyAsync();
 
     /// <inheritdoc/>
+    public async Task<bool> ExistsRangeAsync(IEnumerable<int> ids)
+    {
+        foreach (var id in ids)
+        {
+            if (!await this.GetCollection(filter: o => o.Id == id).AnyAsync())
+                return false;
+        }
+
+        return true;
+    }
+
+    /// <inheritdoc/>
     public async Task<int> UpdateListAsync(IEnumerable<TEntity> models)
     {
         this.ModelSet.UpdateRange(models);

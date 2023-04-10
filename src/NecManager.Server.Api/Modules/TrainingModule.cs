@@ -49,7 +49,7 @@ public sealed class TrainingModule : IModule
 
         _ = endpoints.MapPut("/trainings/{trainingId:int}",
              //[Authorize] async (ApiRequestHeaders requestHeaders, [FromServices] ITrainingBusiness trainingService, [FromBody] TrainingUpdateInput input)
-             async (ApiRequestHeaders requestHeaders, [FromServices] ITrainingBusiness trainingService, [FromBody] TrainingUpdateInput input)
+             async (ApiRequestHeaders requestHeaders, [FromServices] ITrainingBusiness trainingService, [FromRoute] int trainingId, [FromBody] TrainingUpdateInput input)
                 => Results.Extensions.ApiResponseEmpty(await trainingService.UpdateTrainingAsync(requestHeaders, input)))
                 .ProducesApiResponseEmpty()
                 .WithName("Update an existing training")
@@ -57,7 +57,7 @@ public sealed class TrainingModule : IModule
 
         _ = endpoints.MapPut("/trainings/{trainingId:int}/add-students",
              //[Authorize] async (ApiRequestHeaders requestHeaders, [FromServices] ITrainingBusiness trainingService, [FromBody] TrainingUpdateStudentInput input)
-             async (ApiRequestHeaders requestHeaders, [FromServices] ITrainingBusiness trainingService, [FromBody] TrainingUpdateStudentInput input)
+             async (ApiRequestHeaders requestHeaders, [FromServices] ITrainingBusiness trainingService, [FromBody] TrainingUpdateStudentInput input, [FromRoute] int trainingId)
                 => Results.Extensions.ApiResponseEmpty(await trainingService.AddStudentsInTrainingAsync(requestHeaders, input)))
                 .ProducesApiResponseEmpty()
                 .WithName("Update an existing training to add student")

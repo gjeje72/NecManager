@@ -17,12 +17,14 @@ internal class TrainingBusiness : ITrainingBusiness
     private readonly ILogger<ITrainingBusiness> logger;
     private readonly ITrainingAccessLayer trainingAccessLayer;
     private readonly ILessonAccessLayer lessonAccessLayer;
+    private readonly IStudentAccessLayer studentAccessLayer;
 
-    public TrainingBusiness(ILogger<ITrainingBusiness> logger, ITrainingAccessLayer trainingAccessLayer, ILessonAccessLayer lessonAccessLayer)
+    public TrainingBusiness(ILogger<ITrainingBusiness> logger, ITrainingAccessLayer trainingAccessLayer, ILessonAccessLayer lessonAccessLayer, IStudentAccessLayer studentAccessLayer)
     {
         this.logger = logger;
         this.trainingAccessLayer = trainingAccessLayer;
         this.lessonAccessLayer = lessonAccessLayer;
+        this.studentAccessLayer = studentAccessLayer;
     }
 
     /// <inheritdoc />
@@ -150,21 +152,24 @@ internal class TrainingBusiness : ITrainingBusiness
     {
         //ArgumentNullException.ThrowIfNull(monitoringIds);
 
-        var matchingTraining = await this.trainingAccessLayer.GetSingleAsync(x => x.Id == input.TrainingId, true).ConfigureAwait(false);
+        var matchingTraining = await this.trainingAccessLayer.GetSingleAsync(x => x.Id == input.TrainingId, true, x => x.Include(t => t.PersonTrainings)).ConfigureAwait(false);
         if (matchingTraining is null)
             return new(monitoringIds, new(ApiResponseResultState.NotFound, TrainingApiErrors.TrainingNotFound));
 
-        var masterName = matchingTraining.PersonTrainings.FirstOrDefault()?.MasterName ?? string.Empty;
-        var isIndiv = matchingTraining.PersonTrainings.FirstOrDefault()?.IsIndividual ?? false;
+        if ((matchingTraining.PersonTrainings.Count == 1 && input.IsIndividual) || (input.StudentsIds.Count > 1 && input.IsIndividual))
+            return new(monitoringIds, new(ApiResponseResultState.BadRequest, TrainingApiErrors.TrainingBadRequest));
 
-        foreach (var studentToAdd in input.Students)
+        if (!await this.studentAccessLayer.ExistsRangeAsync(input.StudentsIds))
+            return new(monitoringIds, new(ApiResponseResultState.NotFound, TrainingApiErrors.TrainingNotFound));
+
+        foreach (var studentId in input.StudentsIds)
         {
             matchingTraining.PersonTrainings.Add(new PersonTraining
             {
-                StudentId = studentToAdd.Id,
+                StudentId = studentId,
                 TrainingId = matchingTraining.Id,
-                MasterName = masterName,
-                IsIndividual = isIndiv
+                MasterName = input.MasterName,
+                IsIndividual = input.IsIndividual,
             });
         }
         try

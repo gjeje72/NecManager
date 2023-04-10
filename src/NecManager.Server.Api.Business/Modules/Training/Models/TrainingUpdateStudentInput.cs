@@ -5,5 +5,9 @@ public sealed class TrainingUpdateStudentInput
 {
     public int TrainingId { get; set; }
 
-    public List<TrainingStudentBase> Students { get; set; } = new();
+    public List<int> StudentsIds { get; set; } = new();
+
+    public string? MasterName { get; set; }
+
+    public bool IsIndividual { get; set; }
 }

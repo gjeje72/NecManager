@@ -131,4 +131,11 @@ public interface IBaseAccessLayer<TEntity>
     /// <param name="id">Id of object to check.</param>
     /// <returns>Returns true if object exists, false otherwise.</returns>
     Task<bool> ExistsAsync(int id);
+
+    /// <summary>
+    ///     Check the existence of all object in a collection from based on id.
+    /// </summary>
+    /// <param name="ids">the collection of id object to check.</param>
+    /// <returns>Returns true if objects exists, false otherwise.</returns>
+    Task<bool> ExistsRangeAsync(IEnumerable<int> ids);
 }

@@ -17,7 +17,7 @@ public sealed class TrainingAccessLayer : AQueryBaseAccessLayer<NecDbContext, Tr
     /// <inheritdoc />
     protected override async Task<IEnumerable<Training>> GetCollectionInternalAsync(TrainingQuery query, bool isPageable = true)
     {
-        IQueryable<Training> queryable = this.ModelSet.Include(t => t.Lesson).Include(t => t.PersonTrainings).Include(t => t.Group);
+        IQueryable<Training> queryable = this.ModelSet.Include(t => t.Lesson).Include(t => t.PersonTrainings).ThenInclude(pt => pt.Student).Include(t => t.Group);
 
         if (query.Date is not null)
             queryable = queryable.Where(t => t.Date == query.Date);
