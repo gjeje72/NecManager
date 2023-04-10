@@ -33,8 +33,8 @@ public sealed class LessonModule : IModule
                     .WithTags("Lessons");
 
         _ = endpoints.MapPost("/lessons",
-            //[Authorize] async (ApiRequestHeaders requestHeaders, [FromServices] ILessonBusiness lessonService, LessonCreationInput input)
-             async (ApiRequestHeaders requestHeaders, [FromServices] ILessonBusiness lessonService, LessonCreationInput input)
+             //[Authorize] async (ApiRequestHeaders requestHeaders, [FromServices] ILessonBusiness lessonService, [FromBody] LessonCreationInput input)
+             async (ApiRequestHeaders requestHeaders, [FromServices] ILessonBusiness lessonService, [FromBody] LessonCreationInput input)
                 => Results.Extensions.ApiResponseEmpty(await lessonService.CreateLessonAsync(requestHeaders, input)))
                 .ProducesApiResponseEmpty()
                 .WithName("Create a new lesson")
@@ -49,8 +49,8 @@ public sealed class LessonModule : IModule
                 .WithTags("Lessons");
 
         _ = endpoints.MapPut("/lessons/{lessonId:int}",
-            //[Authorize] async (ApiRequestHeaders requestHeaders, [FromServices] ILessonBusiness lessonService, [FromRoute] int lessonId, LessonUpdateInput input)
-             async (ApiRequestHeaders requestHeaders, [FromServices] ILessonBusiness lessonService, [FromRoute] int lessonId, LessonUpdateInput input)
+             //[Authorize] async (ApiRequestHeaders requestHeaders, [FromServices] ILessonBusiness lessonService, [FromRoute] int lessonId, [FromBody] LessonUpdateInput input)
+             async (ApiRequestHeaders requestHeaders, [FromServices] ILessonBusiness lessonService, [FromRoute] int lessonId, [FromBody] LessonUpdateInput input)
                 => Results.Extensions.ApiResponseEmpty(await lessonService.UpdateLessonAsync(requestHeaders, lessonId, input)))
                 .ProducesApiResponseEmpty()
                 .WithName("Update an existing lesson")

@@ -16,4 +16,5 @@ public enum RestServiceErrorCode
     TrainingCreationFailure = 4002,
     TrainingDeletionFailure = 4003,
     TrainingUpdateFailure = 4004,
+    TrainingsCreationFailure = 4005,
 }

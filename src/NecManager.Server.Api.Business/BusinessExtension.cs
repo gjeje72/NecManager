@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using NecManager.Server.Api.Business.Modules.Group;
 using NecManager.Server.Api.Business.Modules.Lesson;
 using NecManager.Server.Api.Business.Modules.Student;
+using NecManager.Server.Api.Business.Modules.Training;
 using NecManager.Server.DataAccessLayer.ServiceExtension;
 
 public static class BusinessExtension
@@ -19,9 +20,12 @@ public static class BusinessExtension
     public static IServiceCollection AddStudentBusiness(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddData(configuration);
+
         services.TryAddTransient<IStudentBusinessModule, StudentBusinessModule>();
         services.TryAddTransient<IGroupBusinessModule, GroupBusinessModule>();
         services.TryAddTransient<ILessonBusiness, LessonBusiness>();
+        services.TryAddTransient<ITrainingBusiness, TrainingBusiness>();
+
         return services;
     }
 }

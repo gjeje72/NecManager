@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 using NecManager.Common;
 using NecManager.Common.DataEnum;
 using NecManager.Common.DataEnum.Internal;
-using NecManager.Server.Api.Business.Modules.Lesson.Models;
 using NecManager.Server.Api.Business.Modules.Training.Models;
 using NecManager.Server.DataAccessLayer.EntityLayer.Abstractions;
 using NecManager.Server.DataAccessLayer.Model;
@@ -61,7 +60,7 @@ internal class TrainingBusiness : ITrainingBusiness
     {
         //ArgumentNullException.ThrowIfNull(monitoringIds);
 
-        if (input.StartTime >= input.EndTime || input.Date < new DateTime(2023,1,1))
+        if (input.StartTime >= input.EndTime || input.Date < new DateTime(2020, 1, 1))
             return new(monitoringIds, new(ApiResponseResultState.BadRequest, TrainingApiErrors.TrainingBadRequest));
 
         var dbLesson = new Training
@@ -85,6 +84,43 @@ internal class TrainingBusiness : ITrainingBusiness
         }
 
         return new(monitoringIds, new());
+    }
+
+    /// <inheritdoc />
+    public async Task<ApiResponseEmpty> CreateRangeTrainingAsync(ServiceMonitoringDefinition monitoringIds, List<TrainingCreationInput> inputs)
+    {
+        //ArgumentNullException.ThrowIfNull(monitoringIds);
+
+        var dbTrainings = new List<Training>();
+
+        foreach (var input in inputs)
+        {
+            if (input.StartTime >= input.EndTime || input.Date < new DateTime(2020, 1, 1))
+                continue;
+
+            var dbTraining = new Training
+            {
+                Date = input.Date,
+                StartTime = input.StartTime,
+                EndTime = input.EndTime,
+                GroupId = input.GroupId,
+                LessonId = input.LessonId,
+                PersonTrainings = input.Students.Select(s => new PersonTraining { IsIndividual = input.IsIndividual, MasterName = input.MasterName, StudentId = s.Id }).ToList()
+            };
+            dbTrainings.Add(dbTraining);
+        }
+        try
+        {
+            await this.trainingAccessLayer.AddRangeAsync(dbTrainings).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            this.logger.LogError(ex, "Error occured while creating trainings.");
+            return new(monitoringIds, new(TrainingApiErrors.TrainingsCreationFailure));
+        }
+
+        return new(monitoringIds, new());
+
     }
 
     /// <inheritdoc />
@@ -112,6 +148,8 @@ internal class TrainingBusiness : ITrainingBusiness
     /// <inheritdoc />
     public async Task<ApiResponseEmpty> AddStudentsInTrainingAsync(ServiceMonitoringDefinition monitoringIds, TrainingUpdateStudentInput input)
     {
+        //ArgumentNullException.ThrowIfNull(monitoringIds);
+
         var matchingTraining = await this.trainingAccessLayer.GetSingleAsync(x => x.Id == input.TrainingId, true).ConfigureAwait(false);
         if (matchingTraining is null)
             return new(monitoringIds, new(ApiResponseResultState.NotFound, TrainingApiErrors.TrainingNotFound));
@@ -119,7 +157,7 @@ internal class TrainingBusiness : ITrainingBusiness
         var masterName = matchingTraining.PersonTrainings.FirstOrDefault()?.MasterName ?? string.Empty;
         var isIndiv = matchingTraining.PersonTrainings.FirstOrDefault()?.IsIndividual ?? false;
 
-        foreach(var studentToAdd in input.Students)
+        foreach (var studentToAdd in input.Students)
         {
             matchingTraining.PersonTrainings.Add(new PersonTraining
             {
@@ -143,27 +181,35 @@ internal class TrainingBusiness : ITrainingBusiness
     }
 
     /// <inheritdoc />
-    public async Task<ApiResponseEmpty> UpdateTrainingLessonAsync(ServiceMonitoringDefinition monitoringIds, int trainingId, int lessonId)
+    public async Task<ApiResponseEmpty> UpdateTrainingAsync(ServiceMonitoringDefinition monitoringIds, TrainingUpdateInput input)
     {
         // ArgumentNullException.ThrowIfNull(monitoringIds);
 
-        var matchingTraining = await this.trainingAccessLayer.GetSingleAsync(x => x.Id == trainingId, true).ConfigureAwait(false);
+        var matchingTraining = await this.trainingAccessLayer.GetSingleAsync(x => x.Id == input.TrainingId, true).ConfigureAwait(false);
         if (matchingTraining is null)
             return new(monitoringIds, new(ApiResponseResultState.NotFound, TrainingApiErrors.TrainingNotFound));
 
-        var matchingLesson = await this.lessonAccessLayer.GetSingleAsync(x => x.Id == lessonId, true).ConfigureAwait(false);
-        if (matchingLesson is null)
-            return new(monitoringIds, new(ApiResponseResultState.NotFound, LessonApiErrors.LessonNotFound));
 
         try
         {
-            matchingTraining.LessonId = lessonId;
+            if (input.LessonId > 0)
+            {
+                var matchingLesson = await this.lessonAccessLayer.GetSingleAsync(x => x.Id == input.LessonId, true).ConfigureAwait(false);
+                if (matchingLesson is null)
+                    return new(monitoringIds, new(ApiResponseResultState.NotFound, LessonApiErrors.LessonNotFound));
+
+                matchingTraining.LessonId = input.LessonId;
+            }
+
+            matchingTraining.Date = input.Date;
+            matchingTraining.StartTime = input.StartTime;
+            matchingTraining.EndTime = input.EndTime;
 
             await this.trainingAccessLayer.UpdateAsync(matchingTraining).ConfigureAwait(false);
         }
         catch (Exception ex)
         {
-            this.logger.LogError(ex, "Error occured while updating training trainingId={trainingId} with lessonId = {lessonId}", trainingId, lessonId);
+            this.logger.LogError(ex, "Error occured while updating training trainingId={trainingId} with lessonId = {lessonId}", input.TrainingId, input.LessonId);
             return new(monitoringIds, new(TrainingApiErrors.TrainingUpdateFailure));
         }
 
