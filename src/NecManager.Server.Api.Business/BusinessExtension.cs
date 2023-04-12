@@ -21,8 +21,8 @@ public static class BusinessExtension
     {
         services.AddData(configuration);
 
-        services.TryAddTransient<IStudentBusinessModule, StudentBusinessModule>();
-        services.TryAddTransient<IGroupBusinessModule, GroupBusinessModule>();
+        services.TryAddTransient<IStudentBusiness, StudentBusiness>();
+        services.TryAddTransient<IGroupBusiness, GroupBusiness>();
         services.TryAddTransient<ILessonBusiness, LessonBusiness>();
         services.TryAddTransient<ITrainingBusiness, TrainingBusiness>();
 

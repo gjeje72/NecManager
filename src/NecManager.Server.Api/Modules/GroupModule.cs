@@ -19,19 +19,39 @@ public sealed class GroupModule : IModule
 
     public IEndpointRouteBuilder MapEndpoints(IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapPost("/groups", async (ApiRequestHeaders headers, [FromBody] CreateGroupInput input, [FromServices] IGroupBusinessModule groupService)
+        endpoints.MapGet("/groups",
+            async (ApiRequestHeaders headers, [FromServices] IGroupBusiness groupService)
+            //[Authorize] async (ApiRequestHeaders headers, [FromServices] IGroupBusiness groupService)
+            => Results.Extensions.ApiResponse(await groupService.GetAllGroupsAsync(headers)))
+                .WithName("Get all groups")
+                .WithTags("Groups");
+
+        endpoints.MapGet("/groups/{groupId}",
+            async (ApiRequestHeaders headers, [FromRoute] int groupId, [FromServices] IGroupBusiness groupService)
+            //[Authorize] async (ApiRequestHeaders headers, [FromRoute] int groupId, [FromServices] IGroupBusiness groupService)
+            => Results.Extensions.ApiResponse(await groupService.GetGroupByIdAsync(headers, groupId)))
+                .WithName("Get a group by id.")
+                .WithTags("Groups");
+
+        endpoints.MapPost("/groups",
+            async (ApiRequestHeaders headers, [FromBody] CreateGroupInput input, [FromServices] IGroupBusiness groupService)
+            //[Authorize] async (ApiRequestHeaders headers, [FromBody] CreateGroupInput input, [FromServices] IGroupBusiness groupService)
             => Results.Extensions.ApiResponse(await groupService.CreateGroupAsync(headers, input)))
                 .WithName("Create a group")
                 .WithTags("Groups");
 
-        endpoints.MapGet("/groups", (ApiRequestHeaders headers, [FromServices] IGroupBusinessModule groupService)
-            => Results.Extensions.ApiResponse(groupService.GetAllGroups(headers)))
-                .WithName("Get all groups")
+        endpoints.MapPost("/groups/{groupId:int}",
+            async (ApiRequestHeaders headers, [FromRoute] int groupId, [FromBody] GroupUpdateInput input, [FromServices] IGroupBusiness groupService)
+            //[Authorize] async (ApiRequestHeaders headers, [FromBody] CreateGroupInput input, [FromServices] IGroupBusiness groupService)
+            => Results.Extensions.ApiResponseEmpty(await groupService.UpdateGroupAsync(headers, input)))
+                .WithName("Update a group")
                 .WithTags("Groups");
 
-        endpoints.MapGet("/groups/{groupId}", async (ApiRequestHeaders headers, [FromRoute] int groupId, [FromServices] IGroupBusinessModule groupService)
-            => Results.Extensions.ApiResponse(await groupService.GetGroupByIdAsync(headers, groupId)))
-                .WithName("Get a group by id.")
+        endpoints.MapDelete("/groups/{groupId:int}",
+            async (ApiRequestHeaders headers, [FromRoute] int groupId, [FromServices] IGroupBusiness groupService)
+            //[Authorize] async (ApiRequestHeaders headers, [FromRoute] int groupId, [FromServices] IGroupBusiness groupService)
+            => Results.Extensions.ApiResponseEmpty(await groupService.DeleteGroupAsync(headers, groupId)))
+                .WithName("Delete a group by id.")
                 .WithTags("Groups");
 
         return endpoints;

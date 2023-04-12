@@ -1,12 +1,36 @@
 ﻿namespace NecManager.Server.DataAccessLayer.EntityLayer.AccessLayer;
 
-using NecManager.Server.DataAccessLayer.EntityLayer.Abstractions;
-using NecManager.Server.DataAccessLayer.Model;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-public class StudentAccessLayer : BaseAccessLayer<NecDbContext, Student>, IStudentAccessLayer
+using Microsoft.EntityFrameworkCore;
+
+using NecManager.Server.DataAccessLayer.EntityLayer.Abstractions;
+using NecManager.Server.DataAccessLayer.EntityLayer.Abstractions.Query;
+using NecManager.Server.DataAccessLayer.Model;
+using NecManager.Server.DataAccessLayer.Model.Query;
+
+public class StudentAccessLayer : AQueryBaseAccessLayer<NecDbContext, Student, StudentQuery>, IStudentAccessLayer
 {
     public StudentAccessLayer(NecDbContext context)
         : base(context)
     {
+    }
+
+    protected override async Task<IEnumerable<Student>> GetCollectionInternalAsync(StudentQuery query, bool isPageable = true)
+    {
+        IQueryable<Student> queryable = this.ModelSet.Include(l => l.StudentGroups).ThenInclude(sg => sg.Group);
+
+        if (query.State is not null)
+            queryable = queryable.Where(l => l.State == query.State);
+
+        if (query.GroupId is not null)
+            queryable = queryable.Where(l => l.StudentGroups.Any() && l.StudentGroups.Any(t => t.GroupId == query.GroupId));
+
+        if (query.WeaponType is not null)
+            queryable = queryable.Where(l => l.StudentGroups.Any() && l.StudentGroups.Any(sg => sg.Group != null && sg.Group.Weapon == query.WeaponType));
+
+        var collectionInternal = !isPageable ? queryable : queryable.Skip((query.CurrentPage - 1) * query.PageSize).Take(query.PageSize);
+        return await collectionInternal.ToListAsync();
     }
 }

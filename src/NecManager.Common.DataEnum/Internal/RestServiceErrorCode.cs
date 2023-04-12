@@ -18,4 +18,12 @@ public enum RestServiceErrorCode
     TrainingUpdateFailure = 4004,
     TrainingsCreationFailure = 4005,
     TrainingStudentNotFound = 4006,
+
+    StudentNotFound = 5001,
+    StudentUpdateFailure = 5002,
+    StudentDeletionFailure = 5003,
+
+    GroupDeletionFailure = 6000,
+    GroupNotFound = 6001,
+    GroupUpdateFailure = 6002,
 }

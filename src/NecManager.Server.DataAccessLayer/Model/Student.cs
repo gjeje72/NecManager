@@ -35,6 +35,11 @@ public sealed class Student : ADataObject
     public CategoryType Category { get; set; }
 
     /// <summary>
+    ///     Gets or sets a state.
+    /// </summary>
+    public StudentState State { get; set; }
+
+    /// <summary>
     ///     Gets or sets a value indicating whether a student is a master.
     /// </summary>
     public bool IsMaster { get; set; }

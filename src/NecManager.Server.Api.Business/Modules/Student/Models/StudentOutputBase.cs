@@ -12,7 +12,11 @@ public sealed class StudentOutputBase
 
     public CategoryType Categorie { get; set; }
 
-    public WeaponType Arme { get; set; }
+    public WeaponType Weapon { get; set; }
+
+    public IEnumerable<int> GroupIds { get; set; } = new List<int>();
+
+    public StudentState State { get; set; }
 
     public string? GroupName { get; set; }
 }

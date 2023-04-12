@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using NecManager.Common.DataEnum;
 using NecManager.Server.Api.Business.Modules.Student.Models;
 
-public sealed class CreateGroupInput
+public sealed class GroupUpdateInput
 {
+    public int GroupId { get; set; }
+
     /// <summary>
     ///     Gets or sets the title of the group.
     /// </summary>
@@ -24,7 +26,7 @@ public sealed class CreateGroupInput
     /// <summary>
     ///     Gets or sets a collection of students.
     /// </summary>
-    public List<StudentOutputBase> Students { get; set; } = new();
+    public List<int> StudentsIds { get; set; } = new();
 
     public int MasterId { get; set; }
 }

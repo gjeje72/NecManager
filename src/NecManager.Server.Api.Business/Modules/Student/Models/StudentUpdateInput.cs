@@ -1,10 +1,12 @@
 ﻿namespace NecManager.Server.Api.Business.Modules.Student.Models;
-
-using NecManager.Common.DataEnum;
 using System.ComponentModel.DataAnnotations;
 
-public sealed class StudentCreationInput
+using NecManager.Common.DataEnum;
+
+public sealed class StudentUpdateInput
 {
+    public int StudentId { get; set; }
+
     /// <summary>
     ///     Gets or sets the name.
     /// </summary>

@@ -36,4 +36,20 @@ public record ApiResponseError(RestServiceErrorCode ErrorCode, string ErrorMessa
         public static readonly ApiResponseError TrainingDeletionFailure = new(RestServiceErrorCode.TrainingDeletionFailure, "Delete a training failed.");
         public static readonly ApiResponseError TrainingUpdateFailure = new(RestServiceErrorCode.TrainingUpdateFailure, "Update training failed.");
     }
+
+    public static class GroupApiErrors
+    {
+        public static readonly ApiResponseError GroupDeletionFailure = new(RestServiceErrorCode.GroupDeletionFailure, "Delete a group failed.");
+        public static readonly ApiResponseError GroupUpdateFailure = new(RestServiceErrorCode.GroupUpdateFailure, "Update a group failed.");
+        public static readonly ApiResponseError GroupNotFound = new(RestServiceErrorCode.GroupNotFound, "Group not found.");
+
+    }
+
+    public static class StudentApiErrors
+    {
+        public static readonly ApiResponseError StudentNotFound = new(RestServiceErrorCode.StudentNotFound, "Student not found.");
+        public static readonly ApiResponseError StudentUpdateFailure = new(RestServiceErrorCode.StudentUpdateFailure, "Update student failed.");
+        public static readonly ApiResponseError StudentDeletionFailure = new(RestServiceErrorCode.StudentDeletionFailure, "Delete student failed.");
+
+    }
 }
