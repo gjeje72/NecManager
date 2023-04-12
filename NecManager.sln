@@ -42,7 +42,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NecManager.Server.Api", "sr
 		{18B1C1FE-FF61-451C-8915-55E5BCE8622C} = {18B1C1FE-FF61-451C-8915-55E5BCE8622C}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NecManager.Server.Api.Business", "src\NecManager.Server.Api.Business\NecManager.Server.Api.Business.csproj", "{18B1C1FE-FF61-451C-8915-55E5BCE8622C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NecManager.Server.Api.Business", "src\NecManager.Server.Api.Business\NecManager.Server.Api.Business.csproj", "{18B1C1FE-FF61-451C-8915-55E5BCE8622C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

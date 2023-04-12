@@ -1,0 +1,9 @@
+﻿<div class="top-bar">
+    <h1 class="top-bar-title">@this.Title</h1>
+    <img class="top-bar-logo" src="images/logo-NEC.png" alt="logo du club" />
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+}
