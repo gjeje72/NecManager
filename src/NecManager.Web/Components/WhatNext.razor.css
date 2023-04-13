@@ -1,0 +1,23 @@
+﻿.what-next {
+    background-color: black;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    clip-path: polygon(0% 0, 100% 0%, 100% 90%, 0 100%);
+    padding: 3rem;
+    width: 75%;
+    position: relative;
+    height: 27.875rem;
+    top: -1.5rem;
+}
+
+h2 {
+    color: #F9F500;
+    font-weight: bold;
+}
+
+.agenda, .competitions {
+    padding-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+}

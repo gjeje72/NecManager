@@ -1,14 +1,15 @@
 ﻿@page "/admin"
+@using NecManager.Web.Components
 
-<h3>admin</h3>
+<TopBar Title="Home" IsHome="true" />
+<div class="double-container">
+    <div class="left-container">
+        <WhatNext />
+    </div>
+    <div class="right-container">
+        <NavButtonWithPicture Url="/admin/cours-collectifs" ImgUrl="/images/btn-collectif.png" Title="Cours collectifs" />
+        <NavButtonWithPicture Url="/admin/lecons-individuelles" ImgUrl="/images/btn-indiv.png" Title="Leçons individuelles" />
+        <NavButtonWithPicture Url="/admin/reglages" ImgUrl="/images/btn-admin.png" Title="Réglages" />
+    </div>
+</div>
 
-<div class="nav-box">
-    <NavLink class="nav-link" href="/admin/student" Match="NavLinkMatch.Prefix">
-        Students
-    </NavLink>
-</div>
-<div class="nav-box">
-    <NavLink class="nav-link" href="/admin/group" Match="NavLinkMatch.Prefix">
-        Groups
-    </NavLink>
-</div>

@@ -72,3 +72,18 @@ a, .btn-link {
 .form-label {
     margin-bottom: 0;
 }
+
+.double-container {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: 45% 45%;
+    margin: 0 auto;
+    grid-template-rows: calc(100vh - 8rem - 3rem);
+}
+
+.nav-link {
+    display: flex;
+    row-gap: 0;
+    padding: 0;
+    justify-content: center;
+}

@@ -1,0 +1,21 @@
+﻿.nav-container {
+    border: solid black 2px;
+    display: flex;
+    width: 75%;
+    height: 7.18rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-title {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding-left: 2rem;
+    text-decoration: none;
+    color: black;
+}
+
+.nav-picture {
+    max-height: calc(7.18rem - 4px);
+}

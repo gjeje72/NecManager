@@ -1,7 +1,20 @@
-﻿.top-bar{
+﻿.top-bar {
     background-color: black;
     width: 100vw;
     height: 8rem;
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    padding-left: 3rem;
+}
+
+::deep .yellow{
+    color: #f9f500;
 }
 
 .top-bar-title {
@@ -13,6 +26,7 @@
     color: white;
     align-items: center;
     padding-left: 2rem;
+    margin-bottom: 0;
 }
 
 .top-bar-logo{

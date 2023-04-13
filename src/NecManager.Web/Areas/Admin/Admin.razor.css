@@ -1,0 +1,14 @@
+﻿.left-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.right-container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1.8rem;
+    justify-content: center;
+    position: relative;
+    top: -2.75rem;
+}
