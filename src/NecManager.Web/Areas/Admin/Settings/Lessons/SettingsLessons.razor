@@ -1,0 +1,12 @@
+﻿@page "/admin/reglages/lecons"
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+<TopBar Title="Admin - Leçons"/>
+
+<QuickGrid ItemsProvider="@this.lessonProviders" Pagination="@pagination">
+    <PropertyColumn Property="@(l => l.Title)" Sortable="true" />
+    <PropertyColumn Property="@(l => l.Weapon)" Sortable="true" />
+    <PropertyColumn Property="@(l => l.DifficultyType)" Sortable="true" />
+</QuickGrid>
+<Paginator Value="@pagination" />
+

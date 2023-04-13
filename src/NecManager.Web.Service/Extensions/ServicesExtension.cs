@@ -19,9 +19,11 @@ public static class ServicesExtension
         services.TryAddTransient<RestHttpService>();
         services.AddBackendHttpClient(RestHttpService.StudentClientName, "students/");
         services.AddBackendHttpClient(RestHttpService.GroupClientName, "groups/");
+        services.AddBackendHttpClient(RestHttpService.LessonClientName, "lessons/");
 
         services.TryAddTransient<IStudentServices, StudentServices>();
         services.TryAddTransient<IGroupServices, GroupServices>();
+        services.TryAddTransient<ILessonServices, LessonServices>();
 
         return services;
     }

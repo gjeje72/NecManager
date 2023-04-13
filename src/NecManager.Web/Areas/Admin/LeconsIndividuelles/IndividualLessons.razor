@@ -2,5 +2,45 @@
 
 <TopBar Title="Leçons individuelles"/>
 
+@*<DataGrid @ref="this.dataGrid"
+              LoadInProgress="this.isLoading"
+              Settings="this.DataGridSettings"
+              ItemsProvider="this.orderProviders"
+              Pagination="this.paginationState">
+        <DataPropertyColumn Title="#" Class="first-column" Property="c => c.Id" />
+        <DataPropertyColumn Title="@this.Localize["Title_CustomerName"]" Property="o => o.CustomerName" />
+        <DataTemplateColumn Title="@this.Localize["Title_DeliveryType"]">
+            <CellTemplate Context="order">
+                <ul>
+                    @foreach (var delivery in order.Deliveries)
+                    {
+                        <li>@delivery.DeliveryType.GetEnumDescription()</li>
+                    }
+                </ul>
+            </CellTemplate>
+        </DataTemplateColumn>
+        <DataPropertyColumn Title="@this.Localize["Title_DeliveryAddress"]" Property="o => o.DeliveryAddress" />
+        <DataPropertyColumn Title="@this.Localize["Title_OrderStatus"]" Property="@(o => o.State)" />
+        <DataTemplateColumn Title="@this.Localize["Title_Actions"]">
+            <CellTemplate Context="order">
+                @if (order.IsExceedingAvailableStock)
+                {
+                    <span class="txt-warning">@this.Localize["Txt_OrderStockWarning"]</span>
+                }
+                <div class="btn-actions-container">
+                    @foreach (var action in order.Actions)
+                    {
+                        <button disabled="@order.IsExceedingAvailableStock" class="bbbs-btn bbbs-btn-primary bema-square bema-square-small" @onclick="(() => this.ChangeStateAsync(order, action))">@action.GetEnumDescription()</button>
+                    }
+                </div>
+            </CellTemplate>
+        </DataTemplateColumn>
+        <DataTemplateColumn>
+            <CellTemplate Context="order">
+                <NavLink class="bbbs-btn bbbs-btn-primary btn-icon bema-icon bema-icon-loupe" href="@($"/admin/orders/{order.Id}")" />
+            </CellTemplate>
+        </DataTemplateColumn>
+    </DataGrid>
+    <PaginationCenterPages Settings="this.paginationSettings" Value="this.paginationState" />
 
-
+*@
