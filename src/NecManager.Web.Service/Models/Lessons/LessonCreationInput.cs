@@ -1,11 +1,9 @@
-﻿namespace NecManager.Web.Service.Models;
+﻿namespace NecManager.Web.Service.Models.Lessons;
 
 using NecManager.Common.DataEnum;
 
-public class LessonBase
+public sealed class LessonCreationInput
 {
-    public int Id { get; set; }
-
     public string Title { get; set; } = string.Empty;
 
     public WeaponType Weapon { get; set; }

@@ -87,3 +87,10 @@ a, .btn-link {
     padding: 0;
     justify-content: center;
 }
+
+.form-group-column {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+

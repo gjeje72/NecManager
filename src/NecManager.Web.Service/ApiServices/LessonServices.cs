@@ -6,9 +6,10 @@ using System.Threading;
 
 using NecManager.Web.Service.ApiServices.Abstractions;
 using NecManager.Web.Service.Provider;
-using NecManager.Web.Service.Models;
 using NecManager.Web.Service.Models.Query;
 using NecManager.Web.Service.Extensions;
+using NecManager.Web.Service.Models.Lessons;
+using NecManager.Web.Service.Models;
 
 internal sealed class LessonServices : ServiceBase, ILessonServices
 {
@@ -18,11 +19,19 @@ internal sealed class LessonServices : ServiceBase, ILessonServices
     }
 
     /// <inheritdoc/>
-    public async Task<ServiceResult<PageableResult<LessonBase>>> GetAllLessonsAsync(LessonInputQuery orderQuery, CancellationToken cancellationToken = default)
+    public async Task<ServiceResult<PageableResult<LessonBase>>> GetAllLessonsAsync(LessonInputQuery lessonQuery, CancellationToken cancellationToken = default)
     {
         var lessonClient = await this.RestHttpService.LessonClient.ConfigureAwait(false);
-        var response = await lessonClient.GetAsync($"{orderQuery.AsQueryParams}", cancellationToken).ConfigureAwait(false);
+        var response = await lessonClient.GetAsync($"{lessonQuery.AsQueryParams}", cancellationToken).ConfigureAwait(false);
 
         return await response.BuildDataServiceResultAsync<PageableResult<LessonBase>>().ConfigureAwait(false);
+    }
+
+    public async Task<ServiceResult> CreateLessonsAsync(LessonCreationInput lessonCreation, CancellationToken cancellationToken = default)
+    {
+        var lessonClient = await this.RestHttpService.LessonClient.ConfigureAwait(false);
+        var response = await lessonClient.PostAsync(string.Empty, lessonCreation.ToStringContent(), cancellationToken).ConfigureAwait(false);
+        return await response.BuildDataServiceResultAsync().ConfigureAwait(false);
+
     }
 }

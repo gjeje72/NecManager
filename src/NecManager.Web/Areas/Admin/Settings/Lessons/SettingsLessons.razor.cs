@@ -1,5 +1,6 @@
 ﻿namespace NecManager.Web.Areas.Admin.Settings.Lessons;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,9 +9,12 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.QuickGrid;
 
 using NecManager.Common;
+using NecManager.Common.DataEnum;
+using NecManager.Common.DataEnum.Internal;
 using NecManager.Web.Areas.Admin.Settings.Lessons.ViewModels;
 using NecManager.Web.Components.Modal;
 using NecManager.Web.Service.ApiServices.Abstractions;
+using NecManager.Web.Service.Models.Lessons;
 using NecManager.Web.Service.Models.Query;
 
 public partial class SettingsLessons : ComponentBase
@@ -18,7 +22,7 @@ public partial class SettingsLessons : ComponentBase
     private PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
     private GridItemsProvider<LessonBaseViewModel> lessonProviders = default!;
     private LessonCreationViewModel UnderCreationLesson = new();
-
+    private QuickGrid<LessonBaseViewModel> lessonsGrid;
     private Dialog? lessonsCreationFormDialog;
 
     public IQueryable<LessonBaseViewModel> Lessons { get; set; } = new List<LessonBaseViewModel>().AsQueryable();
@@ -62,6 +66,37 @@ public partial class SettingsLessons : ComponentBase
     }
     private async Task CreateLessonAsync()
     {
+        if (string.IsNullOrWhiteSpace(this.UnderCreationLesson.Title)
+            || string.IsNullOrWhiteSpace(this.UnderCreationLesson.Content)
+            || string.IsNullOrWhiteSpace(this.UnderCreationLesson.Description))
+            return;
 
+        var result = await this.LessonServices.CreateLessonsAsync(new LessonCreationInput
+        {
+            Title = this.UnderCreationLesson.Title,
+            Description = this.UnderCreationLesson.Description,
+            Content = this.UnderCreationLesson.Content,
+            Weapon = this.UnderCreationLesson.Weapon,
+            Difficulty = this.UnderCreationLesson.Difficulty
+        }).ConfigureAwait(true);
+
+        if (result.State == ServiceResultState.Success)
+        {
+            await this.lessonsGrid.RefreshDataAsync().ConfigureAwait(true);
+            if (this.lessonsCreationFormDialog is not null)
+                this.lessonsCreationFormDialog.CloseDialog();
+        }
+    }
+
+    private void WeaponSelectChangedEventHandler(ChangeEventArgs e)
+    {
+        _ = Enum.TryParse<WeaponType>(e.Value?.ToString(), out var weaponType);
+        this.UnderCreationLesson.Weapon = weaponType;
+    }
+
+    private void DifficultySelectChangedEventHandler(ChangeEventArgs e)
+    {
+        _ = Enum.TryParse<DifficultyType>(e.Value?.ToString(), out var difficultyType);
+        this.UnderCreationLesson.Difficulty = difficultyType;
     }
 }

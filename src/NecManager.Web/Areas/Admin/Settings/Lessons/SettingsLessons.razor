@@ -1,5 +1,6 @@
 ﻿@page "/admin/reglages/lecons"
 @using Microsoft.AspNetCore.Components.QuickGrid
+@using NecManager.Common.DataEnum;
 @using NecManager.Web.Components.Modal
 
 <TopBar Title="Admin - Leçons" />
@@ -10,24 +11,50 @@
         OnValidate="this.CreateLessonAsync"
         @ref="this.lessonsCreationFormDialog">
     <ChildContent>
-        <div>
+        <div class="form-group-column">
+            <label for="weapon">Arme</label>
+            <select id="weapon" @onchange="this.WeaponSelectChangedEventHandler">
+                <option value="@WeaponType.None">- arme -</option>
+                @foreach(var weapon in Enum.GetValues<WeaponType>())
+                {
+                    if(weapon != WeaponType.None)
+                    {
+                        <option value="@weapon">@weapon</option>                    
+                    }
+                }
+            </select>
+        </div>
+        <div class="form-group-column">
+            <label for="difficulty">Difficulté</label>
+            <select id="difficulty" @onchange="this.DifficultySelectChangedEventHandler">
+                <option value="@DifficultyType.None">- difficulté -</option>
+                @foreach (var difficulty in Enum.GetValues<DifficultyType>())
+                {
+                    if (difficulty != DifficultyType.None)
+                    {
+                        <option value="@difficulty">@difficulty</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="form-group-column">
             <label for="title">Titre</label>
-            <input id="title" type="text" @bind="this.UnderCreationLesson.Title" placeholder="titre" />
+            <input id="title" type="text" @bind="this.UnderCreationLesson.Title" />
         </div>
-        <div>
+        <div class="form-group-column">
             <label for="descr">Description</label>
-            <input id="descr" type="text" @bind="this.UnderCreationLesson.Description" placeholder="description" />
+            <input id="descr" type="text" @bind="this.UnderCreationLesson.Description" />
         </div>
-        <div>
+        <div class="form-group-column">
             <label for="content">Contenu</label>
-            <input id="content" type="text" @bind="this.UnderCreationLesson.Content" placeholder="contenu" />
+            <textarea id="content" @bind="this.UnderCreationLesson.Content" />
         </div>
     </ChildContent>
 </Dialog>
 <div>
     <button @onclick="@this.CreateLessonEventHandler">NOUVELLE LECON</button>
 </div>
-<QuickGrid ItemsProvider="@this.lessonProviders" Pagination="@pagination">
+<QuickGrid ItemsProvider="@this.lessonProviders" Pagination="@pagination" @ref=lessonsGrid>
     <PropertyColumn Property="@(l => l.Title)" Sortable="true" />
     <PropertyColumn Property="@(l => l.Weapon)" Sortable="true" />
     <PropertyColumn Property="@(l => l.DifficultyType)" Sortable="true" />
