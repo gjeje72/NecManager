@@ -1,8 +1,32 @@
 ﻿@page "/admin/reglages/lecons"
 @using Microsoft.AspNetCore.Components.QuickGrid
+@using NecManager.Web.Components.Modal
 
-<TopBar Title="Admin - Leçons"/>
+<TopBar Title="Admin - Leçons" />
 
+<Dialog Title="Création d'une leçon"
+        ValidateButtonText="Créer"
+        CancelButtonText="Annuler"
+        OnValidate="this.CreateLessonAsync"
+        @ref="this.lessonsCreationFormDialog">
+    <ChildContent>
+        <div>
+            <label for="title">Titre</label>
+            <input id="title" type="text" @bind="this.UnderCreationLesson.Title" placeholder="titre" />
+        </div>
+        <div>
+            <label for="descr">Description</label>
+            <input id="descr" type="text" @bind="this.UnderCreationLesson.Description" placeholder="description" />
+        </div>
+        <div>
+            <label for="content">Contenu</label>
+            <input id="content" type="text" @bind="this.UnderCreationLesson.Content" placeholder="contenu" />
+        </div>
+    </ChildContent>
+</Dialog>
+<div>
+    <button @onclick="@this.CreateLessonEventHandler">NOUVELLE LECON</button>
+</div>
 <QuickGrid ItemsProvider="@this.lessonProviders" Pagination="@pagination">
     <PropertyColumn Property="@(l => l.Title)" Sortable="true" />
     <PropertyColumn Property="@(l => l.Weapon)" Sortable="true" />

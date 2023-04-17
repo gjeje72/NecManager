@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using AutoMapper;
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.QuickGrid;
 
 using NecManager.Common;
 using NecManager.Web.Areas.Admin.Settings.Lessons.ViewModels;
+using NecManager.Web.Components.Modal;
 using NecManager.Web.Service.ApiServices.Abstractions;
 using NecManager.Web.Service.Models.Query;
 
@@ -18,10 +17,11 @@ public partial class SettingsLessons : ComponentBase
 {
     private PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
     private GridItemsProvider<LessonBaseViewModel> lessonProviders = default!;
-    public IQueryable<LessonBaseViewModel> Lessons { get; set; } = new List<LessonBaseViewModel>().AsQueryable();
+    private LessonCreationViewModel UnderCreationLesson = new();
 
-    [Inject]
-    private IMapper Mapper { get; set; } = null!;
+    private Dialog? lessonsCreationFormDialog;
+
+    public IQueryable<LessonBaseViewModel> Lessons { get; set; } = new List<LessonBaseViewModel>().AsQueryable();
 
     [Inject]
     public ILessonServices LessonServices { get; set; } = null!;
@@ -54,5 +54,14 @@ public partial class SettingsLessons : ComponentBase
             TotalElements = lessons?.TotalElements ?? 0
         };
         return GridItemsProviderResult.From(pageableLessons.Items.ToList(), pageableLessons.TotalElements);
+    }
+    private void CreateLessonEventHandler()
+    {
+        if (this.lessonsCreationFormDialog is not null)
+            this.lessonsCreationFormDialog.ShowDialog();
+    }
+    private async Task CreateLessonAsync()
+    {
+
     }
 }

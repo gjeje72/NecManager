@@ -1,0 +1,21 @@
+﻿@inherits DialogTemplate
+
+@if (this.ShowModal)
+{
+    <DialogTemplate Title=@this.Title OnValidate="@this.OnValidate" OnCancel="@this.OnCancel">
+        <ChildContent>
+            @this.ChildContent
+        </ChildContent>
+        <FooterContent>
+            <button type="button" class="btn btn-secondary" @onclick="@this.OnCancel">@this.CancelButtonText</button>
+
+            @if(string.IsNullOrWhiteSpace(this.FormId))
+            {
+                <button type="button" class="btn btn-success" disabled="@this.IsValidatedButtonDisabled" @onclick="@this.OnValidate">@this.ValidateButtonText</button>
+            }
+            else{
+                <button type="submit" form="@this.FormId" class="btn btn-success" disabled="@this.IsValidatedButtonDisabled">@this.ValidateButtonText</button>
+            } 
+        </FooterContent>
+    </DialogTemplate>
+}
