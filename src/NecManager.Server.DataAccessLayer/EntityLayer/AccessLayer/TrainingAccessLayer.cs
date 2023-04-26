@@ -45,8 +45,15 @@ public sealed class TrainingAccessLayer : AQueryBaseAccessLayer<NecDbContext, Tr
             queryable = queryable.Where(t => t.Lesson != null && t.Lesson.Weapon == query.WeaponType);
 
         if (!string.IsNullOrWhiteSpace(query.MasterName))
-            queryable = queryable.Where(t => t.PersonTrainings.Any(pt => pt.MasterName == query.MasterName));
+            queryable = queryable.Where(t => t.PersonTrainings.Any(pt => pt.MasterName.Contains(query.MasterName)));
 
+        if(!string.IsNullOrWhiteSpace(query.Filter))
+            queryable = queryable.Where(t => t.Lesson!.Title.Contains(query.Filter)
+                                                 || t.Lesson.Description.Contains(query.Filter)
+                                                 || t.Group!.Title.Contains(query.Filter)
+                                                 || t.PersonTrainings.Any(pt => pt.Student!.Name.Contains(query.Filter))
+                                                 || t.PersonTrainings.Any(pt => pt.Student!.FirstName.Contains(query.Filter))
+                                                 );
         var collectionInternal = !isPageable ? queryable : queryable.Skip((query.CurrentPage - 1) * query.PageSize).Take(query.PageSize);
         return await collectionInternal.ToListAsync();
     }

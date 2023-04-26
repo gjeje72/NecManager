@@ -23,6 +23,8 @@ public sealed class TrainingInputQuery : APageableQuery
 
     public int? StudentId { get; set; }
 
+    public string? Filter { get; set; }
+
     public bool OnlyIndividual { get; set; }
 
     public string? MasterName { get; set; }
@@ -61,5 +63,6 @@ public sealed class TrainingInputQuery : APageableQuery
         { nameof(this.StudentId), this.StudentId.ToString() ?? string.Empty },
         { nameof(this.OnlyIndividual), this.OnlyIndividual.ToString() ?? string.Empty },
         { nameof(this.MasterName), this.MasterName ?? string.Empty },
+        { nameof(this.Filter), this.Filter ?? string.Empty },
     };
 }

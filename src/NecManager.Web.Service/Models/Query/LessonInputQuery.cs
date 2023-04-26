@@ -16,6 +16,8 @@ public sealed class LessonInputQuery : APageableQuery
 
     public int? GroupId { get; set; }
 
+    public bool? IsPageable { get; set; }
+
     /// <inheritdoc />
     protected override Dictionary<string, string> QueryParameters
     {
@@ -43,5 +45,6 @@ public sealed class LessonInputQuery : APageableQuery
         { nameof(this.DifficultyType), this.DifficultyType.ToString() ?? string.Empty },
         { nameof(this.WeaponType), this.WeaponType.ToString() ?? string.Empty},
         { nameof(this.GroupId), this.GroupId.ToString() ?? string.Empty },
+        { nameof(this.IsPageable), this.IsPageable.ToString() ?? string.Empty },
     };
 }

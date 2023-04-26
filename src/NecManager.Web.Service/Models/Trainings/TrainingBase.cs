@@ -25,6 +25,8 @@ public sealed class TrainingBase
     /// </summary>
     public string? Categories { get; set; }
 
+    public string? GroupName { get; set; }
+
     /// <summary>
     ///     Gets or sets a weapon.
     /// </summary>

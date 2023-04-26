@@ -29,8 +29,8 @@ internal class LessonBusiness : ILessonBusiness
     {
         //ArgumentNullException.ThrowIfNull(monitoringIds);
 
-        var (pageSize, currentPage, difficultyType, weaponType, groupId) = query;
-        var pageableResult = await this.lessonAccessLayer.GetPageableCollectionAsync(new(pageSize, currentPage, difficultyType, weaponType, groupId), false);
+        var (pageSize, currentPage, difficultyType, weaponType, groupId, isPageable) = query;
+        var pageableResult = await this.lessonAccessLayer.GetPageableCollectionAsync(new(pageSize, currentPage, difficultyType, weaponType, groupId), isPageable == null ? true : (bool)isPageable);
         if (pageableResult.Items is not null)
         {
             var pageableLessons = new PageableResult<LessonBase>

@@ -32,8 +32,8 @@ internal class TrainingBusiness : ITrainingBusiness
     {
         //ArgumentNullException.ThrowIfNull(monitoringIds);
 
-        var (pageSize, currentPage, difficultyType, weaponType, groupId, date, season, studentId, onlyIndividual, masterName) = query;
-        var pageableResult = await this.trainingAccessLayer.GetPageableCollectionAsync(new(pageSize, currentPage, difficultyType, weaponType, groupId, date, season, studentId, onlyIndividual, masterName), false);
+        var (pageSize, currentPage, difficultyType, weaponType, groupId, date, season, studentId, filter, onlyIndividual, masterName) = query;
+        var pageableResult = await this.trainingAccessLayer.GetPageableCollectionAsync(new(pageSize, currentPage, difficultyType, weaponType, groupId, date, season, studentId, filter, onlyIndividual, masterName), false);
         if (pageableResult.Items is not null)
         {
             var pageableLessons = new PageableResult<TrainingBase>
@@ -229,6 +229,7 @@ internal class TrainingBusiness : ITrainingBusiness
             StartTime = matchingTraining.StartTime,
             EndTime = matchingTraining.EndTime,
             Categories = matchingTraining.Group?.Categories,
+            GroupName = matchingTraining.PersonTrainings.FirstOrDefault()?.IsIndividual ?? false ? $"{matchingTraining.PersonTrainings.FirstOrDefault()?.Student?.FirstName ?? string.Empty} {matchingTraining.PersonTrainings.FirstOrDefault()?.Student?.Name ?? string.Empty}" : matchingTraining.Group?.Title,
             Weapon = matchingTraining.Lesson?.Weapon ?? WeaponType.None,
             IsIndividual = matchingTraining.PersonTrainings.Count() == 1 && (matchingTraining.PersonTrainings.FirstOrDefault()?.IsIndividual ?? false),
             MasterName = matchingTraining.PersonTrainings?.FirstOrDefault()?.MasterName ?? string.Empty,

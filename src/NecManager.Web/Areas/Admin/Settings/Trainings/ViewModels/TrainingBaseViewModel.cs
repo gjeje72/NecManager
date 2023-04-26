@@ -24,10 +24,16 @@ public sealed class TrainingBaseViewModel
     /// </summary>
     public string? Categories { get; set; }
 
+    public string? GroupName { get; set; }
+
     /// <summary>
     ///     Gets or sets a weapon.
     /// </summary>
     public WeaponType Weapon { get; set; }
 
     public bool IsIndividual { get; set; }
+
+    public string LessonName { get; set; } = string.Empty;
+
+    public string MasterName { get; set;} = string.Empty;
 }

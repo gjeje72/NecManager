@@ -13,7 +13,7 @@ using NecManager.Common.DataEnum;
 /// </summary>
 /// <param name="PageSize">The page size.</param>
 /// <param name="CurrentPage">The current page.</param>
-public sealed record LessonQueryInput(int PageSize, int CurrentPage, DifficultyType? DifficultyType = null, WeaponType? WeaponType = null, int? GroupId = null) : PageableQuery(PageSize, CurrentPage)
+public sealed record LessonQueryInput(int PageSize, int CurrentPage, DifficultyType? DifficultyType = null, WeaponType? WeaponType = null, int? GroupId = null, bool? isPageable = true) : PageableQuery(PageSize, CurrentPage)
 {
     /// <summary>
     ///     Method which bind query parameters to query object.
@@ -28,8 +28,8 @@ public sealed record LessonQueryInput(int PageSize, int CurrentPage, DifficultyT
         _ = int.TryParse(httpContext.Request.Query["groupId"], out var groupId);
         DifficultyType? difficultyType = Enum.TryParse<DifficultyType>(httpContext.Request.Query["difficultyType"], out var parsedDifficultyType) ? parsedDifficultyType : null;
         WeaponType? weaponType = Enum.TryParse<WeaponType>(httpContext.Request.Query["weaponType"], out var parsedWeaponType) ? parsedWeaponType : null;
+        _ = bool.TryParse(httpContext.Request.Query["isPageable"], out var isPageable);
 
-
-        return ValueTask.FromResult<LessonQueryInput?>(new(pageSize == 0 ? 10 : pageSize, page == 0 ? 1 : page, difficultyType, weaponType, groupId == 0 ? null : groupId));
+        return ValueTask.FromResult<LessonQueryInput?>(new(pageSize == 0 ? 10 : pageSize, page == 0 ? 1 : page, difficultyType, weaponType, groupId == 0 ? null : groupId, isPageable));
     }
 }
