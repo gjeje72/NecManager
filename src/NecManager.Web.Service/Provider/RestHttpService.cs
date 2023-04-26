@@ -19,6 +19,11 @@ internal sealed class RestHttpService
     /// </summary>
     public const string GroupClientName = "Group";
 
+    /// <summary>
+    ///     Constant which define the lesson http client name.
+    /// </summary>
+    public const string LessonClientName = "Lesson";
+
     private readonly IHttpClientFactory factory;
 
     private readonly IConfiguration configuration;
@@ -43,6 +48,7 @@ internal sealed class RestHttpService
     public Task<HttpClient> StudentClient => this.CreateAuthenticatedClientAsync(StudentClientName);
 
     public Task<HttpClient> GroupClient => this.CreateAuthenticatedClientAsync(GroupClientName);
+    public Task<HttpClient> LessonClient => this.CreateAuthenticatedClientAsync(LessonClientName);
 
     /// <summary>
     ///     Method which set the functional id.

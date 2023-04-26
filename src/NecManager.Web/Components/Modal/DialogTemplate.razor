@@ -1,0 +1,28 @@
+﻿@inherits DialogComponentBase
+
+<div class="modal modal-active" aria-modal="true" role="dialog">
+    <div class="dialog-overlay" @onclick="@this.OnCancel"></div>
+    <div class="modal-dialog" @onclick:stopPropagation="true" role="document">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">@this.Title</h4>                    
+                <button type="button" class="btn close" data-dismiss="modal" aria-label="Close" @onclick="@this.OnCancel">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body overflow-hidden">
+                @this.ChildContent
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                @this.FooterContent
+            </div>
+        </div>
+    </div>
+</div>

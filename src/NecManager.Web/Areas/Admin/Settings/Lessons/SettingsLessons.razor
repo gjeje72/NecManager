@@ -1,0 +1,73 @@
+﻿@page "/admin/reglages/lecons"
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using NecManager.Common.DataEnum;
+@using NecManager.Web.Components.Modal
+
+<TopBar Title="Admin - Leçons" />
+
+<Dialog Title="Création d'une leçon"
+        ValidateButtonText="@this.ValidateButtonLabel"
+        CancelButtonText="Annuler"
+        OnValidate="this.OnValidCreateOrUpdateFormAsync"
+        @ref="this.lessonsCreationFormDialog">
+    <ChildContent>
+        <div class="form-group-column">
+            <label for="weapon">Arme</label>
+            <InputSelect id="weapon"
+                         @bind-Value="@this.UnderCreationLesson.Weapon"
+                         @bind-Value:after="@(() => this.WeaponSelectChangedEventHandler(this.UnderCreationLesson.Weapon))">
+                <option value="@WeaponType.None">- arme -</option>
+                @foreach (var weapon in Enum.GetValues<WeaponType>())
+                {
+                    if (weapon != WeaponType.None)
+                    {
+                        <option value="@weapon">@weapon</option>
+                    }
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group-column">
+            <label for="difficulty">Difficulté</label>
+            <InputSelect id="difficulty"
+                         @bind-Value="@this.UnderCreationLesson.Difficulty"
+                         @bind-Value:after="@(() => this.DifficultySelectChangedEventHandler(this.UnderCreationLesson.Difficulty))">
+                <option value="@DifficultyType.None">- difficulté -</option>
+                @foreach (var difficulty in Enum.GetValues<DifficultyType>())
+                {
+                    if (difficulty != DifficultyType.None)
+                    {
+                        <option value="@difficulty">@difficulty</option>
+                    }
+                }
+            </InputSelect>
+        </div>
+        <div class="form-group-column">
+            <label for="title">Titre</label>
+            <input id="title" type="text" @bind="this.UnderCreationLesson.Title" />
+        </div>
+        <div class="form-group-column">
+            <label for="descr">Description</label>
+            <input id="descr" type="text" @bind="this.UnderCreationLesson.Description" />
+        </div>
+        <div class="form-group-column">
+            <label for="content">Contenu</label>
+            <textarea id="content" @bind="this.UnderCreationLesson.Content" />
+        </div>
+    </ChildContent>
+</Dialog>
+<div class="admin-container"> 
+    <div class="admin-container-actions">
+        <button @onclick="@this.CreateLessonEventHandler">NOUVELLE LECON</button>
+    </div>
+    <QuickGrid ItemsProvider="@this.lessonProviders" Pagination="@pagination" @ref=lessonsGrid>
+        <PropertyColumn Property="@(l => l.Title)" Sortable="true" />
+        <PropertyColumn Property="@(l => l.Weapon)" Sortable="true" />
+        <PropertyColumn Property="@(l => l.DifficultyType)" Sortable="true" />
+        <TemplateColumn Title="Actions">
+            <button @onclick="@(() => this.OnUpdateClickEventHandler(context))"><i class="oi oi-pencil"></i></button>
+            <button @onclick="@(() => this.OnDeleteLessonClickEventHandler(context.Id))"><i class="oi oi-trash"></i></button>
+        </TemplateColumn>
+    </QuickGrid>
+    <Paginator Value="@pagination" />
+</div>
+

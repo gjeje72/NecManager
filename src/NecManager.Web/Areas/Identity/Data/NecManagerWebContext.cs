@@ -1,9 +1,7 @@
-﻿namespace NecManager.Web.Data;
+﻿namespace NecManager.Web.Areas.Identity.Data;
 
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-
-using NecManager.Web.Areas.Identity.Data;
 
 public class NecManagerWebContext : IdentityDbContext<NecManagerWebUser>
 {

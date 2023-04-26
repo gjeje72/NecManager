@@ -1,6 +1,7 @@
 ﻿namespace NecManager.Common.DataEnum;
 public enum DifficultyType
 {
+    None = 0,
     Initiation = 1,
     Novice = 2,
     Intermediate = 3,
