@@ -1,0 +1,26 @@
+﻿@page "/admin/reglages/entrainements"
+@inherits ComponentBase
+@using NecManager.Web.Components
+@using Microsoft.AspNetCore.Components.QuickGrid
+
+<TopBar Title="Admin - Entrainements" BackUrl="/admin/reglages" />
+
+<div class="admin-container">
+    <div class="admin-container-actions">
+        <button>Nouveau</button>
+        <NavLink href="admin/reglages/entrainements/nouvelle-saison">Initialiser saison</NavLink>
+    </div>
+    <QuickGrid ItemsProvider="@this.trainingProviders" Pagination="@pagination" @ref=trainingsGrid>
+        <TemplateColumn Title="Actions">
+            <button><i class="oi oi-pencil"></i></button>
+            <button><i class="oi oi-trash"></i></button>
+        </TemplateColumn>
+    </QuickGrid>
+    <Paginator Value="@pagination" />
+
+</div>
+<p>Actions (initialiser saison, Créer entrainement)</p>
+<p>FILTER (arme, groupe, difficulté, saison, etudiant, onlyIndiv, masterName)</p>
+<p>Table</p>
+<p>Pagination</p>
+

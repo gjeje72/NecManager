@@ -24,6 +24,7 @@ public static class ServicesExtension
         services.TryAddTransient<IStudentServices, StudentServices>();
         services.TryAddTransient<IGroupServices, GroupServices>();
         services.TryAddTransient<ILessonServices, LessonServices>();
+        services.TryAddTransient<ITrainingServices, TrainingServices>();
 
         return services;
     }
