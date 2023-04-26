@@ -66,14 +66,6 @@ public partial class SettingsLessons : ComponentBase
         return GridItemsProviderResult.From(pageableLessons.Items.ToList(), pageableLessons.TotalElements);
     }
 
-    private void CreateLessonEventHandler()
-    {
-        this.isUnderUpdate = false;
-
-        if (this.lessonsCreationFormDialog is not null)
-            this.lessonsCreationFormDialog.ShowDialog();
-    }
-
     private async Task OnValidCreateOrUpdateFormAsync()
     {
         if (this.isUnderUpdate)
@@ -132,6 +124,15 @@ public partial class SettingsLessons : ComponentBase
             if (this.lessonsCreationFormDialog is not null)
                 this.lessonsCreationFormDialog.CloseDialog();
         }
+    }
+
+    private void CreateLessonEventHandler()
+    {
+        this.isUnderUpdate = false;
+        this.UnderCreationLesson = new();
+
+        if (this.lessonsCreationFormDialog is not null)
+            this.lessonsCreationFormDialog.ShowDialog();
     }
 
     private void OnUpdateClickEventHandler(LessonBaseViewModel lessonToUpdate)

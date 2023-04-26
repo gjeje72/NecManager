@@ -5,6 +5,7 @@ using NecManager.Common.DataEnum;
 public class LessonBaseViewModel
 {
     public int Id { get; set; }
+
     public string Title { get; set; } = string.Empty;
 
     public WeaponType Weapon { get; set; }
