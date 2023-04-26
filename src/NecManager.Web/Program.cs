@@ -39,6 +39,8 @@ void ServiceCollection(IServiceCollection services)
 {
     // TODO builder.Host.UseCommonLogger();
     services.AddWebServices();
+    services.AddLocalization();
+
 
     // Add services to the container.
     services.AddRazorPages();

@@ -11,4 +11,6 @@ public interface ILessonServices
 {
     Task<ServiceResult<PageableResult<LessonBase>>> GetAllLessonsAsync(LessonInputQuery orderQuery, CancellationToken cancellationToken = default);
     Task<ServiceResult> CreateLessonsAsync(LessonCreationInput lessonCreation, CancellationToken cancellationToken = default);
+    Task<ServiceResult> DeleteLessonsByIdAsync(int lessonId, CancellationToken cancellationToken = default);
+    Task<ServiceResult> UpdateLessonAsync(LessonUpdateInput lessonUpdate, CancellationToken cancellationToken = default);
 }

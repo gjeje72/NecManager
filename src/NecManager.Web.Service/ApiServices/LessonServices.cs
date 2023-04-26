@@ -32,6 +32,19 @@ internal sealed class LessonServices : ServiceBase, ILessonServices
         var lessonClient = await this.RestHttpService.LessonClient.ConfigureAwait(false);
         var response = await lessonClient.PostAsync(string.Empty, lessonCreation.ToStringContent(), cancellationToken).ConfigureAwait(false);
         return await response.BuildDataServiceResultAsync().ConfigureAwait(false);
+    }
 
+    public async Task<ServiceResult> UpdateLessonAsync(LessonUpdateInput lessonUpdate, CancellationToken cancellationToken = default)
+    {
+        var lessonClient = await this.RestHttpService.LessonClient.ConfigureAwait(false);
+        var response = await lessonClient.PutAsync($"{lessonUpdate.Id}", lessonUpdate.ToStringContent(), cancellationToken).ConfigureAwait(false);
+        return await response.BuildDataServiceResultAsync().ConfigureAwait(false);
+    }
+
+    public async Task<ServiceResult> DeleteLessonsByIdAsync(int lessonId, CancellationToken cancellationToken = default)
+    {
+        var lessonClient = await this.RestHttpService.LessonClient.ConfigureAwait(false);
+        var response = await lessonClient.DeleteAsync($"{lessonId}", cancellationToken).ConfigureAwait(false);
+        return await response.BuildDataServiceResultAsync().ConfigureAwait(false);
     }
 }
