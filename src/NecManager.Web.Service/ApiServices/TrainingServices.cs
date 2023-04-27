@@ -25,4 +25,12 @@ internal sealed class TrainingServices : ServiceBase, ITrainingServices
 
         return await response.BuildDataServiceResultAsync<PageableResult<TrainingBase>>().ConfigureAwait(false);
     }
+
+    /// <inheritdoc/>
+    public async Task<ServiceResult> CreateTrainingAsync(TrainingCreationInput creationInput, CancellationToken cancellationToken = default)
+    {
+        var trainingClient = await this.RestHttpService.TrainingClient.ConfigureAwait(false);
+        var response = await trainingClient.PostAsync(string.Empty, creationInput.ToStringContent(), cancellationToken).ConfigureAwait(false);
+        return await response.BuildDataServiceResultAsync().ConfigureAwait(false);
+    }
 }

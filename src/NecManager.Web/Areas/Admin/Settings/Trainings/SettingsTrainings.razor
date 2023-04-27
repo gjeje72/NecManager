@@ -14,61 +14,84 @@
         @ref="this.trainingCreationFormDialog">
     <ChildContent>
         <div class="form-group-column">
-            <label for="date">Date</label>
-            <input id="date" type="date" @bind="this.UnderCreationTraining.Date" />
-        </div>
-        <div class="form-group-column">
-            <label for="startTime">Début</label>
-            <input id="startTime" type="number" @bind="this.UnderCreationTraining.StartTime" />
-        </div>
-        <div class="form-group-column">
-            <label for="endTime">Fin</label>
-            <input id="endTime" type="number" @bind="this.UnderCreationTraining.EndTime" />
-        </div>
-        <div class="form-group-column">
-            <label for="isIndiv">Leçon individuelle ?</label>
-            <input type="checkbox" id="isIndiv" @bind="this.UnderCreationTraining.IsIndividual" />
-        </div>
-        <div class="form-group-column">
             <label for="masterName">Maître</label>
             <input type="text" id="masterName" @bind="this.UnderCreationTraining.MasterName" />
         </div>
+        <div class="form-group-column">
+            <label for="date">Date</label>
+            <input id="date" type="date" @bind="this.UnderCreationTraining.Date" />
+        </div>
+        <div class="row form-group">
+            <div class="form-group-column">
+                <label for="startTime">Début</label>
+                <input id="startTime" type="time" @bind="this.UnderCreationTraining.StartTime" />
+            </div>
+            <div class="form-group-column">
+                <label for="endTime">Fin</label>
+                <input id="endTime" type="time" @bind="this.UnderCreationTraining.EndTime" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="isIndiv">Leçon individuelle ?</label>
+            <input type="checkbox" id="isIndiv" @bind="this.UnderCreationTraining.IsIndividual" />
+        </div>
+        @if (!this.UnderCreationTraining.IsIndividual)
+        {
+            <InputSelect id="group"
+                     @bind-Value="@this.LessonFilter.GroupId"
+                     @bind-Value:after="@(() => this.GroupSelectChangedEventHandler(this.LessonFilter.GroupId))">
+                <option value="" selected>- groupe -</option>
+                @foreach (var group in this.Groups)
+                {
+                    <option value="@group.Id">@group.Title</option>
+                }
+            </InputSelect>
+        }
+        else
+        {
+            <span>Selectionner un étudiant</span>
+        }
         <div>
-            <div class="form-group-column">
-                <label for="difficulty">Difficulté</label>
-                <InputSelect id="difficulty"
-                             @bind-Value="@this.LessonFilter.DifficultyType"
-                             @bind-Value:after="@(() => this.DifficultySelectChangedEventHandler(this.LessonFilter.DifficultyType))">
-                    <option value="@DifficultyType.None">- difficulté -</option>
-                    @foreach (var difficulty in Enum.GetValues<DifficultyType>())
-                    {
-                        if (difficulty != DifficultyType.None)
+            <p>Sélectionner une leçon</p>
+            <i>Difficulté et arme permettent de filter les leçons</i>
+            <div class="row form-group">
+                <div class="form-group-column">
+                    <label for="difficulty">Difficulté</label>
+                    <InputSelect id="difficulty"
+                                 @bind-Value="@this.LessonFilter.DifficultyType"
+                                 @bind-Value:after="@(() => this.DifficultySelectChangedEventHandler(this.LessonFilter.DifficultyType))">
+                        <option value="@DifficultyType.None" selected>- difficulté -</option>
+                        @foreach (var difficulty in Enum.GetValues<DifficultyType>())
                         {
-                            <option value="@difficulty">@difficulty</option>
+                            if (difficulty != DifficultyType.None)
+                            {
+                                <option value="@difficulty">@difficulty</option>
+                            }
                         }
-                    }
-                </InputSelect>
+                    </InputSelect>
+                </div>
+                <div class="form-group-column">
+                    <label for="weapon">Weapon</label>
+                    <InputSelect id="weapon"
+                                 @bind-Value="@this.LessonFilter.WeaponType"
+                                 @bind-Value:after="@(() => this.WeaponSelectChangedEventHandler(this.LessonFilter.WeaponType))">
+                        <option value="@WeaponType.None" selected>- arme -</option>
+                        @foreach (var weapon in Enum.GetValues<WeaponType>())
+                        {
+                            if (weapon != WeaponType.None)
+                            {
+                                <option value="@weapon">@weapon</option>
+                            }
+                        }
+                    </InputSelect>
+                </div>
             </div>
             <div class="form-group-column">
-                <label for="weapon">Weapon</label>
-                <InputSelect id="weapon"
-                             @bind-Value="@this.LessonFilter.WeaponType"
-                             @bind-Value:after="@(() => this.WeaponSelectChangedEventHandler(this.LessonFilter.WeaponType))">
-                    <option value="@WeaponType.None">- arme -</option>
-                    @foreach (var weapon in Enum.GetValues<WeaponType>())
-                    {
-                        if (weapon != WeaponType.None)
-                        {
-                            <option value="@weapon">@weapon</option>
-                        }
-                    }
-                </InputSelect>
-            </div>
-            <div class="form-group-column">
+                <label for="lesson">Leçon</label>
                 <InputSelect id="lesson"
                              @bind-Value="@this.UnderCreationTraining.LessonId"
                              @bind-Value:after="@(() => this.LessonSelectChangedEventHandler(this.UnderCreationTraining.LessonId))">
-                    <option value="">- lesson -</option>
+                    <option value="" selected>- lesson -</option>
                     @foreach (var lesson in this.Lessons)
                     {
                         <option value="@lesson.Id">@lesson.Title</option>
@@ -133,8 +156,4 @@
     <Paginator Value="@pagination" />
 
 </div>
-<p>Actions (initialiser saison, Créer entrainement)</p>
-<p>FILTER (arme, groupe, difficulté, saison, etudiant, onlyIndiv, masterName)</p>
-<p>Table</p>
-<p>Pagination</p>
 

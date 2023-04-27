@@ -1,5 +1,6 @@
 ﻿namespace NecManager.Web.Areas.Admin.Settings.Trainings;
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,7 +15,9 @@ using NecManager.Web.Areas.Admin.Settings.Lessons.ViewModels;
 using NecManager.Web.Areas.Admin.Settings.Trainings.ViewModels;
 using NecManager.Web.Components.Modal;
 using NecManager.Web.Service.ApiServices.Abstractions;
+using NecManager.Web.Service.Models;
 using NecManager.Web.Service.Models.Query;
+using NecManager.Web.Service.Models.Trainings;
 
 public partial class SettingsTrainings
 {
@@ -24,18 +27,27 @@ public partial class SettingsTrainings
     [Inject]
     public ILessonServices LessonServices { get; set; } = null!;
 
+    [Inject]
+    public IGroupServices GroupServices { get; set; } = null!;
+
     private PaginationState pagination = new() { ItemsPerPage = 10 };
     private GridItemsProvider<TrainingBaseViewModel> trainingProviders = default!;
     private QuickGrid<TrainingBaseViewModel> trainingsGrid;
     private TrainingInputQuery trainingInputQuery = new();
     private Dialog? trainingCreationFormDialog;
-    private TrainingCreationViewModel UnderCreationTraining { get; set; } = new();
+    private TrainingCreationViewModel UnderCreationTraining { get; set; } = new() { Date= DateTime.Now };
     private LessonInputQuery LessonFilter = new();
     private List<LessonBaseViewModel> Lessons = new();
+    private List<GroupBase> Groups = new();
 
     protected override async Task OnInitializedAsync()
     {
         this.trainingProviders = async req => await this.GetTrainingsProviderAsync(req).ConfigureAwait(true);
+        var (state, groups, _) = await this.GroupServices.GetAllGroups().ConfigureAwait(true);
+        if (state == ServiceResultState.Success && groups is not null)
+            this.Groups = groups;
+
+        await this.RefreshLessonListAsync().ConfigureAwait(true);
     }
 
     private async Task<GridItemsProviderResult<TrainingBaseViewModel>> GetTrainingsProviderAsync(GridItemsProviderRequest<TrainingBaseViewModel> gridItemsProviderRequest)
@@ -118,10 +130,37 @@ public partial class SettingsTrainings
             this.trainingCreationFormDialog.ShowDialog();
     }
 
-    private void OnValidCreateFormAsync()
+    private async Task OnValidCreateFormAsync()
     {
+        var decimalStartTime = (decimal)this.UnderCreationTraining.StartTime.TimeOfDay.TotalHours;
+        var decimalEndTime = (decimal)this.UnderCreationTraining.EndTime.TimeOfDay.TotalHours;
 
+        var trainingToCreate = new TrainingCreationInput
+        {
+            Date = this.UnderCreationTraining.Date,
+            StartTime = decimalStartTime,
+            EndTime = decimalEndTime,
+            IsIndividual = this.UnderCreationTraining.IsIndividual,
+            LessonId = this.UnderCreationTraining.LessonId,
+            MasterName = this.UnderCreationTraining.MasterName,
+            GroupId = this.UnderCreationTraining.GroupId,
+            Students = this.UnderCreationTraining.Students.Select(s => new TrainingStudentBase() { Id = s.Id, Category = s.Category, FirstName = s.FirstName, Name = s.Name }).ToList()
+        };
+
+        if (!trainingToCreate.IsIndividual && trainingToCreate.GroupId is null or 0)
+            return;
+
+        if (trainingToCreate.IsIndividual && trainingToCreate.Students.Count != 1)
+            return;
+
+        var (state, _) = await this.TrainingServices.CreateTrainingAsync(trainingToCreate).ConfigureAwait(true);
+        if (state == ServiceResultState.Success)
+        {
+            this.trainingCreationFormDialog!.CloseDialog();
+            await this.trainingsGrid.RefreshDataAsync().ConfigureAwait(true);
+        }
     }
+
     private async Task RefreshLessonListAsync()
     {
        var (state, lessons, _) = await this.LessonServices.GetAllLessonsAsync(new() { DifficultyType = this.LessonFilter.DifficultyType, WeaponType = this.LessonFilter.WeaponType, IsPageable = false });
@@ -134,13 +173,21 @@ public partial class SettingsTrainings
     }
     private async Task DifficultySelectChangedEventHandler(DifficultyType? difficulty)
     {
-        this.LessonFilter.DifficultyType = difficulty;
+        if (difficulty == DifficultyType.None)
+            this.LessonFilter.DifficultyType = null;
+        else
+            this.LessonFilter.DifficultyType = difficulty;
+
         await this.RefreshLessonListAsync().ConfigureAwait(true);
     }
 
     private async Task WeaponSelectChangedEventHandler(WeaponType? weapon)
     {
-        this.LessonFilter.WeaponType = weapon;
+        if (weapon == WeaponType.None)
+            this.LessonFilter.WeaponType = null;
+        else
+            this.LessonFilter.WeaponType = weapon;
+
         await this.RefreshLessonListAsync().ConfigureAwait(true);
     }
 
@@ -148,6 +195,8 @@ public partial class SettingsTrainings
     {
         if(lessonId != null)
             this.UnderCreationTraining.LessonId = (int)lessonId;
-
     }
+
+    private void GroupSelectChangedEventHandler(int? groupId)
+       => this.UnderCreationTraining.GroupId = groupId;
 }
