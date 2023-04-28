@@ -7,7 +7,21 @@
 @using NecManager.Web.Components.Modal
 
 <TopBar Title="Admin - Entrainements" BackUrl="/admin/reglages" />
-<Dialog Title="Création d'un entrainement"
+<Dialog @ref="this.confirmDeleteDialog"
+        Title="Confirmer la suppression"
+        ValidateButtonText="Confirmer"
+        CancelButtonText="Annuler"
+        OnValidate="this.OnConfirmDeleteTrainingClickEventHandler">
+    @if (this.underDeleteTraining.IsIndividual)
+    {
+        <p>Supprimer l'entrainement du @this.underDeleteTraining.Date.ToShortDateString() pour : @this.underDeleteTraining.GroupName</p>        
+    }
+    else
+    {
+        <p>Supprimer l'entrainement du @this.underDeleteTraining.Date.ToShortDateString() avec le groupe : @this.underDeleteTraining.GroupName</p>
+    }
+</Dialog>
+<Dialog Title="@this.CreateOrUpdateTrainingModalTitle"
         ValidateButtonText="@this.ValidationButtonLabel"
         CancelButtonText="Annuler"
         OnValidate="this.OnValidCreateOrUpdateFormAsync"
@@ -99,6 +113,12 @@
                 </InputSelect>
             </div>
         </div>
+        @if (!string.IsNullOrWhiteSpace(this.ErrorMessage))
+        {
+            <i>
+                @this.ErrorMessage
+            </i>
+        }
     </ChildContent>
 </Dialog>
 <div class="admin-container">
@@ -150,7 +170,7 @@
         <PropertyColumn Property="@(t => t.GroupName)" Title="Groupe/Elève" Sortable="true" />
         <TemplateColumn Title="Actions">
             <button @onclick="@(() => this.OnUpdateTrainingClickEventHandler(context))"><i class="oi oi-pencil"></i></button>
-            <button><i class="oi oi-trash"></i></button>
+            <button @onclick="@(() => this.OnDeleteTrainingClickEventHandler(context))"><i class="oi oi-trash"></i></button>
         </TemplateColumn>
     </QuickGrid>
     <Paginator Value="@pagination" />

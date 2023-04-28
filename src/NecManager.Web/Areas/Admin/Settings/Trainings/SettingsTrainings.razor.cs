@@ -37,13 +37,19 @@ public partial class SettingsTrainings
     private QuickGrid<TrainingBaseViewModel> trainingsGrid;
     private TrainingInputQuery trainingInputQuery = new();
     private Dialog? trainingCreationFormDialog;
+    private Dialog? confirmDeleteDialog;
+    private TrainingBaseViewModel underDeleteTraining;
+
     private TrainingCreationViewModel UnderCreationTraining { get; set; } = new() { Date= DateTime.Now };
     private LessonInputQuery LessonFilter = new();
     private List<LessonBaseViewModel> Lessons = new();
     private List<GroupBase> Groups = new();
     private bool isUnderUpdate = false;
+    private string ErrorMessage = string.Empty;
     private string ValidationButtonLabel
         => this.isUnderUpdate ? "Mettre à jour" : "Créer";
+    private string CreateOrUpdateTrainingModalTitle
+        => this.isUnderUpdate ? "Mettre à jour un entrainement" : "Création d'un entrainement";
 
     protected override async Task OnInitializedAsync()
     {
@@ -145,6 +151,7 @@ public partial class SettingsTrainings
     private void OnCreateTrainingClickEventHandler()
     {
         this.isUnderUpdate = false;
+        this.ErrorMessage = string.Empty;
         this.UnderCreationTraining = new();
 
         if (this.trainingCreationFormDialog is not null)
@@ -157,7 +164,10 @@ public partial class SettingsTrainings
         var startTime = new DateTime().AddHours(hours);
         var endHours = Convert.ToDouble(training.EndTime);
         var endTime = new DateTime().AddHours(endHours);
+
         this.isUnderUpdate = true;
+        this.ErrorMessage = string.Empty;
+
         this.UnderCreationTraining.Id = training.Id;
         this.UnderCreationTraining.Date = training.Date;
         this.UnderCreationTraining.MasterName = training.MasterName;
@@ -188,11 +198,12 @@ public partial class SettingsTrainings
             Students = this.UnderCreationTraining.Students.Select(s => new TrainingStudentBase() { Id = s.Id, Category = s.Category, FirstName = s.FirstName, Name = s.Name }).ToList()
         };
 
-        if (!trainingToCreate.IsIndividual && trainingToCreate.GroupId is null or 0)
+        if (!trainingToCreate.IsIndividual && trainingToCreate.GroupId is null or 0
+            || trainingToCreate.IsIndividual && trainingToCreate.Students.Count != 1)
+        {
+            this.ErrorMessage = "Vous devez choisir un groupe ou un élève si individuel.";
             return;
-
-        if (trainingToCreate.IsIndividual && trainingToCreate.Students.Count != 1)
-            return;
+        }
 
         var (state, _) = await this.TrainingServices.CreateTrainingAsync(trainingToCreate).ConfigureAwait(true);
         if (state == ServiceResultState.Success)
@@ -220,18 +231,22 @@ public partial class SettingsTrainings
             Students = this.UnderCreationTraining.Students.Select(s => new TrainingStudentBase() { Id = s.Id, Category = s.Category, FirstName = s.FirstName, Name = s.Name }).ToList()
         };
 
-        if (!trainingToUpdate.IsIndividual && trainingToUpdate.GroupId is null or 0)
-            return;
-
-        if (trainingToUpdate.IsIndividual && trainingToUpdate.Students.Count != 1)
-            return;
-
-        var (state, _) = await this.TrainingServices.UpdateTrainingAsync(trainingToUpdate).ConfigureAwait(true);
-        if (state == ServiceResultState.Success)
+        if (!trainingToUpdate.IsIndividual && trainingToUpdate.GroupId is null or 0
+            || trainingToUpdate.IsIndividual && trainingToUpdate.Students.Count != 1)
         {
-            this.trainingCreationFormDialog!.CloseDialog();
-            await this.trainingsGrid.RefreshDataAsync().ConfigureAwait(true);
+            this.ErrorMessage = "Vous devez choisir un groupe ou un élève si individuel.";
+            return;
         }
+
+        var (state, errorMessage) = await this.TrainingServices.UpdateTrainingAsync(trainingToUpdate).ConfigureAwait(true);
+        if (state != ServiceResultState.Success)
+        {
+            this.ErrorMessage = errorMessage[0];
+            return;
+        }
+
+        this.trainingCreationFormDialog!.CloseDialog();
+        await this.trainingsGrid.RefreshDataAsync().ConfigureAwait(true);
     }
 
     private async Task RefreshLessonListAsync()
@@ -264,7 +279,7 @@ public partial class SettingsTrainings
         await this.RefreshLessonListAsync().ConfigureAwait(true);
     }
 
-    private async Task LessonSelectChangedEventHandler(int? lessonId)
+    private void LessonSelectChangedEventHandler(int? lessonId)
     {
         if(lessonId != null)
             this.UnderCreationTraining.LessonId = (int)lessonId;
@@ -272,4 +287,21 @@ public partial class SettingsTrainings
 
     private void GroupSelectChangedEventHandler(int? groupId)
        => this.UnderCreationTraining.GroupId = groupId;
+
+    private async Task OnDeleteTrainingClickEventHandler(TrainingBaseViewModel training)
+    {
+        this.underDeleteTraining = training;
+        if (this.confirmDeleteDialog != null)
+            this.confirmDeleteDialog.ShowDialog();
+    }
+
+    private async Task OnConfirmDeleteTrainingClickEventHandler()
+    {
+        var result = await this.TrainingServices.DeleteTrainingAsync(this.underDeleteTraining.Id).ConfigureAwait(true);
+        if (result.State == ServiceResultState.Success)
+        {
+            this.confirmDeleteDialog!.CloseDialog();
+            await this.trainingsGrid.RefreshDataAsync().ConfigureAwait(true);
+        }
+    }
 }
