@@ -45,7 +45,7 @@ public sealed class TrainingAccessLayer : AQueryBaseAccessLayer<NecDbContext, Tr
             queryable = queryable.Where(t => t.Lesson != null && t.Lesson.Weapon == query.WeaponType);
 
         if (!string.IsNullOrWhiteSpace(query.MasterName))
-            queryable = queryable.Where(t => t.PersonTrainings.Any(pt => pt.MasterName.Contains(query.MasterName)));
+            queryable = queryable.Where(t => t.MasterName != null && t.MasterName.Contains(query.MasterName));
 
         if(!string.IsNullOrWhiteSpace(query.Filter))
             queryable = queryable.Where(t => t.Lesson!.Title.Contains(query.Filter)

@@ -72,7 +72,8 @@ internal class TrainingBusiness : ITrainingBusiness
             EndTime = input.EndTime,
             GroupId = input.GroupId,
             LessonId = input.LessonId,
-            PersonTrainings = input.Students.Select(s => new PersonTraining { IsIndividual = input.IsIndividual, MasterName = input.MasterName, StudentId = s.Id }).ToList()
+            MasterName = input.MasterName,
+            PersonTrainings = input.Students.Select(s => new PersonTraining { IsIndividual = input.IsIndividual, StudentId = s.Id }).ToList()
         };
 
         try
@@ -107,7 +108,8 @@ internal class TrainingBusiness : ITrainingBusiness
                 EndTime = input.EndTime,
                 GroupId = input.GroupId,
                 LessonId = input.LessonId,
-                PersonTrainings = input.Students.Select(s => new PersonTraining { IsIndividual = input.IsIndividual, MasterName = input.MasterName, StudentId = s.Id }).ToList()
+                MasterName = input.MasterName,
+                PersonTrainings = input.Students.Select(s => new PersonTraining { IsIndividual = input.IsIndividual, StudentId = s.Id }).ToList()
             };
             dbTrainings.Add(dbTraining);
         }
@@ -164,11 +166,11 @@ internal class TrainingBusiness : ITrainingBusiness
 
         foreach (var studentId in input.StudentsIds)
         {
+            matchingTraining.MasterName = input.MasterName;
             matchingTraining.PersonTrainings.Add(new PersonTraining
             {
                 StudentId = studentId,
                 TrainingId = matchingTraining.Id,
-                MasterName = input.MasterName,
                 IsIndividual = input.IsIndividual,
             });
         }
@@ -209,6 +211,7 @@ internal class TrainingBusiness : ITrainingBusiness
             matchingTraining.Date = input.Date;
             matchingTraining.StartTime = input.StartTime;
             matchingTraining.EndTime = input.EndTime;
+            matchingTraining.MasterName = input.MasterName;
 
             await this.trainingAccessLayer.UpdateAsync(matchingTraining).ConfigureAwait(false);
         }
@@ -229,10 +232,12 @@ internal class TrainingBusiness : ITrainingBusiness
             StartTime = matchingTraining.StartTime,
             EndTime = matchingTraining.EndTime,
             Categories = matchingTraining.Group?.Categories,
-            GroupName = matchingTraining.PersonTrainings.FirstOrDefault()?.IsIndividual ?? false ? $"{matchingTraining.PersonTrainings.FirstOrDefault()?.Student?.FirstName ?? string.Empty} {matchingTraining.PersonTrainings.FirstOrDefault()?.Student?.Name ?? string.Empty}" : matchingTraining.Group?.Title,
+            GroupName = matchingTraining.PersonTrainings.FirstOrDefault()?.IsIndividual ?? false
+                        ? GetGroupNameIfIndividualTraining(matchingTraining)
+                        : matchingTraining.Group?.Title,
             Weapon = matchingTraining.Lesson?.Weapon ?? WeaponType.None,
             IsIndividual = matchingTraining.PersonTrainings.Count() == 1 && (matchingTraining.PersonTrainings.FirstOrDefault()?.IsIndividual ?? false),
-            MasterName = matchingTraining.PersonTrainings?.FirstOrDefault()?.MasterName ?? string.Empty,
+            MasterName = matchingTraining.MasterName ?? string.Empty,
             Students = matchingTraining.PersonTrainings?.Select(pt => new TrainingStudentBase
             {
                 Id = pt.StudentId,
@@ -252,4 +257,6 @@ internal class TrainingBusiness : ITrainingBusiness
                             }
                             : new(),
         };
+    private static string GetGroupNameIfIndividualTraining(Training matchingTraining)
+        => $"{matchingTraining.PersonTrainings.FirstOrDefault()?.Student?.FirstName ?? string.Empty} {matchingTraining.PersonTrainings.FirstOrDefault()?.Student?.Name ?? string.Empty}";
 }

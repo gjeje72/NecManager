@@ -16,4 +16,6 @@ public sealed class TrainingUpdateInput
     ///     The end time for this training. 16h45 = 16,75
     /// </summary>
     public decimal EndTime { get; set; }
+
+    public string? MasterName { get; set; }
 }
