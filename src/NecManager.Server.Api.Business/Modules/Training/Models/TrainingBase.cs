@@ -5,6 +5,10 @@ public sealed class TrainingBase
 {
     public int Id { get; set; }
 
+    public int? GroupId { get; set; }
+
+    public int LessonId { get; set; }
+
     public DateTime Date { get; set; }
 
     /// <summary>

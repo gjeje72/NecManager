@@ -192,7 +192,7 @@ internal class TrainingBusiness : ITrainingBusiness
     {
         // ArgumentNullException.ThrowIfNull(monitoringIds);
 
-        var matchingTraining = await this.trainingAccessLayer.GetSingleAsync(x => x.Id == input.TrainingId, true).ConfigureAwait(false);
+        var matchingTraining = await this.trainingAccessLayer.GetSingleAsync(x => x.Id == input.Id, true).ConfigureAwait(false);
         if (matchingTraining is null)
             return new(monitoringIds, new(ApiResponseResultState.NotFound, TrainingApiErrors.TrainingNotFound));
 
@@ -217,7 +217,7 @@ internal class TrainingBusiness : ITrainingBusiness
         }
         catch (Exception ex)
         {
-            this.logger.LogError(ex, "Error occured while updating training trainingId={trainingId} with lessonId = {lessonId}", input.TrainingId, input.LessonId);
+            this.logger.LogError(ex, "Error occured while updating training trainingId={trainingId} with lessonId = {lessonId}", input.Id, input.LessonId);
             return new(monitoringIds, new(TrainingApiErrors.TrainingUpdateFailure));
         }
 
@@ -228,6 +228,8 @@ internal class TrainingBusiness : ITrainingBusiness
         => new TrainingBase()
         {
             Id = matchingTraining.Id,
+            GroupId = matchingTraining.GroupId,
+            LessonId = matchingTraining.LessonId,
             Date = matchingTraining.Date,
             StartTime = matchingTraining.StartTime,
             EndTime = matchingTraining.EndTime,

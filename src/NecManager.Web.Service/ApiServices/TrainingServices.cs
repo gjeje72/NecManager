@@ -33,4 +33,11 @@ internal sealed class TrainingServices : ServiceBase, ITrainingServices
         var response = await trainingClient.PostAsync(string.Empty, creationInput.ToStringContent(), cancellationToken).ConfigureAwait(false);
         return await response.BuildDataServiceResultAsync().ConfigureAwait(false);
     }
+
+    public async Task<ServiceResult> UpdateTrainingAsync(TrainingUpdateInput updateInput, CancellationToken cancellationToken = default)
+    {
+        var trainingClient = await this.RestHttpService.TrainingClient.ConfigureAwait(false);
+        var response = await trainingClient.PutAsync($"{updateInput.Id}", updateInput.ToStringContent(), cancellationToken).ConfigureAwait(false);
+        return await response.BuildDataServiceResultAsync().ConfigureAwait(false);
+    }
 }

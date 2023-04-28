@@ -8,9 +8,9 @@
 
 <TopBar Title="Admin - Entrainements" BackUrl="/admin/reglages" />
 <Dialog Title="Création d'un entrainement"
-        ValidateButtonText="CREER"
+        ValidateButtonText="@this.ValidationButtonLabel"
         CancelButtonText="Annuler"
-        OnValidate="this.OnValidCreateFormAsync"
+        OnValidate="this.OnValidCreateOrUpdateFormAsync"
         @ref="this.trainingCreationFormDialog">
     <ChildContent>
         <div class="form-group-column">
@@ -38,8 +38,8 @@
         @if (!this.UnderCreationTraining.IsIndividual)
         {
             <InputSelect id="group"
-                     @bind-Value="@this.LessonFilter.GroupId"
-                     @bind-Value:after="@(() => this.GroupSelectChangedEventHandler(this.LessonFilter.GroupId))">
+                     @bind-Value="@this.UnderCreationTraining.GroupId"
+                     @bind-Value:after="@(() => this.GroupSelectChangedEventHandler(this.UnderCreationTraining.GroupId))">
                 <option value="" selected>- groupe -</option>
                 @foreach (var group in this.Groups)
                 {
@@ -103,7 +103,7 @@
 </Dialog>
 <div class="admin-container">
     <div class="admin-container-actions">
-        <button @onclick="@this.CreateTrainingEventHandler">Nouveau</button>
+        <button @onclick="@this.OnCreateTrainingClickEventHandler">Nouveau</button>
         <NavLink href="admin/reglages/entrainements/nouvelle-saison">Initialiser saison</NavLink>
     </div>
 
@@ -149,7 +149,7 @@
         <PropertyColumn Property="@(t => t.MasterName)" Title="Maître" Sortable="true" />
         <PropertyColumn Property="@(t => t.GroupName)" Title="Groupe/Elève" Sortable="true" />
         <TemplateColumn Title="Actions">
-            <button><i class="oi oi-pencil"></i></button>
+            <button @onclick="@(() => this.OnUpdateTrainingClickEventHandler(context))"><i class="oi oi-pencil"></i></button>
             <button><i class="oi oi-trash"></i></button>
         </TemplateColumn>
     </QuickGrid>

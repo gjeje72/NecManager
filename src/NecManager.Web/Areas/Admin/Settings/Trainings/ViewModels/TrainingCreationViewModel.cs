@@ -5,6 +5,8 @@ using System;
 
 public class TrainingCreationViewModel
 {
+    public int Id { get; set; }
+
     public DateTime Date { get; set; }
 
     /// <summary>

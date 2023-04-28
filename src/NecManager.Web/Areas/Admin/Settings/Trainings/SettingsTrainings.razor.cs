@@ -2,7 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
@@ -39,6 +41,9 @@ public partial class SettingsTrainings
     private LessonInputQuery LessonFilter = new();
     private List<LessonBaseViewModel> Lessons = new();
     private List<GroupBase> Groups = new();
+    private bool isUnderUpdate = false;
+    private string ValidationButtonLabel
+        => this.isUnderUpdate ? "Mettre à jour" : "Créer";
 
     protected override async Task OnInitializedAsync()
     {
@@ -69,6 +74,8 @@ public partial class SettingsTrainings
                 new TrainingBaseViewModel
                 {
                     Id = t.Id,
+                    GroupId = t.GroupId,
+                    LessonId = t.LessonId,
                     IsIndividual = t.IsIndividual,
                     GroupName = t.GroupName,
                     Categories = t.Categories,
@@ -124,13 +131,47 @@ public partial class SettingsTrainings
         await this.trainingsGrid.RefreshDataAsync().ConfigureAwait(true);
     }
 
-    private void CreateTrainingEventHandler()
+    private async Task OnValidCreateOrUpdateFormAsync()
     {
+        if (this.isUnderUpdate)
+        {
+            await this.UpdateTrainingAsync().ConfigureAwait(true);
+            return;
+        }
+
+        await this.CreateTrainingAsync().ConfigureAwait(true);
+    }
+
+    private void OnCreateTrainingClickEventHandler()
+    {
+        this.isUnderUpdate = false;
+        this.UnderCreationTraining = new();
+
         if (this.trainingCreationFormDialog is not null)
             this.trainingCreationFormDialog.ShowDialog();
     }
 
-    private async Task OnValidCreateFormAsync()
+    private void OnUpdateTrainingClickEventHandler(TrainingBaseViewModel training)
+    {
+        var hours = Convert.ToDouble(training.StartTime);
+        var startTime = new DateTime().AddHours(hours);
+        var endHours = Convert.ToDouble(training.EndTime);
+        var endTime = new DateTime().AddHours(endHours);
+        this.isUnderUpdate = true;
+        this.UnderCreationTraining.Id = training.Id;
+        this.UnderCreationTraining.Date = training.Date;
+        this.UnderCreationTraining.MasterName = training.MasterName;
+        this.UnderCreationTraining.StartTime = startTime;
+        this.UnderCreationTraining.EndTime = endTime;
+        this.UnderCreationTraining.GroupId = training.GroupId;
+        this.UnderCreationTraining.IsIndividual = training.IsIndividual;
+        this.UnderCreationTraining.LessonId = training.LessonId;
+
+        if (this.trainingCreationFormDialog is not null)
+            this.trainingCreationFormDialog.ShowDialog();
+    }
+
+    private async Task CreateTrainingAsync()
     {
         var decimalStartTime = (decimal)this.UnderCreationTraining.StartTime.TimeOfDay.TotalHours;
         var decimalEndTime = (decimal)this.UnderCreationTraining.EndTime.TimeOfDay.TotalHours;
@@ -154,6 +195,38 @@ public partial class SettingsTrainings
             return;
 
         var (state, _) = await this.TrainingServices.CreateTrainingAsync(trainingToCreate).ConfigureAwait(true);
+        if (state == ServiceResultState.Success)
+        {
+            this.trainingCreationFormDialog!.CloseDialog();
+            await this.trainingsGrid.RefreshDataAsync().ConfigureAwait(true);
+        }
+    }
+
+    private async Task UpdateTrainingAsync()
+    {
+        var decimalStartTime = (decimal)this.UnderCreationTraining.StartTime.TimeOfDay.TotalHours;
+        var decimalEndTime = (decimal)this.UnderCreationTraining.EndTime.TimeOfDay.TotalHours;
+
+        var trainingToUpdate = new TrainingUpdateInput
+        {
+            Id = this.UnderCreationTraining.Id,
+            Date = this.UnderCreationTraining.Date,
+            StartTime = decimalStartTime,
+            EndTime = decimalEndTime,
+            MasterName = this.UnderCreationTraining.MasterName,
+            IsIndividual = this.UnderCreationTraining.IsIndividual,
+            LessonId = this.UnderCreationTraining.LessonId,
+            GroupId = this.UnderCreationTraining.GroupId,
+            Students = this.UnderCreationTraining.Students.Select(s => new TrainingStudentBase() { Id = s.Id, Category = s.Category, FirstName = s.FirstName, Name = s.Name }).ToList()
+        };
+
+        if (!trainingToUpdate.IsIndividual && trainingToUpdate.GroupId is null or 0)
+            return;
+
+        if (trainingToUpdate.IsIndividual && trainingToUpdate.Students.Count != 1)
+            return;
+
+        var (state, _) = await this.TrainingServices.UpdateTrainingAsync(trainingToUpdate).ConfigureAwait(true);
         if (state == ServiceResultState.Success)
         {
             this.trainingCreationFormDialog!.CloseDialog();

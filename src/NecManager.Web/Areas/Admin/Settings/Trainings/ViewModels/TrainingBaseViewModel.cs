@@ -26,6 +26,10 @@ public sealed class TrainingBaseViewModel
 
     public string? GroupName { get; set; }
 
+    public int? GroupId { get; set; }
+
+    public int LessonId { get; set; }
+
     /// <summary>
     ///     Gets or sets a weapon.
     /// </summary>
