@@ -1,9 +1,10 @@
 ﻿namespace NecManager.Web.Service.ApiServices.Abstractions;
-using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 using NecManager.Common;
 using NecManager.Web.Service.Models;
+using NecManager.Web.Service.Models.Query;
 
 public interface IStudentServices
 {
@@ -11,5 +12,5 @@ public interface IStudentServices
     ///     Method use to get all existing student basic info.
     /// </summary>
     /// <returns>A list of <see cref="StudentBase" /> representing the basic student info.</returns>
-    Task<ServiceResult<List<StudentBase>>> GetAllStudentsAsync();
+    Task<ServiceResult<PageableResult<StudentBase>>> GetAllStudentsAsync(StudentInputQuery query, CancellationToken cancellationToken = default);
 }

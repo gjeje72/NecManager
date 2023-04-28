@@ -9,6 +9,7 @@ using NecManager.Web.Service.Models.Query;
 using NecManager.Web.Service.Provider;
 using NecManager.Web.Service.Models.Trainings;
 using NecManager.Web.Service.Extensions;
+using System.Collections.Generic;
 
 internal sealed class TrainingServices : ServiceBase, ITrainingServices
 {
@@ -31,6 +32,14 @@ internal sealed class TrainingServices : ServiceBase, ITrainingServices
     {
         var trainingClient = await this.RestHttpService.TrainingClient.ConfigureAwait(false);
         var response = await trainingClient.PostAsync(string.Empty, creationInput.ToStringContent(), cancellationToken).ConfigureAwait(false);
+        return await response.BuildDataServiceResultAsync().ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    public async Task<ServiceResult> CreateRangeTrainingsAsync(List<TrainingCreationInput> trainingCreationInputs, CancellationToken cancellationToken = default)
+    {
+        var trainingClient = await this.RestHttpService.TrainingClient.ConfigureAwait(false);
+        var response = await trainingClient.PostAsync("multiple", trainingCreationInputs.ToStringContent(), cancellationToken).ConfigureAwait(false);
         return await response.BuildDataServiceResultAsync().ConfigureAwait(false);
     }
 

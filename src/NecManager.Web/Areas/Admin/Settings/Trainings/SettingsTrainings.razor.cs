@@ -2,9 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
@@ -32,18 +30,22 @@ public partial class SettingsTrainings
     [Inject]
     public IGroupServices GroupServices { get; set; } = null!;
 
+    [Inject]
+    public IStudentServices StudentServices { get; set; } = null!;
+
     private PaginationState pagination = new() { ItemsPerPage = 10 };
     private GridItemsProvider<TrainingBaseViewModel> trainingProviders = default!;
     private QuickGrid<TrainingBaseViewModel> trainingsGrid;
     private TrainingInputQuery trainingInputQuery = new();
     private Dialog? trainingCreationFormDialog;
     private Dialog? confirmDeleteDialog;
-    private TrainingBaseViewModel underDeleteTraining;
-
-    private TrainingCreationViewModel UnderCreationTraining { get; set; } = new() { Date= DateTime.Now };
+    private TrainingBaseViewModel underDeleteTraining = new();
+    private TrainingCreationViewModel UnderCreationTraining { get; set; } = new() { Date = DateTime.Now };
     private LessonInputQuery LessonFilter = new();
     private List<LessonBaseViewModel> Lessons = new();
     private List<GroupBase> Groups = new();
+    private List<TrainingStudentBaseViewModel> Students = new();
+
     private bool isUnderUpdate = false;
     private string ErrorMessage = string.Empty;
     private string ValidationButtonLabel
@@ -71,6 +73,7 @@ public partial class SettingsTrainings
             DifficultyType = this.trainingInputQuery.DifficultyType,
             Filter = this.trainingInputQuery.Filter,
             OnlyIndividual = this.trainingInputQuery.OnlyIndividual,
+            MasterName = this.trainingInputQuery.MasterName,
         };
 
         var (_, trainings, _) = await this.TrainingServices.GetAllTrainingsAsync(query).ConfigureAwait(true);
@@ -108,7 +111,7 @@ public partial class SettingsTrainings
             this.trainingInputQuery.WeaponType = weaponType;
         }
 
-        await this.trainingsGrid.RefreshDataAsync().ConfigureAwait(true);
+        await this.trainingsGrid.RefreshDataAsync();
     }
 
     private async Task OnDifficultyFilterChangeEventHandlerAsync(DifficultyType? difficulty)
@@ -122,19 +125,25 @@ public partial class SettingsTrainings
             this.trainingInputQuery.DifficultyType = difficulty;
         }
 
-        await this.trainingsGrid.RefreshDataAsync().ConfigureAwait(true);
+        await this.trainingsGrid.RefreshDataAsync();
     }
 
     private async Task OnFilterChangeEventHandlerAsync(string? filter)
     {
         this.trainingInputQuery.Filter = filter;
-        await this.trainingsGrid.RefreshDataAsync().ConfigureAwait(true);
+        await this.trainingsGrid.RefreshDataAsync();
+    }
+
+    private async Task OnMasterNameChangeEventHandlerAsync(string? masterName)
+    {
+        this.trainingInputQuery.MasterName = masterName;
+        await this.trainingsGrid.RefreshDataAsync();
     }
 
     private async Task OnOnlyIndiviualFilterChangeEventHandlerAsync(bool? onlyIndividual)
     {
         this.trainingInputQuery.OnlyIndividual = onlyIndividual ?? false;
-        await this.trainingsGrid.RefreshDataAsync().ConfigureAwait(true);
+        await this.trainingsGrid.RefreshDataAsync();
     }
 
     private async Task OnValidCreateOrUpdateFormAsync()
@@ -148,22 +157,28 @@ public partial class SettingsTrainings
         await this.CreateTrainingAsync().ConfigureAwait(true);
     }
 
-    private void OnCreateTrainingClickEventHandler()
+    private async Task OnCreateTrainingClickEventHandler()
     {
         this.isUnderUpdate = false;
         this.ErrorMessage = string.Empty;
         this.UnderCreationTraining = new();
 
+        if (this.Students.Count == 0)
+            await this.RefreshStudentListAsync().ConfigureAwait(true);
+
         if (this.trainingCreationFormDialog is not null)
             this.trainingCreationFormDialog.ShowDialog();
     }
 
-    private void OnUpdateTrainingClickEventHandler(TrainingBaseViewModel training)
+    private async Task OnUpdateTrainingClickEventHandler(TrainingBaseViewModel training)
     {
         var hours = Convert.ToDouble(training.StartTime);
         var startTime = new DateTime().AddHours(hours);
         var endHours = Convert.ToDouble(training.EndTime);
         var endTime = new DateTime().AddHours(endHours);
+
+        if (this.Students.Count == 0 && training.IsIndividual)
+            await this.RefreshStudentListAsync().ConfigureAwait(true);
 
         this.isUnderUpdate = true;
         this.ErrorMessage = string.Empty;
@@ -251,7 +266,7 @@ public partial class SettingsTrainings
 
     private async Task RefreshLessonListAsync()
     {
-       var (state, lessons, _) = await this.LessonServices.GetAllLessonsAsync(new() { DifficultyType = this.LessonFilter.DifficultyType, WeaponType = this.LessonFilter.WeaponType, IsPageable = false });
+        var (state, lessons, _) = await this.LessonServices.GetAllLessonsAsync(new() { DifficultyType = this.LessonFilter.DifficultyType, WeaponType = this.LessonFilter.WeaponType, IsPageable = false });
         if (state == ServiceResultState.Success && lessons is not null)
             this.Lessons = lessons.Items?.Select(l => new LessonBaseViewModel
             {
@@ -259,6 +274,21 @@ public partial class SettingsTrainings
                 Title = l.Title,
             }).ToList() ?? new();
     }
+
+    private async Task RefreshStudentListAsync()
+    {
+        var (state, students, _) = await this.StudentServices.GetAllStudentsAsync(new() { Filter = this.UnderCreationTraining.StudentFilter });
+        if(state == ServiceResultState.Success && students is not null)
+            this.Students = students.Items?.Select(s => new TrainingStudentBaseViewModel
+            {
+                Id = s.Id,
+                FirstName = s.FirstName,
+                LastName = s.LastName,
+                Categorie = s.Categorie,
+                Weapon = s.Weapon
+            }).ToList() ?? new();
+    }
+
     private async Task DifficultySelectChangedEventHandler(DifficultyType? difficulty)
     {
         if (difficulty == DifficultyType.None)
@@ -281,12 +311,20 @@ public partial class SettingsTrainings
 
     private void LessonSelectChangedEventHandler(int? lessonId)
     {
-        if(lessonId != null)
+        if (lessonId != null)
             this.UnderCreationTraining.LessonId = (int)lessonId;
     }
 
     private void GroupSelectChangedEventHandler(int? groupId)
        => this.UnderCreationTraining.GroupId = groupId;
+
+    private void StudentSelectChangedEventHandler(int? studentId)
+    {
+        if(studentId is not null)
+            this.UnderCreationTraining.Students = new() { new() { Id = (int)studentId } };
+
+        this.UnderCreationTraining.StudentId = studentId;
+    }
 
     private async Task OnDeleteTrainingClickEventHandler(TrainingBaseViewModel training)
     {
@@ -303,5 +341,11 @@ public partial class SettingsTrainings
             this.confirmDeleteDialog!.CloseDialog();
             await this.trainingsGrid.RefreshDataAsync().ConfigureAwait(true);
         }
+    }
+
+    private async Task OnStudentFilterChangeEventHandler(ChangeEventArgs arg)
+    {
+        this.UnderCreationTraining.StudentFilter = arg.Value?.ToString() ?? string.Empty;
+        await this.RefreshStudentListAsync().ConfigureAwait(true);
     }
 }

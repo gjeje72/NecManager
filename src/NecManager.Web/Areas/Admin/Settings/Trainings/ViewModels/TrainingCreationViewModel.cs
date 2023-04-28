@@ -28,4 +28,8 @@ public class TrainingCreationViewModel
     public bool IsIndividual { get; set; }
 
     public string? MasterName { get; set; }
+
+    public string StudentFilter { get; set; } = string.Empty;
+
+    public int? StudentId { get; set; }
 }

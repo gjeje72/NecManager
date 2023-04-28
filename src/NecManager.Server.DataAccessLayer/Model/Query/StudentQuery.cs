@@ -8,4 +8,5 @@ public sealed record StudentQuery(
     int CurrentPage,
     WeaponType? WeaponType = null,
     int? GroupId = null,
-    StudentState? State = null) : PageableQuery(PageSize, CurrentPage);
+    StudentState? State = null,
+    string? Filter = null) : PageableQuery(PageSize, CurrentPage);

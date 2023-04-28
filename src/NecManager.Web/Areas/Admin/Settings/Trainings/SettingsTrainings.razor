@@ -14,7 +14,7 @@
         OnValidate="this.OnConfirmDeleteTrainingClickEventHandler">
     @if (this.underDeleteTraining.IsIndividual)
     {
-        <p>Supprimer l'entrainement du @this.underDeleteTraining.Date.ToShortDateString() pour : @this.underDeleteTraining.GroupName</p>        
+        <p>Supprimer l'entrainement du @this.underDeleteTraining.Date.ToShortDateString() pour : @this.underDeleteTraining.GroupName</p>
     }
     else
     {
@@ -31,11 +31,11 @@
             <label for="masterName">Maître</label>
             <input type="text" id="masterName" @bind="this.UnderCreationTraining.MasterName" />
         </div>
-        <div class="form-group-column">
-            <label for="date">Date</label>
-            <input id="date" type="date" @bind="this.UnderCreationTraining.Date" />
-        </div>
         <div class="row form-group">
+            <div class="form-group-column">
+                <label for="date">Date</label>
+                <input id="date" type="date" @bind="this.UnderCreationTraining.Date" />
+            </div>
             <div class="form-group-column">
                 <label for="startTime">Début</label>
                 <input id="startTime" type="time" @bind="this.UnderCreationTraining.StartTime" />
@@ -45,12 +45,16 @@
                 <input id="endTime" type="time" @bind="this.UnderCreationTraining.EndTime" />
             </div>
         </div>
-        <div class="form-group">
-            <label for="isIndiv">Leçon individuelle ?</label>
-            <input type="checkbox" id="isIndiv" @bind="this.UnderCreationTraining.IsIndividual" />
-        </div>
+        @if (!this.isUnderUpdate)
+        {
+            <div class="form-group">
+                <label for="isIndiv">Leçon individuelle ?</label>
+                <input type="checkbox" id="isIndiv" @bind="this.UnderCreationTraining.IsIndividual" />
+            </div>
+        }
         @if (!this.UnderCreationTraining.IsIndividual)
         {
+            <label for="group">Groupe</label>
             <InputSelect id="group"
                      @bind-Value="@this.UnderCreationTraining.GroupId"
                      @bind-Value:after="@(() => this.GroupSelectChangedEventHandler(this.UnderCreationTraining.GroupId))">
@@ -63,7 +67,20 @@
         }
         else
         {
-            <span>Selectionner un étudiant</span>
+            @if (!this.isUnderUpdate)
+            {
+                <label for="studentFilter">Recherche étudiant</label>
+                <input type="text" id="studentFilter" @onchange="this.OnStudentFilterChangeEventHandler" />
+                <InputSelect id="student"
+                     @bind-Value="@this.UnderCreationTraining.StudentId"
+                     @bind-Value:after="@(() => this.StudentSelectChangedEventHandler(this.UnderCreationTraining.StudentId))">
+                    <option value="" selected>- étudiant -</option>
+                    @foreach (var student in this.Students)
+                    {
+                        <option value="@student.Id">@student.FirstName @student.LastName [@student.Weapon - @student.Categorie] </option>
+                    }
+                </InputSelect>
+            }
         }
         <div>
             <p>Sélectionner une leçon</p>
@@ -129,45 +146,58 @@
 
     <div class="admin-container-filter">
         <EditForm Model="@this.trainingInputQuery">
-            <InputSelect @bind-Value="this.trainingInputQuery.WeaponType"
-                         @bind-Value:after="@(() => this.OnWeaponFilterChangeEventHandlerAsync(this.trainingInputQuery.WeaponType))">
-                <option value="@WeaponType.None">- arme -</option>
-                @foreach (var weaponType in Enum.GetValues<WeaponType>())
-                {
-                    if (weaponType == WeaponType.None)
-                        continue;
+            <div class="row">
 
-                    <option value="@weaponType">@Enum.GetName(weaponType)</option>
-                }
-            </InputSelect>
-            <InputSelect @bind-Value="this.trainingInputQuery.DifficultyType"
-                         @bind-Value:after="@(() => this.OnDifficultyFilterChangeEventHandlerAsync(this.trainingInputQuery.DifficultyType))">
-                <option value="@DifficultyType.None">- difficulté -</option>
-                @foreach (var difficulty in Enum.GetValues<DifficultyType>())
-                {
-                    if (difficulty == DifficultyType.None)
-                        continue;
+                <InputSelect @bind-Value="this.trainingInputQuery.WeaponType"
+                             @bind-Value:after="@(() => this.OnWeaponFilterChangeEventHandlerAsync(this.trainingInputQuery.WeaponType))">
+                    <option value="@WeaponType.None">- arme -</option>
+                    @foreach (var weaponType in Enum.GetValues<WeaponType>())
+                    {
+                        if (weaponType == WeaponType.None)
+                            continue;
 
-                    <option value="@difficulty">@Enum.GetName(difficulty)</option>
-                }
-            </InputSelect>
-            <InputText @bind-Value="this.trainingInputQuery.Filter"
-                       @bind-Value:after="@(() => this.OnFilterChangeEventHandlerAsync(this.trainingInputQuery.Filter))" />
-            <label for="onlyIndividual">Uniquement les leçons indivs :</label>
-            <InputCheckbox id="onlyIndividual"
-                           @bind-Value="this.trainingInputQuery.OnlyIndividual"
-                           @bind-Value:after="@(() => this.OnOnlyIndiviualFilterChangeEventHandlerAsync(this.trainingInputQuery.OnlyIndividual))" />
+                        <option value="@weaponType">@Enum.GetName(weaponType)</option>
+                    }
+                </InputSelect>
+                <InputSelect @bind-Value="this.trainingInputQuery.DifficultyType"
+                             @bind-Value:after="@(() => this.OnDifficultyFilterChangeEventHandlerAsync(this.trainingInputQuery.DifficultyType))">
+                    <option value="@DifficultyType.None">- difficulté -</option>
+                    @foreach (var difficulty in Enum.GetValues<DifficultyType>())
+                    {
+                        if (difficulty == DifficultyType.None)
+                            continue;
+
+                        <option value="@difficulty">@Enum.GetName(difficulty)</option>
+                    }
+                </InputSelect>
+
+                <div class="form-group-column">
+                    <label for="masterNameFilter">Maître</label>
+                    <InputText id="masterNameFilter"
+                               @bind-Value="this.trainingInputQuery.MasterName"
+                               @bind-Value:after="@(() => this.OnMasterNameChangeEventHandlerAsync(this.trainingInputQuery.MasterName))" />
+                </div>
+                <div class="form-group-column">
+                    <label for="filter">Recherche</label>
+                    <InputText id="filter" @bind-Value="this.trainingInputQuery.Filter"
+                               @bind-Value:after="@(() => this.OnFilterChangeEventHandlerAsync(this.trainingInputQuery.Filter))" />
+                </div>
+                <label for="onlyIndividual">Uniquement les leçons indivs :</label>
+                <InputCheckbox id="onlyIndividual"
+                               @bind-Value="this.trainingInputQuery.OnlyIndividual"
+                               @bind-Value:after="@(() => this.OnOnlyIndiviualFilterChangeEventHandlerAsync(this.trainingInputQuery.OnlyIndividual))" />
+            </div>
         </EditForm>
     </div>
 
     <QuickGrid ItemsProvider="@this.trainingProviders" Pagination="@pagination" @ref=trainingsGrid>
-        <PropertyColumn Property="@(t => t.Date.ToShortDateString())" Title="Date" Sortable="true" />
-        <PropertyColumn Property="@(t => t.StartTime.ToTimeString())" Title="Début" Sortable="true" />
-        <PropertyColumn Property="@(t => t.EndTime.ToTimeString())" Title="Fin" Sortable="true" />
-        <PropertyColumn Property="@(t => t.IsIndividual ? "oui" : string.Empty)" Title="Individuel" Sortable="true" />
-        <PropertyColumn Property="@(t => t.LessonName)" Title="Cours" Sortable="true" />
-        <PropertyColumn Property="@(t => t.MasterName)" Title="Maître" Sortable="true" />
-        <PropertyColumn Property="@(t => t.GroupName)" Title="Groupe/Elève" Sortable="true" />
+        <PropertyColumn Property="@(t => t.Date.ToShortDateString())" Title="Date" />
+        <PropertyColumn Property="@(t => t.StartTime.ToTimeString())" Title="Début" />
+        <PropertyColumn Property="@(t => t.EndTime.ToTimeString())" Title="Fin" />
+        <PropertyColumn Property="@(t => t.IsIndividual ? "oui" : string.Empty)" Title="Individuel" />
+        <PropertyColumn Property="@(t => t.LessonName)" Title="Cours" />
+        <PropertyColumn Property="@(t => t.MasterName)" Title="Maître" />
+        <PropertyColumn Property="@(t => t.GroupName)" Title="Groupe/Elève" />
         <TemplateColumn Title="Actions">
             <button @onclick="@(() => this.OnUpdateTrainingClickEventHandler(context))"><i class="oi oi-pencil"></i></button>
             <button @onclick="@(() => this.OnDeleteTrainingClickEventHandler(context))"><i class="oi oi-trash"></i></button>

@@ -2,9 +2,164 @@
 @using NecManager.Web.Components
 
 <TopBar Title="Admin - Initialiser saison" BackUrl="/admin/reglages/entrainements" />
+<div class="admin-container">
 
-<p>PROCHAINEMENT ICI INITIALISATION DE LA SAISON</p>
-@*<p>Start Date</p>
-<p>End Date</p>
-<p>Vacances</p>
-<p>Jours fériés</p>*@
+    @*<p>PROCHAINEMENT ICI INITIALISATION DE LA SAISON</p>*@
+    <div class="row">
+        <div class="form-group-column">
+            <label for="group">Groupe</label>
+            <select id="group" @bind="@this.SeasonTrainingCreation.GroupId">
+                <option value="" selected>- groupe -</option>
+                @foreach (var group in this.Groups)
+                {
+                    <option value="@group.Id">@group.Title</option>
+                }
+            </select>
+        </div>
+        <div class="form-group-column">
+            <label for="masterName">Maître</label>
+            <input type="text" id="masterName" @bind="this.SeasonTrainingCreation.MasterName" />
+        </div>
+    </div>
+    <div class="row">
+
+    <div class="form-group-column">
+        <label for="date">Début de la saison</label>
+        <input id="date" type="date" @bind="this.SeasonTrainingCreation.StartDate" />
+    </div>
+    <div class="form-group-column">
+        <label for="date">Fin de la saison</label>
+        <input id="date" type="date" @bind="this.SeasonTrainingCreation.EndDate" />
+    </div>
+
+    </div>
+    <div class="row">
+        <div class="form-group-column">
+            <label for="monday">Lundi</label>
+            <input id="monday" type="checkbox" @bind="this.SeasonTrainingCreation.isMondaySelected" />
+            @if (this.SeasonTrainingCreation.isMondaySelected)
+            {
+                <div class="form-group-column">
+                    <label for="mondayStartTime">Début</label>
+                    <input id="mondayStartTime" type="time" @bind="this.SeasonTrainingCreation.MondayStartTime" />
+                </div>
+                <div class="form-group-column">
+                    <label for="mondayEndTime">Fin</label>
+                    <input id="mondayEndTime" type="time" @bind="this.SeasonTrainingCreation.MondayEndTime" />
+                </div>
+            }
+        </div>
+        <div class="form-group-column">
+            <label for="tuesday">Mardi</label>
+            <input id="tuesday" type="checkbox" @bind="this.SeasonTrainingCreation.isTuesdaySelected" />
+            @if (this.SeasonTrainingCreation.isTuesdaySelected)
+            {
+                <div class="form-group-column">
+                    <label for="tuesdayStartTime">Début</label>
+                    <input id="tuesdayStartTime" type="time" @bind="this.SeasonTrainingCreation.TuesdayStartTime" />
+                </div>
+                <div class="form-group-column">
+                    <label for="tuesdayEndTime">Fin</label>
+                    <input id="tuesdayEndTime" type="time" @bind="this.SeasonTrainingCreation.TuesdayEndTime" />
+                </div>
+            }
+        </div>
+        <div class="form-group-column">
+            <label for="wednesday">Mercredi</label>
+            <input id="wednesday" type="checkbox" @bind="this.SeasonTrainingCreation.isWednesdaySelected" />
+            @if (this.SeasonTrainingCreation.isWednesdaySelected)
+            {
+                <div class="form-group-column">
+                    <label for="wednesdayStartTime">Début</label>
+                    <input id="wednesdayStartTime" type="time" @bind="this.SeasonTrainingCreation.WednesdayStartTime" />
+                </div>
+                <div class="form-group-column">
+                    <label for="wednesdayEndTime">Fin</label>
+                    <input id="wednesdayEndTime" type="time" @bind="this.SeasonTrainingCreation.WednesdayEndTime" />
+                </div>
+            }
+        </div>
+        <div class="form-group-column">
+            <label for="thrusday">Jeudi</label>
+            <input id="thrusday" type="checkbox" @bind="this.SeasonTrainingCreation.isThursdaySelected" />
+            @if (this.SeasonTrainingCreation.isThursdaySelected)
+            {
+                <div class="form-group-column">
+                    <label for="thursdayStartTime">Début</label>
+                    <input id="thursdayStartTime" type="time" @bind="this.SeasonTrainingCreation.ThursdayStartTime" />
+                </div>
+                <div class="form-group-column">
+                    <label for="thursdayEndTime">Fin</label>
+                    <input id="thursdayEndTime" type="time" @bind="this.SeasonTrainingCreation.ThursdayEndTime" />
+                </div>
+            }
+        </div>
+        <div class="form-group-column">
+            <label for="friday">Vendredi</label>
+            <input id="friday" type="checkbox" @bind="this.SeasonTrainingCreation.isFridaySelected" />
+            @if (this.SeasonTrainingCreation.isFridaySelected)
+            {
+                <div class="form-group-column">
+                    <label for="fridayStartTime">Début</label>
+                    <input id="fridayStartTime" type="time" @bind="this.SeasonTrainingCreation.FridayStartTime" />
+                </div>
+                <div class="form-group-column">
+                    <label for="fridayEndTime">Fin</label>
+                    <input id="fridayEndTime" type="time" @bind="this.SeasonTrainingCreation.FridayEndTime" />
+                </div>
+            }
+        </div>
+        <div class="form-group-column">
+            <label for="saturday">Samedi</label>
+            <input id="saturday" type="checkbox" @bind="this.SeasonTrainingCreation.isSaturdaySelected" />
+            @if (this.SeasonTrainingCreation.isSaturdaySelected)
+            {
+                <div class="form-group-column">
+                    <label for="saturdayStartTime">Début</label>
+                    <input id="saturdayStartTime" type="time" @bind="this.SeasonTrainingCreation.SaturdayStartTime" />
+                </div>
+                <div class="form-group-column">
+                    <label for="saturdayEndTime">Fin</label>
+                    <input id="saturdayEndTime" type="time" @bind="this.SeasonTrainingCreation.SaturdayEndTime" />
+                </div>
+            }
+        </div>
+        <div class="form-group-column">
+            <label for="sunday">Dimanche</label>
+            <input id="sunday" type="checkbox" @bind="this.SeasonTrainingCreation.isSundaySelected" />
+            @if (this.SeasonTrainingCreation.isSundaySelected)
+            {
+                <div class="form-group-column">
+                    <label for="sundayStartTime">Début</label>
+                    <input id="sundayStartTime" type="time" @bind="this.SeasonTrainingCreation.SundayStartTime" />
+                </div>
+                <div class="form-group-column">
+                    <label for="sundayEndTime">Fin</label>
+                    <input id="sundayEndTime" type="time" @bind="this.SeasonTrainingCreation.SundayEndTime" />
+                </div>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group-column">
+            <span>Vacances</span>
+            <label for="startHoliday">Début</label>
+            <input type="date" id="startHoliday" @bind="this.SeasonTrainingCreation.HolidayStartDate" />
+            <label for="endHoliday">Fin</label>
+            <input type="date" id="endHoliday" @bind="this.SeasonTrainingCreation.HolidayEndDate" />
+            <button @onclick="this.OnAddHolidayClickEventHandler">Ajouter une période de vacances</button>
+        </div>
+        <div class="form-group-column">
+            <span>Jours fériés</span>
+            <input type="date" @bind="this.SeasonTrainingCreation.PublicHolidayDate" />
+            <button @onclick="this.OnAddPublicHolidayClickEventHandler">Ajouter un jour férié</button>
+        </div>
+    </div>
+    <div>
+        @foreach (var excludedDate in this.SeasonTrainingCreation.ExcludedDates)
+        {
+            <span>@excludedDate.ToShortDateString()</span>
+        }
+    </div>
+    <button @onclick="@this.CreateTrainingsAsync">INITIALISER</button>
+</div>

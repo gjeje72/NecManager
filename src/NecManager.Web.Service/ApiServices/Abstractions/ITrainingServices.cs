@@ -1,5 +1,6 @@
 ﻿namespace NecManager.Web.Service.ApiServices.Abstractions;
 
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -9,6 +10,7 @@ using NecManager.Web.Service.Models.Trainings;
 
 public interface ITrainingServices
 {
+    Task<ServiceResult> CreateRangeTrainingsAsync(List<TrainingCreationInput> trainingCreationInputs, CancellationToken cancellationToken = default);
     Task<ServiceResult> CreateTrainingAsync(TrainingCreationInput creationInput, CancellationToken cancellationToken = default);
     Task<ServiceResult> DeleteTrainingAsync(int id, CancellationToken cancellationToken = default);
     Task<ServiceResult<PageableResult<TrainingBase>>> GetAllTrainingsAsync(TrainingInputQuery trainingQuery, CancellationToken cancellationToken = default);

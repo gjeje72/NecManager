@@ -45,6 +45,7 @@ public sealed record TrainingQueryInput(
         bool onlyIndividual = bool.TryParse(httpContext.Request.Query["onlyIndividual"], out var parsedOnlyInd) ? parsedOnlyInd : false;
         string? masterName = httpContext.Request.Query["masterName"];
         string? filter = httpContext.Request.Query["filter"];
+
         return ValueTask.FromResult<TrainingQueryInput?>(new(
             pageSize == 0 ? 10 : pageSize,
             page == 0 ? 1 : page,

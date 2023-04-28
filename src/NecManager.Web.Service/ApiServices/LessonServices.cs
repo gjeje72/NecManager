@@ -1,15 +1,14 @@
 ﻿namespace NecManager.Web.Service.ApiServices;
 
-using NecManager.Common;
-using System.Threading.Tasks;
 using System.Threading;
+using System.Threading.Tasks;
 
+using NecManager.Common;
 using NecManager.Web.Service.ApiServices.Abstractions;
-using NecManager.Web.Service.Provider;
-using NecManager.Web.Service.Models.Query;
 using NecManager.Web.Service.Extensions;
 using NecManager.Web.Service.Models.Lessons;
-using NecManager.Web.Service.Models;
+using NecManager.Web.Service.Models.Query;
+using NecManager.Web.Service.Provider;
 
 internal sealed class LessonServices : ServiceBase, ILessonServices
 {

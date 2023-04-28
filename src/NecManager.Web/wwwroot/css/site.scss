@@ -74,9 +74,11 @@ a, .btn-link {
 }
 
 .admin-container {
-    margin: 2rem 10% 0 10%;
+    padding: 2rem 10% 2rem 10%;
+    overflow: auto;
+    max-height: calc(100vh - 12rem);
 
-    &-actions{
+    &-actions {
         margin-bottom: 1rem;
     }
 }

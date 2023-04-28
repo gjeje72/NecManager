@@ -30,6 +30,13 @@ public class StudentAccessLayer : AQueryBaseAccessLayer<NecDbContext, Student, S
         if (query.WeaponType is not null)
             queryable = queryable.Where(l => l.StudentGroups.Any() && l.StudentGroups.Any(sg => sg.Group != null && sg.Group.Weapon == query.WeaponType));
 
+        if (!string.IsNullOrWhiteSpace(query.Filter))
+            queryable = queryable.Where(s => s.Name.Contains(query.Filter)
+                                                 || s.FirstName.Contains(query.Filter)
+                                                 || s.EmailAddress.Contains(query.Filter)
+                                                 || s.StudentGroups.Any(sg => sg.Group != null && sg.Group.Title.Contains(query.Filter))
+                                                 );
+
         var collectionInternal = !isPageable ? queryable : queryable.Skip((query.CurrentPage - 1) * query.PageSize).Take(query.PageSize);
         return await collectionInternal.ToListAsync();
     }

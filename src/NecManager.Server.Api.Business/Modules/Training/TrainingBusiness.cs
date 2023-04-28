@@ -33,7 +33,7 @@ internal class TrainingBusiness : ITrainingBusiness
         //ArgumentNullException.ThrowIfNull(monitoringIds);
 
         var (pageSize, currentPage, difficultyType, weaponType, groupId, date, season, studentId, filter, onlyIndividual, masterName) = query;
-        var pageableResult = await this.trainingAccessLayer.GetPageableCollectionAsync(new(pageSize, currentPage, difficultyType, weaponType, groupId, date, season, studentId, filter, onlyIndividual, masterName), false);
+        var pageableResult = await this.trainingAccessLayer.GetPageableCollectionAsync(new(pageSize, currentPage, difficultyType, weaponType, groupId, date, season, studentId, filter, onlyIndividual, masterName), true);
         if (pageableResult.Items is not null)
         {
             var pageableLessons = new PageableResult<TrainingBase>
