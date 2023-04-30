@@ -74,9 +74,11 @@ a, .btn-link {
 }
 
 .admin-container {
-    margin: 2rem 10% 0 10%;
+    padding: 2rem 10% 2rem 10%;
+    overflow: auto;
+    max-height: calc(100vh - 12rem);
 
-    &-actions{
+    &-actions {
         margin-bottom: 1rem;
     }
 }
@@ -100,4 +102,14 @@ a, .btn-link {
     display: flex;
     flex-direction: column;
     margin-bottom: 1rem;
+}
+
+.row {
+    display: flex;
+    column-gap: 2rem;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: 0;
+    margin-left: 0;
+    align-items: center;
 }

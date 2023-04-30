@@ -11,5 +11,5 @@ public sealed class GroupOutputDetails : GroupOutputBase
     /// </summary>
     public List<StudentOutputBase>? Students { get; set; } = new();
 
-    public List<TrainingBase> Trainings { get; set; } = new();
+    public List<TrainingDetails> Trainings { get; set; } = new();
 }

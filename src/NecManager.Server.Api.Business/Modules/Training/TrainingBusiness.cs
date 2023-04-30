@@ -32,8 +32,8 @@ internal class TrainingBusiness : ITrainingBusiness
     {
         //ArgumentNullException.ThrowIfNull(monitoringIds);
 
-        var (pageSize, currentPage, difficultyType, weaponType, groupId, date, season, studentId, onlyIndividual, masterName) = query;
-        var pageableResult = await this.trainingAccessLayer.GetPageableCollectionAsync(new(pageSize, currentPage, difficultyType, weaponType, groupId, date, season, studentId, onlyIndividual, masterName), false);
+        var (pageSize, currentPage, difficultyType, weaponType, groupId, date, season, studentId, filter, onlyIndividual, masterName) = query;
+        var pageableResult = await this.trainingAccessLayer.GetPageableCollectionAsync(new(pageSize, currentPage, difficultyType, weaponType, groupId, date, season, studentId, filter, onlyIndividual, masterName), true);
         if (pageableResult.Items is not null)
         {
             var pageableLessons = new PageableResult<TrainingBase>
@@ -72,7 +72,8 @@ internal class TrainingBusiness : ITrainingBusiness
             EndTime = input.EndTime,
             GroupId = input.GroupId,
             LessonId = input.LessonId,
-            PersonTrainings = input.Students.Select(s => new PersonTraining { IsIndividual = input.IsIndividual, MasterName = input.MasterName, StudentId = s.Id }).ToList()
+            MasterName = input.MasterName,
+            PersonTrainings = input.Students.Select(s => new PersonTraining { IsIndividual = input.IsIndividual, StudentId = s.Id }).ToList()
         };
 
         try
@@ -107,7 +108,8 @@ internal class TrainingBusiness : ITrainingBusiness
                 EndTime = input.EndTime,
                 GroupId = input.GroupId,
                 LessonId = input.LessonId,
-                PersonTrainings = input.Students.Select(s => new PersonTraining { IsIndividual = input.IsIndividual, MasterName = input.MasterName, StudentId = s.Id }).ToList()
+                MasterName = input.MasterName,
+                PersonTrainings = input.Students.Select(s => new PersonTraining { IsIndividual = input.IsIndividual, StudentId = s.Id }).ToList()
             };
             dbTrainings.Add(dbTraining);
         }
@@ -164,11 +166,11 @@ internal class TrainingBusiness : ITrainingBusiness
 
         foreach (var studentId in input.StudentsIds)
         {
+            matchingTraining.MasterName = input.MasterName;
             matchingTraining.PersonTrainings.Add(new PersonTraining
             {
                 StudentId = studentId,
                 TrainingId = matchingTraining.Id,
-                MasterName = input.MasterName,
                 IsIndividual = input.IsIndividual,
             });
         }
@@ -190,7 +192,7 @@ internal class TrainingBusiness : ITrainingBusiness
     {
         // ArgumentNullException.ThrowIfNull(monitoringIds);
 
-        var matchingTraining = await this.trainingAccessLayer.GetSingleAsync(x => x.Id == input.TrainingId, true).ConfigureAwait(false);
+        var matchingTraining = await this.trainingAccessLayer.GetSingleAsync(x => x.Id == input.Id, true).ConfigureAwait(false);
         if (matchingTraining is null)
             return new(monitoringIds, new(ApiResponseResultState.NotFound, TrainingApiErrors.TrainingNotFound));
 
@@ -209,12 +211,13 @@ internal class TrainingBusiness : ITrainingBusiness
             matchingTraining.Date = input.Date;
             matchingTraining.StartTime = input.StartTime;
             matchingTraining.EndTime = input.EndTime;
+            matchingTraining.MasterName = input.MasterName;
 
             await this.trainingAccessLayer.UpdateAsync(matchingTraining).ConfigureAwait(false);
         }
         catch (Exception ex)
         {
-            this.logger.LogError(ex, "Error occured while updating training trainingId={trainingId} with lessonId = {lessonId}", input.TrainingId, input.LessonId);
+            this.logger.LogError(ex, "Error occured while updating training trainingId={trainingId} with lessonId = {lessonId}", input.Id, input.LessonId);
             return new(monitoringIds, new(TrainingApiErrors.TrainingUpdateFailure));
         }
 
@@ -225,30 +228,19 @@ internal class TrainingBusiness : ITrainingBusiness
         => new TrainingBase()
         {
             Id = matchingTraining.Id,
+            GroupId = matchingTraining.GroupId,
+            LessonId = matchingTraining.LessonId,
             Date = matchingTraining.Date,
             StartTime = matchingTraining.StartTime,
             EndTime = matchingTraining.EndTime,
-            Categories = matchingTraining.Group?.Categories,
+            LessonName = matchingTraining.Lesson?.Title ?? string.Empty,
+            GroupName = matchingTraining.PersonTrainings.FirstOrDefault()?.IsIndividual ?? false
+                        ? GetGroupNameIfIndividualTraining(matchingTraining)
+                        : matchingTraining.Group?.Title,
             Weapon = matchingTraining.Lesson?.Weapon ?? WeaponType.None,
             IsIndividual = matchingTraining.PersonTrainings.Count() == 1 && (matchingTraining.PersonTrainings.FirstOrDefault()?.IsIndividual ?? false),
-            MasterName = matchingTraining.PersonTrainings?.FirstOrDefault()?.MasterName ?? string.Empty,
-            Students = matchingTraining.PersonTrainings?.Select(pt => new TrainingStudentBase
-            {
-                Id = pt.StudentId,
-                FirstName = pt.Student?.FirstName ?? string.Empty,
-                Name = pt.Student?.Name ?? string.Empty,
-                Category = pt.Student?.Category ?? CategoryType.None,
-            }).ToList() ?? new(),
-            Lesson = matchingTraining.Lesson != null
-                            ? new()
-                            {
-                                Id = matchingTraining.LessonId,
-                                Title = matchingTraining.Lesson.Title,
-                                Weapon = matchingTraining.Lesson.Weapon,
-                                Difficulty = matchingTraining.Lesson.Difficulty,
-                                Description = matchingTraining.Lesson.Description,
-                                Content = matchingTraining.Lesson.Content,
-                            }
-                            : new(),
+            MasterName = matchingTraining.MasterName ?? string.Empty,
         };
+    private static string GetGroupNameIfIndividualTraining(Training matchingTraining)
+        => $"{matchingTraining.PersonTrainings.FirstOrDefault()?.Student?.FirstName ?? string.Empty} {matchingTraining.PersonTrainings.FirstOrDefault()?.Student?.Name ?? string.Empty}";
 }

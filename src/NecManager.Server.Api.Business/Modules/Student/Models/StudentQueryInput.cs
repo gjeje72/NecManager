@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using NecManager.Common;
 using NecManager.Common.DataEnum;
 
-public sealed record StudentQueryInput(int PageSize, int CurrentPage, WeaponType? WeaponType = null, int? GroupId = null, StudentState? State = null) : PageableQuery(PageSize, CurrentPage)
+public sealed record StudentQueryInput(int PageSize, int CurrentPage, WeaponType? WeaponType = null, int? GroupId = null, StudentState? State = null, string? Filter = null, bool? isPageable = true) : PageableQuery(PageSize, CurrentPage)
 {
     /// <summary>
     ///     Method which bind query parameters to query object.
@@ -22,7 +22,10 @@ public sealed record StudentQueryInput(int PageSize, int CurrentPage, WeaponType
         _ = int.TryParse(httpContext.Request.Query["groupId"], out var groupId);
         StudentState? studentState = Enum.TryParse<StudentState>(httpContext.Request.Query["studentState"], out var parsedDifficultyType) ? parsedDifficultyType : null;
         WeaponType? weaponType = Enum.TryParse<WeaponType>(httpContext.Request.Query["weaponType"], out var parsedWeaponType) ? parsedWeaponType : null;
+        string? filter = httpContext.Request.Query["filter"];
+        _ = bool.TryParse(httpContext.Request.Query["isPageable"], out var isPageable);
 
-        return ValueTask.FromResult<StudentQueryInput?>(new(pageSize == 0 ? 10 : pageSize, page == 0 ? 1 : page, weaponType, groupId == 0 ? null : groupId, studentState));
+
+        return ValueTask.FromResult<StudentQueryInput?>(new(pageSize == 0 ? 10 : pageSize, page == 0 ? 1 : page, weaponType, groupId == 0 ? null : groupId, studentState, filter, isPageable));
     }
 }

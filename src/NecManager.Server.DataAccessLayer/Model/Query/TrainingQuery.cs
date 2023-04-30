@@ -18,5 +18,6 @@ public sealed record TrainingQuery(
     DateTime? Date = null,
     int? Season = null,
     int? StudentId = null,
+    string? Filter = null,
     bool OnlyIndividual = false,
     string? MasterName = null) : PageableQuery(PageSize, CurrentPage);

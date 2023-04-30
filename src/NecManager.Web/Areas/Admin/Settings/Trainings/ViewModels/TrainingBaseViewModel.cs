@@ -1,13 +1,11 @@
-﻿namespace NecManager.Server.Api.Business.Modules.Training.Models;
-using NecManager.Common.DataEnum;
+﻿namespace NecManager.Web.Areas.Admin.Settings.Trainings.ViewModels;
 
-public sealed class TrainingBase
+using NecManager.Common.DataEnum;
+using System;
+
+public sealed class TrainingBaseViewModel
 {
     public int Id { get; set; }
-
-    public int? GroupId { get; set; }
-
-    public int LessonId { get; set; }
 
     public DateTime Date { get; set; }
 
@@ -21,9 +19,16 @@ public sealed class TrainingBase
     /// </summary>
     public decimal EndTime { get; set; }
 
+    /// <summary>
+    ///     Gets or sets a collection of categories.
+    /// </summary>
+    public string? Categories { get; set; }
+
     public string? GroupName { get; set; }
 
-    public string? LessonName { get; set; }
+    public int? GroupId { get; set; }
+
+    public int LessonId { get; set; }
 
     /// <summary>
     ///     Gets or sets a weapon.
@@ -32,5 +37,7 @@ public sealed class TrainingBase
 
     public bool IsIndividual { get; set; }
 
-    public string? MasterName { get; set; }
+    public string LessonName { get; set; } = string.Empty;
+
+    public string MasterName { get; set;} = string.Empty;
 }

@@ -1,7 +1,9 @@
 ﻿namespace NecManager.Server.Api.Business.Modules.Training.Models;
+using System;
+
 using NecManager.Common.DataEnum;
 
-public sealed class TrainingBase
+public sealed class TrainingDetails
 {
     public int Id { get; set; }
 
@@ -21,6 +23,11 @@ public sealed class TrainingBase
     /// </summary>
     public decimal EndTime { get; set; }
 
+    ///// <summary>
+    /////     Gets or sets a collection of categories.
+    ///// </summary>
+    //public string? Categories { get; set; }
+
     public string? GroupName { get; set; }
 
     public string? LessonName { get; set; }
@@ -33,4 +40,8 @@ public sealed class TrainingBase
     public bool IsIndividual { get; set; }
 
     public string? MasterName { get; set; }
+
+    public List<TrainingStudentBase> Students { get; set; } = new();
+
+    public TrainingLesson Lesson { get; set; } = new();
 }

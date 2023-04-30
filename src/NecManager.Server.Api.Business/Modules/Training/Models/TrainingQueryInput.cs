@@ -22,6 +22,7 @@ public sealed record TrainingQueryInput(
     DateTime? Date = null,
     int? Season = null,
     int? StudentId = null,
+    string? Filter = null,
     bool OnlyIndividual = false,
     string? MasterName = null) : PageableQuery(PageSize, CurrentPage)
 {
@@ -43,6 +44,8 @@ public sealed record TrainingQueryInput(
         DateTime? date = DateTime.TryParse(httpContext.Request.Query["date"], out var parsedDate) ? parsedDate : null;
         bool onlyIndividual = bool.TryParse(httpContext.Request.Query["onlyIndividual"], out var parsedOnlyInd) ? parsedOnlyInd : false;
         string? masterName = httpContext.Request.Query["masterName"];
+        string? filter = httpContext.Request.Query["filter"];
+
         return ValueTask.FromResult<TrainingQueryInput?>(new(
             pageSize == 0 ? 10 : pageSize,
             page == 0 ? 1 : page,
@@ -52,6 +55,7 @@ public sealed record TrainingQueryInput(
             date,
             season == 0 ? null : season,
             studentId == 0 ? null : studentId,
+            filter,
             onlyIndividual,
             masterName));
     }

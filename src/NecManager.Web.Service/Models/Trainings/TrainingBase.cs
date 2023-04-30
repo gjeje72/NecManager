@@ -1,4 +1,7 @@
-﻿namespace NecManager.Server.Api.Business.Modules.Training.Models;
+﻿namespace NecManager.Web.Service.Models.Trainings;
+using System;
+using System.Collections.Generic;
+
 using NecManager.Common.DataEnum;
 
 public sealed class TrainingBase

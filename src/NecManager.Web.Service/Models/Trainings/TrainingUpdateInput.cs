@@ -1,9 +1,10 @@
-﻿namespace NecManager.Server.Api.Business.Modules.Training.Models;
+﻿namespace NecManager.Web.Service.Models.Trainings;
+using System;
+using System.Collections.Generic;
+
 public sealed class TrainingUpdateInput
 {
     public int Id { get; set; }
-
-    public int LessonId { get; set; }
 
     public DateTime Date { get; set; }
 
@@ -16,6 +17,14 @@ public sealed class TrainingUpdateInput
     ///     The end time for this training. 16h45 = 16,75
     /// </summary>
     public decimal EndTime { get; set; }
+
+    public int LessonId { get; set; }
+
+    public int? GroupId { get; set; }
+
+    public List<TrainingStudentBase> Students { get; set; } = new();
+
+    public bool IsIndividual { get; set; }
 
     public string? MasterName { get; set; }
 }

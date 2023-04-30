@@ -1,10 +1,8 @@
-﻿namespace NecManager.Web.Service.Models;
-
-using System.Collections.Generic;
+﻿namespace NecManager.Web.Areas.Admin.Settings.Trainings.ViewModels;
 
 using NecManager.Common.DataEnum;
 
-public sealed class StudentBase
+public class TrainingStudentBaseViewModel
 {
     public int Id { get; set; }
 
@@ -16,9 +14,4 @@ public sealed class StudentBase
 
     public WeaponType Weapon { get; set; }
 
-    public IEnumerable<int> GroupIds { get; set; } = new List<int>();
-
-    public StudentState State { get; set; }
-
-    public string? GroupName { get; set; }
 }

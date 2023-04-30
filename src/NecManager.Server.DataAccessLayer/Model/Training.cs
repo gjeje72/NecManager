@@ -18,6 +18,8 @@ public sealed class Training : ADataObject
     /// </summary>
     public decimal EndTime { get; set; }
 
+    public string? MasterName { get; set; }
+
     public ICollection<PersonTraining> PersonTrainings { get; set; } = new HashSet<PersonTraining>();
 
     public int LessonId { get; set; }

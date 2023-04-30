@@ -72,7 +72,7 @@ public sealed partial class AdminGroup : ComponentBase
 
     private async Task GetStudentsAsync()
     {
-        var (studentSuccess, studentsFound, _) = await this.StudentServices.GetAllStudentsAsync();
+        var (studentSuccess, studentsFound, _) = await this.StudentServices.GetAllStudentsAsync(new());
         if (studentSuccess == ServiceResultState.Success)
         {
             this.Students = this.Mapper.Map<List<AdminGroupSelectableStudent>>(studentsFound);

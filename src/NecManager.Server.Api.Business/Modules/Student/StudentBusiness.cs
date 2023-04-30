@@ -29,8 +29,8 @@ internal sealed class StudentBusiness : IStudentBusiness
     {
         //ArgumentNullException.ThrowIfNull(monitoringIds);
 
-        var (pageSize, currentPage, weaponType, groupId, state) = query;
-        var pageableResult = await this.studentAccessLayer.GetPageableCollectionAsync(new(pageSize, currentPage, weaponType, groupId, state), false);
+        var (pageSize, currentPage, weaponType, groupId, state, filter, isPageable) = query;
+        var pageableResult = await this.studentAccessLayer.GetPageableCollectionAsync(new(pageSize, currentPage, weaponType, groupId, state, filter), isPageable == null ? true : (bool)isPageable);
         if (pageableResult.Items is not null)
         {
             var pageableStudents = new PageableResult<StudentOutputBase>

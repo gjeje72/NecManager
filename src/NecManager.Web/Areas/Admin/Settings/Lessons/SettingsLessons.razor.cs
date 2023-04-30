@@ -22,7 +22,7 @@ public partial class SettingsLessons : ComponentBase
     private PaginationState pagination = new PaginationState { ItemsPerPage = 10 };
     private GridItemsProvider<LessonBaseViewModel> lessonProviders = default!;
     private LessonCreationViewModel UnderCreationLesson = new();
-    private QuickGrid<LessonBaseViewModel> lessonsGrid;
+    private QuickGrid<LessonBaseViewModel> lessonsGrid = new();
     private Dialog? lessonsCreationFormDialog;
     private bool isUnderUpdate;
     private string ValidateButtonLabel
