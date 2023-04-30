@@ -101,16 +101,6 @@ public sealed partial class AdminGroup : ComponentBase
         }
     }
 
-    private void AddOrRemoveStudents(List<AdminGroupSelectableStudent> studentSelected)
-    {
-        this.ModelForm.UsersIds = new();
-
-        foreach(var student in studentSelected)
-        {
-            this.ModelForm.UsersIds.Add(student.StudentId);
-        }
-    }
-
     private void ShowCategoriesDialog()
     {
         this.categorieSelectorDialog.ShowDialog();

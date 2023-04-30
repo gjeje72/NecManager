@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 
 using NecManager.Common.DataEnum;
+using NecManager.Web.Areas.Admin.Settings.Group.ViewModels;
 
 public sealed class CreateGroupViewModel
 {
@@ -14,5 +15,5 @@ public sealed class CreateGroupViewModel
 
     public WeaponType Weapon { get; set; }
 
-    public List<int>? UsersIds { get; set; } = new();
+    public List<GroupStudentViewModel> Students { get; set; } = new();
 }
