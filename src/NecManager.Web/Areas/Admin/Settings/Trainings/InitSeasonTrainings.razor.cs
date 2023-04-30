@@ -23,6 +23,7 @@ public partial class InitSeasonTrainings
 
     private SeasonTrainingCreation SeasonTrainingCreation { get; set; } = new();
     private List<GroupBase> Groups = new();
+    private string InititationStateMessage = "En attente d'initialisation.";
 
     protected override async Task OnInitializedAsync()
     {
@@ -33,6 +34,7 @@ public partial class InitSeasonTrainings
 
     private async Task CreateTrainingsAsync()
     {
+        this.InititationStateMessage = "Création en cours...";
         var selectedDays = this.GetSelectedDayOfWeek();
         DateTime currentDate = this.SeasonTrainingCreation.StartDate;
         while (currentDate <= this.SeasonTrainingCreation.EndDate)
@@ -76,10 +78,14 @@ public partial class InitSeasonTrainings
             currentDate = currentDate.AddDays(1);
         }
 
-        var (state, _) = await this.TrainingServices.CreateRangeTrainingsAsync(this.SeasonTrainingCreation.Trainings).ConfigureAwait(true);
+        var (state, errorMessage) = await this.TrainingServices.CreateRangeTrainingsAsync(this.SeasonTrainingCreation.Trainings).ConfigureAwait(true);
         if (state == ServiceResultState.Success)
         {
-            /*TADA */ 
+            this.InititationStateMessage = $"Création réussie pour le groupe {this.Groups.First(g => g.Id == this.SeasonTrainingCreation.GroupId).Title} !";
+        }
+        else
+        {
+            this.InititationStateMessage = $"Erreur lors de la création, vérifier vos saisies. {errorMessage}.";
         }
     }
 

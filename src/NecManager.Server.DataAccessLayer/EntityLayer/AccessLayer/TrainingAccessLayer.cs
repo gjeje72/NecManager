@@ -54,6 +54,7 @@ public sealed class TrainingAccessLayer : AQueryBaseAccessLayer<NecDbContext, Tr
                                                  || t.PersonTrainings.Any(pt => pt.Student!.Name.Contains(query.Filter))
                                                  || t.PersonTrainings.Any(pt => pt.Student!.FirstName.Contains(query.Filter))
                                                  );
+
         queryable = queryable.OrderBy(t => t.Date);
         var collectionInternal = !isPageable ? queryable : queryable.Skip((query.CurrentPage - 1) * query.PageSize).Take(query.PageSize);
         return await collectionInternal.ToListAsync();

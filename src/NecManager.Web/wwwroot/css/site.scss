@@ -103,3 +103,13 @@ a, .btn-link {
     flex-direction: column;
     margin-bottom: 1rem;
 }
+
+.row {
+    display: flex;
+    column-gap: 2rem;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: 0;
+    margin-left: 0;
+    align-items: center;
+}

@@ -205,7 +205,7 @@ internal sealed class GroupBusiness : IGroupBusiness
                 }
                 : new()).ToList(),
             Trainings = group.Trainings.Select(t =>
-            new TrainingBase
+            new TrainingDetails
             {
                 Id = t.Id,
                 Date = t.Date,

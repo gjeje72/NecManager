@@ -147,30 +147,36 @@
     <div class="admin-container-filter">
         <EditForm Model="@this.trainingInputQuery">
             <div class="row">
+                <div class="form-group-column">
+                    <label for="weapon">Arme</label>
+                    <InputSelect id="weapon"
+                                 @bind-Value="this.trainingInputQuery.WeaponType"
+                                 @bind-Value:after="@(() => this.OnWeaponFilterChangeEventHandlerAsync(this.trainingInputQuery.WeaponType))">
+                        <option value="@WeaponType.None">- arme -</option>
+                        @foreach (var weaponType in Enum.GetValues<WeaponType>())
+                        {
+                            if (weaponType == WeaponType.None)
+                                continue;
 
-                <InputSelect @bind-Value="this.trainingInputQuery.WeaponType"
-                             @bind-Value:after="@(() => this.OnWeaponFilterChangeEventHandlerAsync(this.trainingInputQuery.WeaponType))">
-                    <option value="@WeaponType.None">- arme -</option>
-                    @foreach (var weaponType in Enum.GetValues<WeaponType>())
-                    {
-                        if (weaponType == WeaponType.None)
-                            continue;
+                            <option value="@weaponType">@Enum.GetName(weaponType)</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="form-group-column">
+                    <label for="difficulty">Niveau des cours</label>
+                    <InputSelect id="difficulty"
+                                 @bind-Value="this.trainingInputQuery.DifficultyType"
+                                 @bind-Value:after="@(() => this.OnDifficultyFilterChangeEventHandlerAsync(this.trainingInputQuery.DifficultyType))">
+                        <option value="@DifficultyType.None">- difficulté -</option>
+                        @foreach (var difficulty in Enum.GetValues<DifficultyType>())
+                        {
+                            if (difficulty == DifficultyType.None)
+                                continue;
 
-                        <option value="@weaponType">@Enum.GetName(weaponType)</option>
-                    }
-                </InputSelect>
-                <InputSelect @bind-Value="this.trainingInputQuery.DifficultyType"
-                             @bind-Value:after="@(() => this.OnDifficultyFilterChangeEventHandlerAsync(this.trainingInputQuery.DifficultyType))">
-                    <option value="@DifficultyType.None">- difficulté -</option>
-                    @foreach (var difficulty in Enum.GetValues<DifficultyType>())
-                    {
-                        if (difficulty == DifficultyType.None)
-                            continue;
-
-                        <option value="@difficulty">@Enum.GetName(difficulty)</option>
-                    }
-                </InputSelect>
-
+                            <option value="@difficulty">@Enum.GetName(difficulty)</option>
+                        }
+                    </InputSelect>
+                </div>
                 <div class="form-group-column">
                     <label for="masterNameFilter">Maître</label>
                     <InputText id="masterNameFilter"
@@ -182,10 +188,12 @@
                     <InputText id="filter" @bind-Value="this.trainingInputQuery.Filter"
                                @bind-Value:after="@(() => this.OnFilterChangeEventHandlerAsync(this.trainingInputQuery.Filter))" />
                 </div>
-                <label for="onlyIndividual">Uniquement les leçons indivs :</label>
-                <InputCheckbox id="onlyIndividual"
-                               @bind-Value="this.trainingInputQuery.OnlyIndividual"
-                               @bind-Value:after="@(() => this.OnOnlyIndiviualFilterChangeEventHandlerAsync(this.trainingInputQuery.OnlyIndividual))" />
+                <div class="form-group-column">
+                    <label for="onlyIndividual">Uniquement les leçons indivs :</label>
+                    <InputCheckbox id="onlyIndividual"
+                                   @bind-Value="this.trainingInputQuery.OnlyIndividual"
+                                   @bind-Value:after="@(() => this.OnOnlyIndiviualFilterChangeEventHandlerAsync(this.trainingInputQuery.OnlyIndividual))" />
+                </div>
             </div>
         </EditForm>
     </div>

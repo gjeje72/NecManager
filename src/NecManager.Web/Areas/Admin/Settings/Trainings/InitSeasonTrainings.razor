@@ -4,7 +4,6 @@
 <TopBar Title="Admin - Initialiser saison" BackUrl="/admin/reglages/entrainements" />
 <div class="admin-container">
 
-    @*<p>PROCHAINEMENT ICI INITIALISATION DE LA SAISON</p>*@
     <div class="row">
         <div class="form-group-column">
             <label for="group">Groupe</label>
@@ -162,4 +161,5 @@
         }
     </div>
     <button @onclick="@this.CreateTrainingsAsync">INITIALISER</button>
+    <span>Résultat : </span><i>@this.InititationStateMessage</i>
 </div>

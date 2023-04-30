@@ -233,31 +233,13 @@ internal class TrainingBusiness : ITrainingBusiness
             Date = matchingTraining.Date,
             StartTime = matchingTraining.StartTime,
             EndTime = matchingTraining.EndTime,
-            Categories = matchingTraining.Group?.Categories,
+            LessonName = matchingTraining.Lesson?.Title ?? string.Empty,
             GroupName = matchingTraining.PersonTrainings.FirstOrDefault()?.IsIndividual ?? false
                         ? GetGroupNameIfIndividualTraining(matchingTraining)
                         : matchingTraining.Group?.Title,
             Weapon = matchingTraining.Lesson?.Weapon ?? WeaponType.None,
             IsIndividual = matchingTraining.PersonTrainings.Count() == 1 && (matchingTraining.PersonTrainings.FirstOrDefault()?.IsIndividual ?? false),
             MasterName = matchingTraining.MasterName ?? string.Empty,
-            Students = matchingTraining.PersonTrainings?.Select(pt => new TrainingStudentBase
-            {
-                Id = pt.StudentId,
-                FirstName = pt.Student?.FirstName ?? string.Empty,
-                Name = pt.Student?.Name ?? string.Empty,
-                Category = pt.Student?.Category ?? CategoryType.None,
-            }).ToList() ?? new(),
-            Lesson = matchingTraining.Lesson != null
-                            ? new()
-                            {
-                                Id = matchingTraining.LessonId,
-                                Title = matchingTraining.Lesson.Title,
-                                Weapon = matchingTraining.Lesson.Weapon,
-                                Difficulty = matchingTraining.Lesson.Difficulty,
-                                Description = matchingTraining.Lesson.Description,
-                                Content = matchingTraining.Lesson.Content,
-                            }
-                            : new(),
         };
     private static string GetGroupNameIfIndividualTraining(Training matchingTraining)
         => $"{matchingTraining.PersonTrainings.FirstOrDefault()?.Student?.FirstName ?? string.Empty} {matchingTraining.PersonTrainings.FirstOrDefault()?.Student?.Name ?? string.Empty}";

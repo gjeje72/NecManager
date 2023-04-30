@@ -19,7 +19,7 @@ using NecManager.Web.Service.Models;
 using NecManager.Web.Service.Models.Query;
 using NecManager.Web.Service.Models.Trainings;
 
-public partial class SettingsTrainings
+public partial class SettingsTrainings : ComponentBase
 {
     [Inject]
     public ITrainingServices TrainingServices { get; set; } = null!;
@@ -35,7 +35,7 @@ public partial class SettingsTrainings
 
     private PaginationState pagination = new() { ItemsPerPage = 10 };
     private GridItemsProvider<TrainingBaseViewModel> trainingProviders = default!;
-    private QuickGrid<TrainingBaseViewModel> trainingsGrid;
+    private QuickGrid<TrainingBaseViewModel> trainingsGrid = new();
     private TrainingInputQuery trainingInputQuery = new();
     private Dialog? trainingCreationFormDialog;
     private Dialog? confirmDeleteDialog;
@@ -87,12 +87,11 @@ public partial class SettingsTrainings
                     LessonId = t.LessonId,
                     IsIndividual = t.IsIndividual,
                     GroupName = t.GroupName,
-                    Categories = t.Categories,
                     Date = t.Date,
                     StartTime = t.StartTime,
                     EndTime = t.EndTime,
                     Weapon = t.Weapon,
-                    LessonName = t.Lesson.Title,
+                    LessonName = t.LessonName ?? string.Empty,
                     MasterName = t.MasterName ?? string.Empty,
                 }).ToList() ?? new(),
             TotalElements = trainings?.TotalElements ?? 0
@@ -224,7 +223,7 @@ public partial class SettingsTrainings
         if (state == ServiceResultState.Success)
         {
             this.trainingCreationFormDialog!.CloseDialog();
-            await this.trainingsGrid.RefreshDataAsync().ConfigureAwait(true);
+            await this.trainingsGrid.RefreshDataAsync();
         }
     }
 
@@ -261,7 +260,7 @@ public partial class SettingsTrainings
         }
 
         this.trainingCreationFormDialog!.CloseDialog();
-        await this.trainingsGrid.RefreshDataAsync().ConfigureAwait(true);
+        await this.trainingsGrid.RefreshDataAsync();
     }
 
     private async Task RefreshLessonListAsync()
@@ -326,7 +325,7 @@ public partial class SettingsTrainings
         this.UnderCreationTraining.StudentId = studentId;
     }
 
-    private async Task OnDeleteTrainingClickEventHandler(TrainingBaseViewModel training)
+    private void OnDeleteTrainingClickEventHandler(TrainingBaseViewModel training)
     {
         this.underDeleteTraining = training;
         if (this.confirmDeleteDialog != null)
@@ -339,7 +338,7 @@ public partial class SettingsTrainings
         if (result.State == ServiceResultState.Success)
         {
             this.confirmDeleteDialog!.CloseDialog();
-            await this.trainingsGrid.RefreshDataAsync().ConfigureAwait(true);
+            await this.trainingsGrid.RefreshDataAsync();
         }
     }
 
