@@ -39,4 +39,12 @@ internal sealed class GroupServices : ServiceBase, IGroupServices
         var response = await groupClient.GetAsync($"{groupId}").ConfigureAwait(false);
         return await response.BuildDataServiceResultAsync<GroupDetails>().ConfigureAwait(false);
     }
+
+    /// <inheritdoc />
+    public async Task<ServiceResult> DeleteGroupAsync(int groupId)
+    {
+        var groupClient = await this.RestHttpService.GroupClient;
+        var response = await groupClient.DeleteAsync($"{groupId}").ConfigureAwait(false);
+        return await response.BuildDataServiceResultAsync().ConfigureAwait(false);
+    }
 }

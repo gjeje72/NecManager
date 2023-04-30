@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.QuickGrid;
+using Microsoft.EntityFrameworkCore;
 
 using NecManager.Common.DataEnum;
 using NecManager.Common.DataEnum.Internal;
@@ -71,7 +72,7 @@ public partial class SettingsGroup
         for (int i = 0; i < arrayOfCat.Count(); i++)
         {
             var value = arrayOfCat[i];
-            var newSelectableItem = new AdminGroupSelectableCategories { CategoryId = i + 1, CategoryName = value.ToString() };
+            var newSelectableItem = new AdminGroupSelectableCategories { CategoryId = i, CategoryName = value.ToString() };
             this.Categories.Add(newSelectableItem);
         }
     }
@@ -98,8 +99,9 @@ public partial class SettingsGroup
 
         if (success == ServiceResultState.Success)
         {
-            this.groupsCreationFormDialog.CloseDialog();
-            await this.groupsGrid.RefreshDataAsync().ConfigureAwait(true);
+            if (this.groupsCreationFormDialog is not null)
+                this.groupsCreationFormDialog.CloseDialog();
+            await this.GetGroupsAsync().ConfigureAwait(true);
         }
     }
 
@@ -144,9 +146,8 @@ public partial class SettingsGroup
             }).ToList() ?? new();
     }
 
-    private void StudentSelectChangedEventHandler(ChangeEventArgs arg)
+    private void OnStudentClickEventHandler(int studentId)
     {
-        int.TryParse(arg.Value?.ToString(), out int studentId);
         if (this.ModelForm.Students is not null && !this.ModelForm.Students.Any(u => u.Id == studentId))
         {
             var student = this.Students.FirstOrDefault(s => s.Id == studentId);
@@ -155,4 +156,16 @@ public partial class SettingsGroup
         }
     }
 
+    private void OnStudentDeleteClickEventHandler(int studentId)
+    {
+        var student = this.ModelForm.Students.FirstOrDefault(s => s.Id == studentId);
+        if (student is not null)
+            this.ModelForm.Students.Remove(student);
+    }
+
+    private async Task OnDeleteGroupClickEventHandler(int groupId)
+    {
+        var success = await this.GroupServices.DeleteGroupAsync(groupId).ConfigureAwait(true);
+        await this.GetGroupsAsync().ConfigureAwait(true);
+    }
 }

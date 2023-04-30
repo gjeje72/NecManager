@@ -13,6 +13,7 @@ public interface IGroupServices
     /// <param name="groupInput">The group to manage.</param>
     /// <returns>Returns a <see cref="GroupBase"/>.</returns>
     Task<ServiceResult<GroupBase>> CreateGroupAsync(GroupDetails groupInput);
+    Task<ServiceResult> DeleteGroupAsync(int groupId);
 
     /// <summary>
     ///     Method used to call api in way to retrieve all groups.

@@ -16,13 +16,13 @@
     <ChildContent>
         <EditForm Model="this.ModelForm">
             <DataAnnotationsValidator />
-            <div class="d-flex flex-wrap">
-                <div class="form-group col-3">
+            <div class="row">
+                <div class="form-group">
                     <label class="form-label" for="name">Nom du groupe</label>
                     <InputText class="form-control" id="name" @bind-Value="this.ModelForm.Title"></InputText>
                 </div>
 
-                <div class="form-group col-3">
+                <div class="form-group">
                     <label class="form-label" for="cat">Armes</label>
                     <InputSelect class="form-control" @bind-Value="this.ModelForm.Weapon" id="cat">
                         @foreach (var weapon in Enum.GetValues(typeof(WeaponType)))
@@ -31,21 +31,28 @@
                         }
                     </InputSelect>
                 </div>
-                <div class="form-group col-3">
+            </div>
+                <div class="form-group">
                     <button type="button" class="btn btn-primary" @onclick="this.ShowCategoriesDialog">Catégories</button>
                 </div>
-            </div>
             <label for="studentFilter">Recherche étudiant</label>
             <div>
-                <input type="text" id="studentFilter" @onchange="this.OnStudentFilterChangeEventHandler" />
-                <select id="student" @onchange="@this.StudentSelectChangedEventHandler">
-                    <option value="" selected>- étudiant -</option>
+                <input type="text" id="studentFilter" @oninput="this.OnStudentFilterChangeEventHandler" />
+                <div class="student-search">
                     @foreach (var student in this.Students)
                     {
-                        <option value="@student.Id">@student.FirstName @student.LastName [@student.Weapon - @student.Categorie] </option>
+                        <span @onclick="@(() => this.OnStudentClickEventHandler(student.Id))">@student.FirstName @student.LastName [@student.Weapon - @student.Categorie]</span>
                     }
-                </select>
-                <span>@string.Join(", ", this.ModelForm.Students.Select(s => s.FirstName + " " + s.LastName))</span>
+                </div>
+                <div class="row">
+                @foreach(var studentAdded in this.ModelForm.Students)
+                {
+                    <div class="row">
+                        <span>@studentAdded.FirstName @studentAdded.LastName</span>
+                        <i class="oi oi-x" @onclick="@(() => this.OnStudentDeleteClickEventHandler(studentAdded.Id))"></i>
+                    </div>
+                }
+                </div>
             </div>
         </EditForm>
     </ChildContent>
@@ -73,10 +80,10 @@
         <PropertyColumn Property="@(g => g.Weapon)" Title="Arme" />
         <PropertyColumn Property="@(g => g.StudentCount)" Title="Nb Etudiants" />
         <PropertyColumn Property="@(g => string.Join(", ", g.Categories))" Title="Catégories" />
-        @*<TemplateColumn Title="Actions">
-            <button @onclick="@(() => this.OnUpdateClickEventHandler(context))"><i class="oi oi-pencil"></i></button>
-            <button @onclick="@(() => this.OnDeleteLessonClickEventHandler(context.Id))"><i class="oi oi-trash"></i></button>
-        </TemplateColumn>*@
+        <TemplateColumn Title="Actions">
+@*            <button @onclick="@(() => this.OnUpdateClickEventHandler(context))"><i class="oi oi-pencil"></i></button>
+*@            <button @onclick="@(() => this.OnDeleteGroupClickEventHandler(context.Id))"><i class="oi oi-trash"></i></button>
+        </TemplateColumn>
     </QuickGrid>
     <Paginator Value="@pagination" />
 </div>
