@@ -40,7 +40,7 @@ public sealed class GroupModule : IModule
                 .WithName("Create a group")
                 .WithTags("Groups");
 
-        endpoints.MapPost("/groups/{groupId:int}",
+        endpoints.MapPut("/groups/{groupId:int}",
             async (ApiRequestHeaders headers, [FromRoute] int groupId, [FromBody] GroupUpdateInput input, [FromServices] IGroupBusiness groupService)
             //[Authorize] async (ApiRequestHeaders headers, [FromBody] CreateGroupInput input, [FromServices] IGroupBusiness groupService)
             => Results.Extensions.ApiResponseEmpty(await groupService.UpdateGroupAsync(headers, input)))

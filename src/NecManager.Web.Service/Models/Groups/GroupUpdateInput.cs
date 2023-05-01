@@ -1,4 +1,4 @@
-﻿namespace NecManager.Server.Api.Business.Modules.Group.Models;
+﻿namespace NecManager.Web.Service.Models.Groups;
 using System.Collections.Generic;
 
 using NecManager.Common.DataEnum;

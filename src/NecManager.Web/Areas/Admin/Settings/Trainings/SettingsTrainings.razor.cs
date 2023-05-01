@@ -16,6 +16,7 @@ using NecManager.Web.Areas.Admin.Settings.Trainings.ViewModels;
 using NecManager.Web.Components.Modal;
 using NecManager.Web.Service.ApiServices.Abstractions;
 using NecManager.Web.Service.Models;
+using NecManager.Web.Service.Models.Groups;
 using NecManager.Web.Service.Models.Query;
 using NecManager.Web.Service.Models.Trainings;
 
