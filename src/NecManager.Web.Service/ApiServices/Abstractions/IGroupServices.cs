@@ -1,20 +1,13 @@
 ﻿namespace NecManager.Web.Service.ApiServices.Abstractions;
 using NecManager.Common;
-using NecManager.Web.Service.Models;
+using NecManager.Web.Service.Models.Groups;
 
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 public interface IGroupServices
 {
-    /// <summary>
-    ///     Method used to call api in way to create a group.
-    /// </summary>
-    /// <param name="groupInput">The group to manage.</param>
-    /// <returns>Returns a <see cref="GroupBase"/>.</returns>
-    Task<ServiceResult<GroupBase>> CreateGroupAsync(GroupDetails groupInput);
-    Task<ServiceResult> DeleteGroupAsync(int groupId);
-
     /// <summary>
     ///     Method used to call api in way to retrieve all groups.
     /// </summary>
@@ -27,4 +20,15 @@ public interface IGroupServices
     /// <param name="groupId">The id from group to retrieve.</param>
     /// <returns>Return a <see cref="GroupDetails"/>.</returns>
     Task<ServiceResult<GroupDetails>> GetGroupAsync(int groupId);
+
+    /// <summary>
+    ///     Method used to call api in way to create a group.
+    /// </summary>
+    /// <param name="groupInput">The group to manage.</param>
+    /// <returns>Returns a <see cref="GroupBase"/>.</returns>
+    Task<ServiceResult<GroupBase>> CreateGroupAsync(GroupDetails groupInput);
+
+    Task<ServiceResult> UpdateGroupAsync(GroupUpdateInput groupUpdateInput, CancellationToken cancellationToken = default);
+
+    Task<ServiceResult> DeleteGroupAsync(int groupId);
 }

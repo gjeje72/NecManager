@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Components;
 using NecManager.Common.DataEnum.Internal;
 using NecManager.Web.Areas.Admin.Settings.Trainings.ViewModels;
 using NecManager.Web.Service.ApiServices.Abstractions;
-using NecManager.Web.Service.Models;
+using NecManager.Web.Service.Models.Groups;
 using NecManager.Web.Service.Models.Trainings;
 
 public partial class InitSeasonTrainings

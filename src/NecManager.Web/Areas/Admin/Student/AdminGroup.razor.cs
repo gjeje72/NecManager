@@ -15,6 +15,7 @@ using NecManager.Web.Areas.Admin.Student.ViewModel;
 using NecManager.Web.Components.Modal;
 using NecManager.Web.Service.ApiServices.Abstractions;
 using NecManager.Web.Service.Models;
+using NecManager.Web.Service.Models.Groups;
 
 public sealed partial class AdminGroup : ComponentBase
 {

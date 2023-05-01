@@ -112,7 +112,7 @@ internal sealed class GroupBusiness : IGroupBusiness
     {
         // ArgumentNullException.ThrowIfNull(monitoringIds);
 
-        var matchingGroup = await this.groupAccessLayer.GetSingleAsync(x => x.Id == input.GroupId, true).ConfigureAwait(false);
+        var matchingGroup = await this.groupAccessLayer.GetSingleAsync(x => x.Id == input.GroupId, true,x => x.Include(g => g.StudentGroups)).ConfigureAwait(false);
         if (matchingGroup is null)
             return new(monitoringIds, new(ApiResponseResultState.NotFound, GroupApiErrors.GroupNotFound));
 
@@ -123,8 +123,8 @@ internal sealed class GroupBusiness : IGroupBusiness
                 if (!await this.studentAccessLayer.ExistsRangeAsync(input.StudentsIds))
                     return new(monitoringIds, new(ApiResponseResultState.NotFound, StudentApiErrors.StudentNotFound));
 
-                matchingGroup.StudentGroups = new List<StudentGroup>();
-                foreach (var studentId in input.StudentsIds)
+                matchingGroup.StudentGroups.Clear();
+                foreach (var studentId in input.StudentsIds.Distinct())
                 {
                     matchingGroup.StudentGroups.Add(new() { StudentId = studentId, IsResponsiveMaster = studentId == input.MasterId });
                 }

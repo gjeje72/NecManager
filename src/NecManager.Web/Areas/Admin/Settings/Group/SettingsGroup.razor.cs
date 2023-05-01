@@ -7,16 +7,15 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.QuickGrid;
-using Microsoft.EntityFrameworkCore;
 
 using NecManager.Common.DataEnum;
 using NecManager.Common.DataEnum.Internal;
 using NecManager.Web.Areas.Admin.Settings.Group.ViewModels;
-using NecManager.Web.Areas.Admin.Settings.Trainings.ViewModels;
 using NecManager.Web.Areas.Admin.Student.ViewModel;
 using NecManager.Web.Components.Modal;
 using NecManager.Web.Service.ApiServices.Abstractions;
 using NecManager.Web.Service.Models;
+using NecManager.Web.Service.Models.Groups;
 
 public partial class SettingsGroup
 {
@@ -34,10 +33,13 @@ public partial class SettingsGroup
     private List<AdminGroupSelectableCategories> Categories = new();
 
     private List<GroupStudentViewModel> Students = new();
-
-    private string ValidateButtonLabel = "CREER";
+    private List<GroupStudentViewModel> AvailableStudents
+        => this.Students.Where(s => !this.ModelForm.Students.Any(st => st.Id == s.Id)).ToList();
     private Dialog? groupsCreationFormDialog;
     private bool IsEditMode;
+    private string ValidateButtonLabel
+        => this.IsEditMode ? "Mettre à jour" : "CREER";
+    private string ErrorMessage = string.Empty;
 
 
     /// <summary>
@@ -80,11 +82,50 @@ public partial class SettingsGroup
     private void CreateGroupEventHandler()
     {
         this.ResetEditMode();
-        if(this.groupsCreationFormDialog is not null)
+        if (this.groupsCreationFormDialog is not null)
             this.groupsCreationFormDialog.ShowDialog();
     }
 
+    private async Task UpdateGroupClickEventHandlerAsync(int groupId)
+    {
+        this.IsEditMode = true;
+        var (state, group, _) = await this.GroupServices.GetGroupAsync(groupId);
+        if (state == ServiceResultState.Success && group is not null)
+        {
+            this.ModelForm.Id = group.Id;
+            this.ModelForm.Title = group.Title;
+            this.ModelForm.Weapon = group.Weapon;
+            this.ModelForm.Categories = group.Categories ?? new();
+            this.ModelForm.Students = group.Students?.Select(s => new GroupStudentViewModel()
+            {
+                Id = s.Id,
+                FirstName = s.FirstName,
+                LastName = s.LastName,
+                Categorie = s.Categorie,
+                Weapon = s.Weapon
+            }).ToList() ?? new();
+
+            this.Categories.ForEach(x => x.IsSelected = false);
+            this.Categories.Where(x => group.CategoriesIds?.Contains(x.CategoryId) ?? false).ToList()
+                .ForEach(x => x.IsSelected = true);
+
+            if (this.groupsCreationFormDialog is not null)
+                this.groupsCreationFormDialog.ShowDialog();
+        }
+    }
+
     private async Task OnValidCreateOrUpdateFormAsync()
+    {
+        if (this.IsEditMode)
+        {
+            await this.UpdateGroupAsync().ConfigureAwait(true);
+            return;
+        }
+
+        await this.CreateGroupAsync().ConfigureAwait(true);
+    }
+
+    private async Task CreateGroupAsync()
     {
         var categories = this.Categories.Where(x => x.IsSelected == true).Select(x => (CategoryType)x.CategoryId).ToList();
         var groupToCreate = new GroupDetails()
@@ -96,6 +137,28 @@ public partial class SettingsGroup
         };
 
         var (success, groupCreated, errorMessage) = await this.GroupServices.CreateGroupAsync(groupToCreate);
+
+        if (success == ServiceResultState.Success)
+        {
+            if (this.groupsCreationFormDialog is not null)
+                this.groupsCreationFormDialog.CloseDialog();
+            await this.GetGroupsAsync().ConfigureAwait(true);
+        }
+    }
+
+    private async Task UpdateGroupAsync()
+    {
+        var categories = this.Categories.Where(x => x.IsSelected == true).Select(x => (CategoryType)x.CategoryId).ToList();
+        var groupToUpdate = new GroupUpdateInput()
+        {
+            GroupId = this.ModelForm.Id,
+            Title = this.ModelForm.Title,
+            Weapon = this.ModelForm.Weapon,
+            Categories = categories.Select(c => (int)c).ToList(),
+            StudentsIds = this.ModelForm.Students.Select(s =>  s.Id ).ToList(),
+        };
+
+        var (success, groupCreated, errorMessage) = await this.GroupServices.UpdateGroupAsync(groupToUpdate);
 
         if (success == ServiceResultState.Success)
         {
@@ -129,7 +192,8 @@ public partial class SettingsGroup
     private async Task OnStudentFilterChangeEventHandler(ChangeEventArgs arg)
     {
         this.StudentFilter = arg.Value?.ToString() ?? string.Empty;
-        await this.RefreshStudentListAsync().ConfigureAwait(true);
+        if(!string.IsNullOrWhiteSpace(this.StudentFilter))
+            await this.RefreshStudentListAsync().ConfigureAwait(true);
     }
 
     private async Task RefreshStudentListAsync()
@@ -151,7 +215,7 @@ public partial class SettingsGroup
         if (this.ModelForm.Students is not null && !this.ModelForm.Students.Any(u => u.Id == studentId))
         {
             var student = this.Students.FirstOrDefault(s => s.Id == studentId);
-            if(student != null)
+            if (student != null)
                 this.ModelForm.Students.Add(student);
         }
     }
@@ -165,7 +229,10 @@ public partial class SettingsGroup
 
     private async Task OnDeleteGroupClickEventHandler(int groupId)
     {
-        var success = await this.GroupServices.DeleteGroupAsync(groupId).ConfigureAwait(true);
-        await this.GetGroupsAsync().ConfigureAwait(true);
+        var (state, errorMessage) = await this.GroupServices.DeleteGroupAsync(groupId).ConfigureAwait(true);
+        if (state == ServiceResultState.Success)
+            await this.GetGroupsAsync().ConfigureAwait(true);
+        else
+            this.ErrorMessage = "Impossible de supprimer un groupe avec des entrainements.";
     }
 }

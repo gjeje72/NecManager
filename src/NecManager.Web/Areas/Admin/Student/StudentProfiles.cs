@@ -8,6 +8,7 @@ using AutoMapper;
 using NecManager.Common.DataEnum;
 using NecManager.Web.Areas.Admin.Student.ViewModel;
 using NecManager.Web.Service.Models;
+using NecManager.Web.Service.Models.Groups;
 
 public sealed class StudentProfiles : Profile
 {

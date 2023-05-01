@@ -1,5 +1,6 @@
-﻿namespace NecManager.Web.Service.Models;
+﻿namespace NecManager.Web.Service.Models.Groups;
 using NecManager.Common.DataEnum;
+
 using System.Collections.Generic;
 
 /// <summary>
