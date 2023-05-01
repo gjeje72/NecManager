@@ -7,7 +7,7 @@
 
 <div class="admin-container"> 
     <div class="admin-container-actions">
-        <button @onclick="@this.OnCreateNewStudentClickEventHandler">NOUVEAU</button>
+        <button class="btn-primary" @onclick="@this.OnCreateNewStudentClickEventHandler">NOUVEAU</button>
     </div>
     <div class="admin-container-filter">
         <EditForm Model="@this.StudentInputQuery">
@@ -52,15 +52,15 @@
     </div>
     <QuickGrid ItemsProvider="@this.studentProviders" Pagination="@pagination" @ref=studentsGrid>
        <PropertyColumn Property="@(l => $"{l.LastName.ToUpperInvariant()} {l.FirstName}")" Title="Etudiant" />
-        <PropertyColumn Property="@(l => l.Category)" Title="Catégorie" />
-        <PropertyColumn Property="@(l => l.Weapon)" Title="Arme" />
+        <PropertyColumn Property="@(l => l.Category)" Title="Catégorie" Align="Align.Center" />
+        <PropertyColumn Property="@(l => l.Weapon)" Title="Arme" Align="Align.Center" />
         <PropertyColumn Property="@(l => l.GroupName)" Title="Groupe" />
-        <PropertyColumn Property="@(l => l.State)" Title="Statut" />
-        <TemplateColumn Title="Actions">
+        <PropertyColumn Property="@(l => l.State)" Title="Statut" Align="Align.Center" />
+        <TemplateColumn Title="Actions" Align="Align.Right">
 @*            <button @onclick="@(() => this.OnUpdateClickEventHandler(context))"><i class="oi oi-pencil"></i></button>
             <button @onclick="@(() => this.OnDeleteLessonClickEventHandler(context.Id))"><i class="oi oi-trash"></i></button>*@
-            <button><i class="oi oi-pencil"></i></button>
-            <button><i class="oi oi-trash"></i></button>
+            <button class="btn-icon"><i class="oi oi-pencil"></i></button>
+            <button class="btn-icon"><i class="oi oi-trash"></i></button>
         </TemplateColumn>
     </QuickGrid>
     <Paginator Value="@pagination" />
