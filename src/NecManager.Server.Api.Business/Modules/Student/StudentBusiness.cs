@@ -1,6 +1,7 @@
 ﻿namespace NecManager.Server.Api.Business.Modules.Student;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 using Microsoft.Extensions.Logging;
 
 using NecManager.Common;
@@ -153,5 +154,6 @@ internal sealed class StudentBusiness : IStudentBusiness
             State = student.State,
             Weapon = student.StudentGroups?.FirstOrDefault()?.Group?.Weapon ?? WeaponType.None,
             GroupIds = student.StudentGroups?.Select(sg => sg.GroupId) ?? new List<int>(),
+            GroupName = string.Join(", ", student.StudentGroups?.Select(sg => sg.Group?.Title) ?? Enumerable.Empty<string>())
         };
 }

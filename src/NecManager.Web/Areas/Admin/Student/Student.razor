@@ -32,27 +32,27 @@ else
                         <InputSelect class="form-control" @bind-Value="this.CreateUserModel.Categorie" id="cat">
                             @foreach (var categorie in Enum.GetValues(typeof(CategoryType)))
                             {
-                        <option value="@categorie">@categorie</option>
+                                <option value="@categorie">@categorie</option>
                             }
-                </InputSelect>
-            </div>
-            <div class="form-group col-3">
-                <label class="form-label" for="arme">Arme</label>
-                <InputSelect class="form-control" @bind-Value="this.CreateUserModel.Arme" id="arme">
-                    @foreach (var weapon in Enum.GetValues(typeof(WeaponType)))
+                        </InputSelect>
+                    </div>
+                    <div class="form-group col-3">
+                        <label class="form-label" for="arme">Arme</label>
+                        <InputSelect class="form-control" @bind-Value="this.CreateUserModel.Arme" id="arme">
+                            @foreach (var weapon in Enum.GetValues(typeof(WeaponType)))
                             {
-                        <option value="@weapon">@weapon</option>
+                                <option value="@weapon">@weapon</option>
                             }
-                </InputSelect>
-            </div>
-            <div class="form-group col-3">
-                <label class="form-label" for="group">Groupe</label>
-                <InputText class="form-control" id="group" @bind-Value="this.CreateUserModel.GroupName"></InputText>
-            </div>
+                        </InputSelect>
+                    </div>
+                    <div class="form-group col-3">
+                        <label class="form-label" for="group">Groupe</label>
+                        <InputText class="form-control" id="group" @bind-Value="this.CreateUserModel.GroupName"></InputText>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success mx-3">CREER</button>
+            </EditForm>
         </div>
-        <button type="submit" class="btn btn-success mx-3">CREER</button>
-    </EditForm>
-</div>
     }
     else
     {
