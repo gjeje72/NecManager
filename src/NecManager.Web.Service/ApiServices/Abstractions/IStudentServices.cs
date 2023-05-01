@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 using NecManager.Common;
 using NecManager.Web.Service.Models;
 using NecManager.Web.Service.Models.Query;
+using NecManager.Web.Service.Models.Students;
 
 public interface IStudentServices
 {
+    Task<ServiceResult> CreateStudentAsync(StudentCreationInput studentCreateInput, CancellationToken cancellationToken = default);
+
     /// <summary>
     ///     Method use to get all existing student basic info.
     /// </summary>

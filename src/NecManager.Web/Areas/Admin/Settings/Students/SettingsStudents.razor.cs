@@ -1,6 +1,7 @@
 ﻿namespace NecManager.Web.Areas.Admin.Settings.Students;
 
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,6 +16,7 @@ using NecManager.Web.Areas.Admin.Settings.Students.ViewModels;
 using NecManager.Web.Components.Modal;
 using NecManager.Web.Service.ApiServices.Abstractions;
 using NecManager.Web.Service.Models.Query;
+using NecManager.Web.Service.Models.Students;
 
 public partial class SettingsStudents
 {
@@ -32,14 +34,19 @@ public partial class SettingsStudents
     private StudentCreationViewModel CreateStudentModel = new();
     private string GroupFilter = string.Empty;
     private List<StudentGroupViewModel> Groups { get; set; } = new();
-    private List<StudentGroupViewModel> AvailableGroups { get; set; } = new();
+    private List<StudentGroupViewModel> AvailableGroups
+        => this.Groups.Where(
+            group => !this.CreateStudentModel.Groups.Any(g => g.Id == group.Id)
+            && (group.Title.ToUpperInvariant().Contains(this.GroupFilter.ToUpperInvariant())
+            || group.Weapon.ToString().ToUpperInvariant().Contains(this.GroupFilter.ToUpperInvariant()))
+            ).ToList();
     private string ValidateButtonLabel = "CREER";
+    private string CreationMessage = string.Empty;
 
-    protected override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
         this.studentProviders = async req => await this.GetStudentsProviderAsync(req).ConfigureAwait(true);
-
-        return base.OnInitializedAsync();
+        await this.GetGroupListAsync().ConfigureAwait(true);
     }
 
     private async Task<GridItemsProviderResult<StudentBaseViewModel>> GetStudentsProviderAsync(GridItemsProviderRequest<StudentBaseViewModel> gridItemsProviderRequest)
@@ -73,13 +80,42 @@ public partial class SettingsStudents
         return GridItemsProviderResult.From(pageableLessons.Items.ToList(), pageableLessons.TotalElements);
     }
 
-    private void OnValidCreateOrUpdateFormAsync()
+    private async Task OnValidCreateOrUpdateFormAsync()
     {
+        if (this.CreateStudentModel.FirstName.Length > 100 || this.CreateStudentModel.Name.Length > 100)
+            return;
 
+        var studentToCreate = new StudentCreationInput
+        {
+            Name = this.CreateStudentModel.Name,
+            FirstName = this.CreateStudentModel.FirstName,
+            Category = this.CreateStudentModel.Category,
+            EmailAddress = this.CreateStudentModel.EmailAddress,
+            PhoneNumber = this.CreateStudentModel.PhoneNumber,
+            State = this.CreateStudentModel.State,
+            IsMaster = this.CreateStudentModel.IsMaster,
+            GroupIds = this.CreateStudentModel.Groups.Select(g => g.Id).ToList(),
+        };
+
+        var (state, errorMessage) = await this.StudentServices.CreateStudentAsync(studentToCreate).ConfigureAwait(true);
+        if (state == ServiceResultState.Success)
+        {
+            this.CreationMessage = $"Création réussie pour {this.CreateStudentModel.Name.ToUpperInvariant()} {this.CreateStudentModel.FirstName}";
+            await this.studentsGrid.RefreshDataAsync();
+        }
+        else
+        {
+            this.CreationMessage = $"Erreur lors de la création : {errorMessage}";
+        }
     }
 
     private void OnCreateNewStudentClickEventHandler()
     {
+        this.CreateStudentModel.Name = string.Empty;
+        this.CreateStudentModel.FirstName = string.Empty;
+        this.CreateStudentModel.EmailAddress = string.Empty;
+        this.CreateStudentModel.PhoneNumber = string.Empty;
+
         if (this.studentsCreationFormDialog is not null)
             this.studentsCreationFormDialog.ShowDialog();
     }
@@ -119,13 +155,9 @@ public partial class SettingsStudents
     }
 
     private async Task OnGroupFilterChangeEventHandler(ChangeEventArgs arg)
-    {
-        this.GroupFilter = arg.Value?.ToString() ?? string.Empty;
-        if (!string.IsNullOrWhiteSpace(this.GroupFilter))
-            await this.RefreshGroupListAsync().ConfigureAwait(true);
-    }
+        => this.GroupFilter = arg.Value?.ToString() ?? string.Empty;
 
-    private async Task RefreshGroupListAsync()
+    private async Task GetGroupListAsync()
     {
         var (state, groups, _) = await this.GroupServices.GetAllGroups();
         if (state == ServiceResultState.Success && groups is not null)
@@ -153,4 +185,7 @@ public partial class SettingsStudents
         if (group is not null)
             this.CreateStudentModel.Groups.Remove(group);
     }
+
+    private string GetCreationStateCss()
+        => this.CreationMessage.StartsWith("Erreur") ? "error" : "success";
 }

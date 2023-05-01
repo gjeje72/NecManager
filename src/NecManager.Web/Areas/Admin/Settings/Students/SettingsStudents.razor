@@ -124,7 +124,7 @@
                 <input type="text" id="groupFilter" @oninput="this.OnGroupFilterChangeEventHandler" />
                 @if (this.AvailableGroups.Count > 0)
                 {
-                    <div class="student-search">
+                    <div class="group-search">
                         @foreach (var group in this.AvailableGroups)
                         {
                             <span @onclick="@(() => this.OnGroupClickEventHandler(group.Id))">@group.Title [@group.Weapon]</span>
@@ -141,6 +141,10 @@
                     }
                 </div>
             </div>
+            @if (!string.IsNullOrWhiteSpace(this.CreationMessage))
+            {
+                <i class="@this.GetCreationStateCss()">@this.CreationMessage</i>
+            }
         </EditForm>
     </ChildContent>
 </Dialog>
