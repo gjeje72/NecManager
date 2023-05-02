@@ -208,8 +208,8 @@
         <PropertyColumn Property="@(t => t.MasterName)" Title="Maître" />
         <PropertyColumn Property="@(t => t.GroupName)" Title="Groupe/Elève" />
         <TemplateColumn Title="Actions">
-            <button @onclick="@(() => this.OnUpdateTrainingClickEventHandler(context))"><i class="oi oi-pencil"></i></button>
-            <button @onclick="@(() => this.OnDeleteTrainingClickEventHandler(context))"><i class="oi oi-trash"></i></button>
+            <button class="btn-icon" @onclick="@(() => this.OnUpdateTrainingClickEventHandler(context))"><i class="oi oi-pencil"></i></button>
+            <button class="btn-icon" @onclick="@(() => this.OnDeleteTrainingClickEventHandler(context))"><i class="oi oi-trash"></i></button>
         </TemplateColumn>
     </QuickGrid>
     <Paginator Value="@pagination" />

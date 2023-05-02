@@ -17,7 +17,7 @@ public class StudentAccessLayer : AQueryBaseAccessLayer<NecDbContext, Student, S
     {
     }
 
-    protected override async Task<IEnumerable<Student>> GetCollectionInternalAsync(StudentQuery query, bool isPageable = true)
+    protected override IQueryable<Student> GetCollectionInternal(StudentQuery query, bool isPageable = true)
     {
         IQueryable<Student> queryable = this.ModelSet.Include(l => l.StudentGroups).ThenInclude(sg => sg.Group);
 
@@ -38,6 +38,6 @@ public class StudentAccessLayer : AQueryBaseAccessLayer<NecDbContext, Student, S
                                                  );
         queryable = queryable.OrderBy(s => s.Name);
         var collectionInternal = !isPageable ? queryable : queryable.Skip((query.CurrentPage - 1) * query.PageSize).Take(query.PageSize);
-        return await collectionInternal.ToListAsync();
+        return collectionInternal;
     }
 }

@@ -15,7 +15,7 @@ public sealed class TrainingAccessLayer : AQueryBaseAccessLayer<NecDbContext, Tr
     }
 
     /// <inheritdoc />
-    protected override async Task<IEnumerable<Training>> GetCollectionInternalAsync(TrainingQuery query, bool isPageable = true)
+    protected override IQueryable<Training> GetCollectionInternal(TrainingQuery query, bool isPageable = true)
     {
         IQueryable<Training> queryable = this.ModelSet.Include(t => t.Lesson).Include(t => t.PersonTrainings).ThenInclude(pt => pt.Student).Include(t => t.Group);
 
@@ -47,7 +47,7 @@ public sealed class TrainingAccessLayer : AQueryBaseAccessLayer<NecDbContext, Tr
         if (!string.IsNullOrWhiteSpace(query.MasterName))
             queryable = queryable.Where(t => t.MasterName != null && t.MasterName.Contains(query.MasterName));
 
-        if(!string.IsNullOrWhiteSpace(query.Filter))
+        if (!string.IsNullOrWhiteSpace(query.Filter))
             queryable = queryable.Where(t => t.Lesson!.Title.Contains(query.Filter)
                                                  || t.Lesson.Description.Contains(query.Filter)
                                                  || t.Group!.Title.Contains(query.Filter)
@@ -57,6 +57,6 @@ public sealed class TrainingAccessLayer : AQueryBaseAccessLayer<NecDbContext, Tr
 
         queryable = queryable.OrderBy(t => t.Date);
         var collectionInternal = !isPageable ? queryable : queryable.Skip((query.CurrentPage - 1) * query.PageSize).Take(query.PageSize);
-        return await collectionInternal.ToListAsync();
+        return collectionInternal;
     }
 }
