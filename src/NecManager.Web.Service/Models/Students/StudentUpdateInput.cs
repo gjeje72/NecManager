@@ -1,24 +1,20 @@
-﻿namespace NecManager.Web.Areas.Admin.Settings.Students.ViewModels;
-
+﻿namespace NecManager.Web.Service.Models.Students;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 using NecManager.Common.DataEnum;
 
-public sealed class StudentCreationViewModel
+public sealed class StudentUpdateInput
 {
     public int Id { get; set; }
 
     /// <summary>
     ///     Gets or sets the name.
     /// </summary>
-    [MaxLength(100)]
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
     ///     Gets or sets the first name.
     /// </summary>
-    [MaxLength(100)]
     public string FirstName { get; set; } = string.Empty;
 
     /// <summary>
@@ -29,7 +25,6 @@ public sealed class StudentCreationViewModel
     /// <summary>
     ///     Gets or sets the email address.
     /// </summary>
-    [EmailAddress]
     public string EmailAddress { get; set; } = string.Empty;
 
     /// <summary>
@@ -47,5 +42,5 @@ public sealed class StudentCreationViewModel
     /// </summary>
     public bool IsMaster { get; set; }
 
-    public List<StudentGroupViewModel> Groups { get; set; } = new();
+    public List<int> GroupIds { get; set; } = new();
 }

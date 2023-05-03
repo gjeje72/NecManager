@@ -5,7 +5,7 @@ using NecManager.Common.DataEnum;
 
 public sealed class StudentUpdateInput
 {
-    public int StudentId { get; set; }
+    public int Id { get; set; }
 
     /// <summary>
     ///     Gets or sets the name.

@@ -16,4 +16,5 @@ public interface IStudentServices
     /// </summary>
     /// <returns>A list of <see cref="StudentBase" /> representing the basic student info.</returns>
     Task<ServiceResult<PageableResult<StudentBase>>> GetAllStudentsAsync(StudentInputQuery query, CancellationToken cancellationToken = default);
+    Task<ServiceResult> UpdateStudentAsync(StudentUpdateInput studentUpdateInput, CancellationToken cancellationToken = default);
 }

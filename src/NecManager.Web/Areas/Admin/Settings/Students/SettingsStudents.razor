@@ -59,7 +59,7 @@
         <TemplateColumn Title="Actions" Align="Align.Right">
 @*            <button @onclick="@(() => this.OnUpdateClickEventHandler(context))"><i class="oi oi-pencil"></i></button>
             <button @onclick="@(() => this.OnDeleteLessonClickEventHandler(context.Id))"><i class="oi oi-trash"></i></button>*@
-            <button class="btn-icon"><i class="oi oi-pencil"></i></button>
+            <button class="btn-icon" @onclick="@(() =>this.OnUpdateStudentClickEventHandler(context))"><i class="oi oi-pencil"></i></button>
             <button class="btn-icon"><i class="oi oi-trash"></i></button>
         </TemplateColumn>
     </QuickGrid>

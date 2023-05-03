@@ -10,6 +10,8 @@
     padding: 1rem;
     row-gap: 0.2rem;
     cursor: pointer;
+    max-height: 8rem;
+    overflow-y: auto;
 
     span:hover {
         background: #F9F500;

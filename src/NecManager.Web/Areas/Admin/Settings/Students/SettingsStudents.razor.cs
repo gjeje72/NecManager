@@ -1,7 +1,6 @@
 ﻿namespace NecManager.Web.Areas.Admin.Settings.Students;
 
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,7 +10,6 @@ using Microsoft.AspNetCore.Components.QuickGrid;
 using NecManager.Common;
 using NecManager.Common.DataEnum;
 using NecManager.Common.DataEnum.Internal;
-using NecManager.Web.Areas.Admin.Settings.Group.ViewModels;
 using NecManager.Web.Areas.Admin.Settings.Students.ViewModels;
 using NecManager.Web.Components.Modal;
 using NecManager.Web.Service.ApiServices.Abstractions;
@@ -40,7 +38,8 @@ public partial class SettingsStudents
             && (group.Title.ToUpperInvariant().Contains(this.GroupFilter.ToUpperInvariant())
             || group.Weapon.ToString().ToUpperInvariant().Contains(this.GroupFilter.ToUpperInvariant()))
             ).ToList();
-    private string ValidateButtonLabel = "CREER";
+    private bool isEditMode = false;
+    private string ValidateButtonLabel => this.isEditMode ? "Mettre à jour" : "CREER";
     private string CreationMessage = string.Empty;
 
     protected override async Task OnInitializedAsync()
@@ -74,6 +73,8 @@ public partial class SettingsStudents
                     GroupName = s.GroupName,
                     State = s.State,
                     Weapon = s.Weapon,
+                    IsMaster = s.IsMaster,
+                    EmailAddress = s.EmailAddress
                 }).ToList() ?? new(),
             TotalElements = students?.TotalElements ?? 0
         };
@@ -81,6 +82,17 @@ public partial class SettingsStudents
     }
 
     private async Task OnValidCreateOrUpdateFormAsync()
+    {
+        if (this.isEditMode)
+        {
+            await this.UpdateStudentAsync().ConfigureAwait(true);
+            return;
+        }
+
+        await this.CreateStudentAsync().ConfigureAwait(true);
+    }
+
+    private async Task CreateStudentAsync()
     {
         if (this.CreateStudentModel.FirstName.Length > 100 || this.CreateStudentModel.Name.Length > 100)
             return;
@@ -109,12 +121,63 @@ public partial class SettingsStudents
         }
     }
 
+    private async Task UpdateStudentAsync()
+    {
+        if (this.CreateStudentModel.FirstName.Length > 100 || this.CreateStudentModel.Name.Length > 100)
+            return;
+
+        var studentToUpdate = new StudentUpdateInput
+        {
+            Id = this.CreateStudentModel.Id,
+            Name = this.CreateStudentModel.Name,
+            FirstName = this.CreateStudentModel.FirstName,
+            Category = this.CreateStudentModel.Category,
+            EmailAddress = this.CreateStudentModel.EmailAddress,
+            PhoneNumber = this.CreateStudentModel.PhoneNumber,
+            State = this.CreateStudentModel.State,
+            IsMaster = this.CreateStudentModel.IsMaster,
+            GroupIds = this.CreateStudentModel.Groups.Select(g => g.Id).ToList(),
+        };
+
+        var (state, errorMessage) = await this.StudentServices.UpdateStudentAsync(studentToUpdate).ConfigureAwait(true);
+        if (state == ServiceResultState.Success)
+        {
+            this.CreationMessage = $"Mise à jour réussie pour {this.CreateStudentModel.Name.ToUpperInvariant()} {this.CreateStudentModel.FirstName}";
+            await this.studentsGrid.RefreshDataAsync();
+
+            if(this.studentsCreationFormDialog is not null)
+                this.studentsCreationFormDialog.CloseDialog();
+        }
+        else
+        {
+            this.CreationMessage = $"Erreur lors de la mise à jour : {errorMessage}";
+        }
+    }
+
     private void OnCreateNewStudentClickEventHandler()
     {
+        this.isEditMode = false;
         this.CreateStudentModel.Name = string.Empty;
         this.CreateStudentModel.FirstName = string.Empty;
         this.CreateStudentModel.EmailAddress = string.Empty;
         this.CreateStudentModel.PhoneNumber = string.Empty;
+
+        if (this.studentsCreationFormDialog is not null)
+            this.studentsCreationFormDialog.ShowDialog();
+    }
+
+    private void OnUpdateStudentClickEventHandler(StudentBaseViewModel student)
+    {
+        this.isEditMode = true;
+
+        this.CreateStudentModel.Id = student.Id;
+        this.CreateStudentModel.Name = student.LastName;
+        this.CreateStudentModel.FirstName = student.FirstName;
+        this.CreateStudentModel.EmailAddress = student.EmailAddress;
+        this.CreateStudentModel.IsMaster = student.IsMaster;
+        this.CreateStudentModel.Category = student.Category;
+        this.CreateStudentModel.State = student.State;
+        this.CreateStudentModel.Groups = this.Groups.Where(g => student.GroupIds.Contains(g.Id)).ToList();
 
         if (this.studentsCreationFormDialog is not null)
             this.studentsCreationFormDialog.ShowDialog();

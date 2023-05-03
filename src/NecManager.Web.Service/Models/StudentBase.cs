@@ -21,4 +21,8 @@ public sealed class StudentBase
     public StudentState State { get; set; }
 
     public string? GroupName { get; set; }
+
+    public string EmailAddress { get; set; } = string.Empty;
+
+    public bool IsMaster { get; set; }
 }
