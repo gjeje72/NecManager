@@ -54,7 +54,7 @@
         <div class="attendance-content">
             <div class="row space-between">
                 <h2 class="title">APPEL</h2>
-                <button class="btn-tertiary">Valider</button>
+                <button class="btn-tertiary" @onclick="@this.OnValidateTrainingStudentClickedEventHandlerAsync">@this.ValidateButtonText</button>
             </div>
             @foreach (var studentCat in this.CurrentTraining.GroupStudents.GroupBy(gs => gs.Category))
             {
@@ -62,7 +62,7 @@
                 @foreach(var student in studentCat)
                 {   
                     <div class="row">
-                        <input type="checkbox" />
+                        <input type="checkbox" checked="@this.CurrentTraining.TrainingStudents.Any(ts => ts.Id == student.Id)" @onchange="@((arg) =>this.AddTrainingStudent(student, arg))" />
                         <span>@student.FirstName</span>
                         <span>@student.Name.ToUpperInvariant()</span>
                     </div>

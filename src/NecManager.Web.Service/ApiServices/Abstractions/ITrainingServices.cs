@@ -20,4 +20,5 @@ public interface ITrainingServices
 
     Task<ServiceResult> UpdateTrainingAsync(TrainingUpdateInput updateInput, CancellationToken cancellationToken = default);
     Task<ServiceResult<TrainingDetails>> GetTrainingByIdAsync(int trainingId, CancellationToken cancellationToken = default);
+    Task<ServiceResult> AddStudentsInTrainingAsync(TrainingUpdateStudentInput updateInput, CancellationToken cancellationToken = default);
 }

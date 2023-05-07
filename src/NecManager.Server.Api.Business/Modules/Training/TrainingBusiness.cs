@@ -164,6 +164,7 @@ internal class TrainingBusiness : ITrainingBusiness
         if (!await this.studentAccessLayer.ExistsRangeAsync(input.StudentsIds))
             return new(monitoringIds, new(ApiResponseResultState.NotFound, TrainingApiErrors.TrainingNotFound));
 
+        matchingTraining.PersonTrainings.Clear();
         foreach (var studentId in input.StudentsIds)
         {
             matchingTraining.MasterName = input.MasterName;

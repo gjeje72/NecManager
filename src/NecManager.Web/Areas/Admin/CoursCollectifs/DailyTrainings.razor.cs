@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
@@ -12,6 +13,7 @@ using NecManager.Common.DataEnum.Internal;
 using NecManager.Web.Areas.Admin.CoursCollectifs.ViewModels;
 using NecManager.Web.Service.ApiServices.Abstractions;
 using NecManager.Web.Service.Models.Query;
+using NecManager.Web.Service.Models.Trainings;
 
 public partial class DailyTrainings
 {
@@ -21,6 +23,8 @@ public partial class DailyTrainings
     private List<TrainingBaseViewModel> Trainings = new();
     private TrainingDetailsViewModel CurrentTraining = new();
     private TrainingInputQuery trainingInputQuery = new();
+    private string ValidateButtonText = "Valider";
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -59,6 +63,7 @@ public partial class DailyTrainings
 
     private async Task SetCurrentTrainingAsync(int? trainingId)
     {
+        this.ValidateButtonText = "Valider";
         if (trainingId == null)
         {
             var nextTraining = this.Trainings.FirstOrDefault(t => t.IsIndividual == false && t.EndTime > DateTime.Now.Hour);
@@ -92,6 +97,26 @@ public partial class DailyTrainings
         }
     }
 
+    private async Task OnValidateTrainingStudentClickedEventHandlerAsync()
+    {
+        if (!this.CurrentTraining.TrainingStudents.Any())
+            return;
+
+        var updateStudentInput = new TrainingUpdateStudentInput
+        {
+            TrainingId = this.CurrentTraining.Id,
+            IsIndividual = false,
+            MasterName = this.CurrentTraining.MasterName,
+            StudentsIds = this.CurrentTraining.TrainingStudents.Select(ts => ts.Id).Distinct().ToList(),
+        };
+
+        var (state, _) = await this.TrainingServices.AddStudentsInTrainingAsync(updateStudentInput).ConfigureAwait(true);
+        if(state == ServiceResultState.Success)
+        {
+            this.ValidateButtonText = "✔️";
+        }
+    }
+
     private async Task OnWeaponFilterChangeEventHandlerAsync(WeaponType? weaponType)
     {
         if (weaponType is null || weaponType == WeaponType.None)
@@ -104,5 +129,22 @@ public partial class DailyTrainings
         }
 
         await this.RefreshTrainingsListAsync().ConfigureAwait(true);
+    }
+
+    private void AddTrainingStudent(TrainingStudentViewModel student, ChangeEventArgs arg)
+    {
+        _ = bool.TryParse(arg.Value?.ToString(), out var isSelected);
+        this.ValidateButtonText = "Valider";
+
+        if (isSelected)
+            this.CurrentTraining.TrainingStudents.Add(student);
+        else
+        {
+            var studentsToRemove = this.CurrentTraining.TrainingStudents.Where(x => x.Id == student.Id).ToList();
+            foreach(var studentToRemove in studentsToRemove)
+            {
+                this.CurrentTraining.TrainingStudents.Remove(studentToRemove);
+            }
+        }
     }
 }

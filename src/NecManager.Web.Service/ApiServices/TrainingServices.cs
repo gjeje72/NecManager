@@ -59,6 +59,13 @@ internal sealed class TrainingServices : ServiceBase, ITrainingServices
         return await response.BuildDataServiceResultAsync().ConfigureAwait(false);
     }
 
+    public async Task<ServiceResult> AddStudentsInTrainingAsync(TrainingUpdateStudentInput updateInput, CancellationToken cancellationToken = default)
+    {
+        var trainingClient = await this.RestHttpService.TrainingClient.ConfigureAwait(false);
+        var response = await trainingClient.PutAsync($"{updateInput.TrainingId}/add-students", updateInput.ToStringContent(), cancellationToken).ConfigureAwait(false);
+        return await response.BuildDataServiceResultAsync().ConfigureAwait(false);
+    }
+
     /// <inheritdoc/>
     public async Task<ServiceResult> DeleteTrainingAsync(int id, CancellationToken cancellationToken = default)
     {
