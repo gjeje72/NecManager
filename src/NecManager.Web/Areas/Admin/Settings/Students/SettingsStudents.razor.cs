@@ -236,7 +236,7 @@ public partial class SettingsStudents
         await this.studentsGrid.RefreshDataAsync();
     }
 
-    private async Task OnGroupFilterChangeEventHandler(ChangeEventArgs arg)
+    private void OnGroupFilterChangeEventHandler(ChangeEventArgs arg)
         => this.GroupFilter = arg.Value?.ToString() ?? string.Empty;
 
     private async Task GetGroupListAsync()

@@ -10,9 +10,6 @@ using NecManager.Server.DataAccessLayer.EntityLayer.AccessLayer;
 
 using NecManager.Server.DataAccessLayer.Model.Abstraction;
 
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-
-
 /// <summary>
 ///     Abstraction that provides basic CRUD operations on models data.
 /// </summary>

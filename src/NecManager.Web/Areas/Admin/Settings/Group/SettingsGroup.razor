@@ -83,13 +83,13 @@
         <i class="error">@this.ErrorMessage</i>
     }
     <QuickGrid Items="@this.Groups" TGridItem="GroupBaseViewModel" Pagination="@pagination" @ref="groupsGrid">
-        <PropertyColumn Property="@(g => g.Title)" Title="Groupe" />
-        <PropertyColumn Property="@(g => g.Weapon)" Title="Arme" Align="Align.Center" />
-        <PropertyColumn Property="@(g => g.StudentCount)" Title="Nb Etudiants" Align="Align.Center" />
-        <PropertyColumn Property="@(g => string.Join(", ", g.Categories))" Title="Catégories" />
+        <PropertyColumn Property="@(g => g!.Title)" Title="Groupe" />
+        <PropertyColumn Property="@(g => g!.Weapon)" Title="Arme" Align="Align.Center" />
+        <PropertyColumn Property="@(g => g!.StudentCount)" Title="Nb Etudiants" Align="Align.Center" />
+        <PropertyColumn Property="@(g => string.Join(", ", g!.Categories))" Title="Catégories" />
         <TemplateColumn Title="Actions" Align="Align.Right">
-            <button class="btn-icon" @onclick="@(() => this.UpdateGroupClickEventHandlerAsync(context.Id))"><i class="oi oi-pencil"></i></button>
-            <button class="btn-icon" @onclick="@(() => this.OnDeleteGroupClickEventHandler(context.Id))"><i class="oi oi-trash"></i></button>
+            <button class="btn-icon" @onclick="@(() => this.UpdateGroupClickEventHandlerAsync(context!.Id))"><i class="oi oi-pencil"></i></button>
+            <button class="btn-icon" @onclick="@(() => this.OnDeleteGroupClickEventHandler(context!.Id))"><i class="oi oi-trash"></i></button>
         </TemplateColumn>
     </QuickGrid>
     <Paginator Value="@pagination" />

@@ -1,7 +1,6 @@
 ﻿namespace NecManager.Server.Api.Business.Modules.Student;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ValueGeneration;
 using Microsoft.Extensions.Logging;
 
 using NecManager.Common;
