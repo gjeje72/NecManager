@@ -19,11 +19,12 @@ a, .btn-link {
 .btn-primary {
     display: inline-block;
     padding: 10px 25px;
-    text-transform: uppercase;
     line-height: 1.7em;
+    background-color: rgba(0,0,0,0);
+    text-transform: uppercase;
+    font-weight: 600;
     letter-spacing: 3.5px;
     color: #000000;
-    background-color: rgba(0,0,0,0);
     border-style: solid;
     border-width: 2px 2px 2px 2px;
     border-color: #000000;
@@ -48,30 +49,33 @@ a, .btn-link {
 }
 
 .btn-secondary {
-    display: inline-block;
-    padding: 10px 25px;
-    text-transform: uppercase;
-    line-height: 1.7em;
-    letter-spacing: 3.5px;
+    @extend .btn-primary;
     color: #fff;
-    font-weight: 600;
     background-color: #000;
-    border-style: solid;
-    border-width: 2px 2px 2px 2px;
-    border-color: #000;
-    border-radius: 0px 0px 0px 0px;
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0);
 
     &:hover, :active {
         color: #000;
         background-color: #F9F500;
         border-color: #000;
-        text-decoration: none;
-    }
+        /*text-decoration: none;*/
+    }/*
 
     &:focus {
         box-shadow: none;
         outline: none;
+    }*/
+}
+
+.btn-tertiary {
+    @extend .btn-primary;
+    color: black;
+    background-color: #F9F500;
+
+    &:hover, :active {
+        color: white;
+        background-color: black;
+        border-color: #F9F500;
+        /*text-decoration: none;*/
     }
 }
 
@@ -159,6 +163,8 @@ input[type="checkbox"] {
     padding: 2rem 10% 2rem 10%;
     overflow: auto;
     max-height: calc(100vh - 12rem);
+    position: relative;
+    z-index: 10;
 
     &-actions {
         margin-bottom: 1rem;
@@ -201,6 +207,10 @@ input[type="checkbox"] {
 
     &.end {
         align-items: flex-end;
+    }
+
+    &.space-between {
+        justify-content: space-between;
     }
 }
 

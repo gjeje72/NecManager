@@ -17,7 +17,6 @@ main {
     height: 149px;
     position: absolute;
     bottom: 0;
-    z-index: -1;
 }
 
 .socials {

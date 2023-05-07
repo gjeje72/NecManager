@@ -1,0 +1,27 @@
+﻿.daily-containers {
+    display: grid;
+    grid-template-areas: "main attendance";
+    grid-template-columns: 1fr 35%;
+    grid-template-rows: calc(100vh - 12rem);
+
+    .content {
+        grid-area: main;
+        padding: 2rem 10% 5rem 10%;
+    }
+
+    .attendance-background {
+        grid-area: attendance;
+        padding: 2rem 10% 5rem 10%;
+        background-color: black;
+
+        .attendance-content {
+            z-index: 20;
+            color: white;
+            overflow-y: auto;
+
+            .title {
+                margin: 0;
+            }
+        }
+    }
+}
