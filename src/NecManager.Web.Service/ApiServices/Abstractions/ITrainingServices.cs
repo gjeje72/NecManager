@@ -19,4 +19,5 @@ public interface ITrainingServices
     Task<ServiceResult> DeleteTrainingAsync(int id, CancellationToken cancellationToken = default);
 
     Task<ServiceResult> UpdateTrainingAsync(TrainingUpdateInput updateInput, CancellationToken cancellationToken = default);
+    Task<ServiceResult<TrainingDetails>> GetTrainingByIdAsync(int trainingId, CancellationToken cancellationToken = default);
 }

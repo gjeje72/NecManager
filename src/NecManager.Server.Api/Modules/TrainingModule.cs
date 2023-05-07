@@ -27,7 +27,7 @@ public sealed class TrainingModule : IModule
              async (ApiRequestHeaders requestHeaders, [FromServices] ITrainingBusiness trainingService, [FromRoute] int trainingId)
                 //[Authorize] async (ApiRequestHeaders requestHeaders, [FromServices] ITrainingBusiness trainingService, [FromRoute] int trainingId)
                 => Results.Extensions.ApiResponse(await trainingService.GetTrainingByIdAsync(requestHeaders, trainingId)))
-                .ProducesApiResponse<TrainingBase>()
+                .ProducesApiResponse<TrainingDetails>()
                 .WithName("Get a training by its identifier.")
                 .WithTags("Trainings");
 

@@ -20,7 +20,7 @@ public sealed class TrainingAccessLayer : AQueryBaseAccessLayer<NecDbContext, Tr
         IQueryable<Training> queryable = this.ModelSet.Include(t => t.Lesson).Include(t => t.PersonTrainings).ThenInclude(pt => pt.Student).Include(t => t.Group);
 
         if (query.Date is not null)
-            queryable = queryable.Where(t => t.Date == query.Date);
+            queryable = queryable.Where(t => t.Date.Year == query.Date.Value.Year && t.Date.DayOfYear == query.Date.Value.DayOfYear);
 
         if (query.Season is not null)
         {

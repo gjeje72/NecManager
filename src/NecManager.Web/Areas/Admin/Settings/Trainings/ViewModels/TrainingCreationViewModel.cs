@@ -7,7 +7,7 @@ public class TrainingCreationViewModel
 {
     public int Id { get; set; }
 
-    public DateTime Date { get; set; }
+    public DateTime Date { get; set; } = DateTime.Now;
 
     /// <summary>
     ///     The start time for this training. 16h30 = 16,50

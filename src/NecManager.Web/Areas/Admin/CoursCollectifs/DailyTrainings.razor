@@ -1,13 +1,53 @@
 ﻿@page "/admin/cours-collectifs"
+@using NecManager.Common.DataEnum;
+@using NecManager.Common.Extensions;
 
 <TopBar Title="Cours collectifs" />
 
 <div class="daily-containers">
     <div class="content">
-        <div class="row">
-            <input type="date" />
-            <input type="date" />
-            <input type="date" />
+        <EditForm Model="@this.trainingInputQuery">
+            <div class="row">
+                <div class="form-group-column">
+                    <label for="date">Date</label>
+                    <InputDate id="date"
+                               @bind-Value="this.trainingInputQuery.Date"
+                               @bind-Value:after="@(() => this.RefreshTrainingsListAsync())" />
+                </div>
+                <div class="form-group-column">
+                    <label for="weapon">Arme</label>
+                    <InputSelect id="weapon"
+                                 @bind-Value="this.trainingInputQuery.WeaponType"
+                                 @bind-Value:after="@(() => this.OnWeaponFilterChangeEventHandlerAsync(this.trainingInputQuery.WeaponType))">
+                        <option value="@WeaponType.None" selected>- arme -</option>
+                        @foreach (var weaponType in Enum.GetValues<WeaponType>())
+                        {
+                            if (weaponType == WeaponType.None)
+                                continue;
+
+                            <option value="@weaponType">@Enum.GetName(weaponType)</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="form-group-column">
+                    <label for="trainings">Entrainement</label>
+                    <InputSelect id="trainings"
+                                 @bind-Value="this.CurrentTraining.Id"
+                                 @bind-Value:after="@(() => this.SetCurrentTrainingAsync(this.CurrentTraining.Id))">
+                        <option value="0">- entrainement -</option>
+                        @foreach (var training in this.Trainings)
+                        {
+                            <option value="@training.Id">[@training.StartTime.ToTimeString() - @training.EndTime.ToTimeString()] @training.GroupName</option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+        </EditForm>
+        <div class="d-flex flex-column">
+            <h2>LECON</h2>
+            <span>@this.CurrentTraining.Lesson.Title</span>
+            <span>@this.CurrentTraining.Lesson.Description</span>
+            <span>@this.CurrentTraining.Lesson.Content</span>
         </div>
     </div>
     <div class="attendance-background">
@@ -16,6 +56,18 @@
                 <h2 class="title">APPEL</h2>
                 <button class="btn-tertiary">Valider</button>
             </div>
+            @foreach (var studentCat in this.CurrentTraining.GroupStudents.GroupBy(gs => gs.Category))
+            {
+                <h3 class="categories">@studentCat.Key</h3>
+                @foreach(var student in studentCat)
+                {   
+                    <div class="row">
+                        <input type="checkbox" />
+                        <span>@student.FirstName</span>
+                        <span>@student.Name.ToUpperInvariant()</span>
+                    </div>
+                }
+            }
         </div>
     </div>
 </div>
