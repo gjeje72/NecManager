@@ -1,5 +1,5 @@
-﻿namespace NecManager.Server.Api.Business.Modules.Student.Models;
-using System.ComponentModel.DataAnnotations;
+﻿namespace NecManager.Web.Service.Models.Students;
+using System.Collections.Generic;
 
 using NecManager.Common.DataEnum;
 
@@ -10,13 +10,11 @@ public sealed class StudentUpdateInput
     /// <summary>
     ///     Gets or sets the name.
     /// </summary>
-    [MaxLength(100)]
     public string Name { get; set; } = string.Empty;
 
     /// <summary>
     ///     Gets or sets the first name.
     /// </summary>
-    [MaxLength(100)]
     public string FirstName { get; set; } = string.Empty;
 
     /// <summary>
@@ -27,7 +25,6 @@ public sealed class StudentUpdateInput
     /// <summary>
     ///     Gets or sets the email address.
     /// </summary>
-    [EmailAddress]
     public string EmailAddress { get; set; } = string.Empty;
 
     /// <summary>

@@ -7,8 +7,8 @@
             @this.ChildContent
         </ChildContent>
         <FooterContent>
-            <button type="button" class="btn btn-tertiary" @onclick="@this.OnCancel">@this.CancelButtonText</button>
-            <button type="button" class="btn btn-success" disabled="@this.IsValidatedButtonDisabled" @onclick="@this.OnValidate">@this.ValidateButtonText</button>
+            <button type="button" class="btn btn-primary" @onclick="@this.OnCancel">@this.CancelButtonText</button>
+            <button type="button" class="btn btn-secondary" disabled="@this.IsValidatedButtonDisabled" @onclick="@this.OnValidate">@this.ValidateButtonText</button>
         </FooterContent>
     </DialogTemplate>
 }

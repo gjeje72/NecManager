@@ -19,4 +19,8 @@ public sealed class StudentOutputBase
     public StudentState State { get; set; }
 
     public string? GroupName { get; set; }
+
+    public bool IsMaster { get; set; }
+
+    public string EmailAddress { get; set; } = string.Empty;
 }

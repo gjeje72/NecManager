@@ -32,7 +32,7 @@
     </div>
 
     </div>
-    <div class="row">
+    <div class="row start">
         <div class="form-group-column">
             <label for="monday">Lundi</label>
             <input id="monday" type="checkbox" @bind="this.SeasonTrainingCreation.isMondaySelected" />
@@ -139,19 +139,20 @@
             }
         </div>
     </div>
-    <div class="row">
+    <div class="row end">
         <div class="form-group-column">
             <span>Vacances</span>
             <label for="startHoliday">Début</label>
             <input type="date" id="startHoliday" @bind="this.SeasonTrainingCreation.HolidayStartDate" />
             <label for="endHoliday">Fin</label>
             <input type="date" id="endHoliday" @bind="this.SeasonTrainingCreation.HolidayEndDate" />
-            <button @onclick="this.OnAddHolidayClickEventHandler">Ajouter une période de vacances</button>
+            <button class="btn-primary my-3" @onclick="this.OnAddHolidayClickEventHandler">Ajouter vacances</button>
         </div>
         <div class="form-group-column">
+            <span class="my-3"></span>
             <span>Jours fériés</span>
             <input type="date" @bind="this.SeasonTrainingCreation.PublicHolidayDate" />
-            <button @onclick="this.OnAddPublicHolidayClickEventHandler">Ajouter un jour férié</button>
+            <button class="btn-primary my-3" @onclick="this.OnAddPublicHolidayClickEventHandler">Ajouter jour férié</button>
         </div>
     </div>
     <div>
@@ -160,6 +161,6 @@
             <span>@excludedDate.ToShortDateString()</span>
         }
     </div>
-    <button @onclick="@this.CreateTrainingsAsync">INITIALISER</button>
+    <button class="btn-secondary" @onclick="@this.CreateTrainingsAsync">INITIALISER</button>
     <span>Résultat : </span><i>@this.InititationStateMessage</i>
 </div>

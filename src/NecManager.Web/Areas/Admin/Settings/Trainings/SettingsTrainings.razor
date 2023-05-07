@@ -7,6 +7,7 @@
 @using NecManager.Web.Components.Modal
 
 <TopBar Title="Admin - Entrainements" BackUrl="/admin/reglages" />
+
 <Dialog @ref="this.confirmDeleteDialog"
         Title="Confirmer la suppression"
         ValidateButtonText="Confirmer"
@@ -140,8 +141,8 @@
 </Dialog>
 <div class="admin-container">
     <div class="admin-container-actions">
-        <button @onclick="@this.OnCreateTrainingClickEventHandler">Nouveau</button>
-        <NavLink href="admin/reglages/entrainements/nouvelle-saison">Initialiser saison</NavLink>
+        <button class="btn-primary" @onclick="@this.OnCreateTrainingClickEventHandler">NOUVEAU</button>
+        <NavLink class="btn-primary" href="admin/reglages/entrainements/nouvelle-saison">Initialiser saison</NavLink>
     </div>
 
     <div class="admin-container-filter">
@@ -207,8 +208,8 @@
         <PropertyColumn Property="@(t => t.MasterName)" Title="Maître" />
         <PropertyColumn Property="@(t => t.GroupName)" Title="Groupe/Elève" />
         <TemplateColumn Title="Actions">
-            <button @onclick="@(() => this.OnUpdateTrainingClickEventHandler(context))"><i class="oi oi-pencil"></i></button>
-            <button @onclick="@(() => this.OnDeleteTrainingClickEventHandler(context))"><i class="oi oi-trash"></i></button>
+            <button class="btn-icon" @onclick="@(() => this.OnUpdateTrainingClickEventHandler(context))"><i class="oi oi-pencil"></i></button>
+            <button class="btn-icon" @onclick="@(() => this.OnDeleteTrainingClickEventHandler(context))"><i class="oi oi-trash"></i></button>
         </TemplateColumn>
     </QuickGrid>
     <Paginator Value="@pagination" />

@@ -57,15 +57,15 @@
 </Dialog>
 <div class="admin-container"> 
     <div class="admin-container-actions">
-        <button @onclick="@this.CreateLessonEventHandler">NOUVELLE LECON</button>
+        <button class="btn-primary" @onclick="@this.CreateLessonEventHandler">NOUVELLE</button>
     </div>
     <QuickGrid ItemsProvider="@this.lessonProviders" Pagination="@pagination" @ref=lessonsGrid>
         <PropertyColumn Property="@(l => l.Title)" Sortable="true" />
         <PropertyColumn Property="@(l => l.Weapon)" Sortable="true" />
         <PropertyColumn Property="@(l => l.DifficultyType)" Sortable="true" />
         <TemplateColumn Title="Actions">
-            <button @onclick="@(() => this.OnUpdateClickEventHandler(context))"><i class="oi oi-pencil"></i></button>
-            <button @onclick="@(() => this.OnDeleteLessonClickEventHandler(context.Id))"><i class="oi oi-trash"></i></button>
+            <button class="btn-icon" @onclick="@(() => this.OnUpdateClickEventHandler(context))"><i class="oi oi-pencil"></i></button>
+            <button class="btn-icon" @onclick="@(() => this.OnDeleteLessonClickEventHandler(context.Id))"><i class="oi oi-trash"></i></button>
         </TemplateColumn>
     </QuickGrid>
     <Paginator Value="@pagination" />

@@ -1,0 +1,156 @@
+﻿@page "/admin/reglages/escrimeurs"
+@using Microsoft.AspNetCore.Components.QuickGrid
+@using NecManager.Common.DataEnum
+@using NecManager.Web.Components.Modal
+
+<TopBar Title="Admin - Escrimeurs" BackUrl="/admin/reglages" />
+
+<div class="admin-container"> 
+    <div class="admin-container-actions">
+        <button class="btn-primary" @onclick="@this.OnCreateNewStudentClickEventHandler">NOUVEAU</button>
+    </div>
+    <div class="admin-container-filter">
+        <EditForm Model="@this.StudentInputQuery">
+            <div class="row">
+                <div class="form-group-column">
+                    <label for="weapon">Arme</label>
+                    <InputSelect id="weapon"
+                                 @bind-Value="this.StudentInputQuery.WeaponType"
+                                 @bind-Value:after="@(() => this.OnWeaponFilterChangeEventHandlerAsync(this.StudentInputQuery.WeaponType))">
+                        <option value="@WeaponType.None">- arme -</option>
+                        @foreach (var weaponType in Enum.GetValues<WeaponType>())
+                        {
+                            if (weaponType == WeaponType.None)
+                                continue;
+
+                            <option value="@weaponType">@Enum.GetName(weaponType)</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="form-group-column">
+                    <label for="state">Statut</label>
+                    <InputSelect id="state"
+                                 @bind-Value="this.StudentInputQuery.StudentState"
+                                 @bind-Value:after="@(() => this.OnStateFilterChangeEventHandlerAsync(this.StudentInputQuery.StudentState))">
+                        <option value="@StudentState.None">- statut -</option>
+                        @foreach (var studentState in Enum.GetValues<StudentState>())
+                        {
+                            if (studentState == StudentState.None)
+                                continue;
+
+                            <option value="@studentState">@Enum.GetName(studentState)</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="form-group-column">
+                    <label for="filter">Recherche</label>
+                    <InputText id="filter" @bind-Value="this.StudentInputQuery.Filter"
+                               @bind-Value:after="@(() => this.OnFilterChangeEventHandlerAsync(this.StudentInputQuery.Filter))" />
+                </div>
+            </div>
+        </EditForm>
+    </div>
+    <QuickGrid ItemsProvider="@this.studentProviders" Pagination="@pagination" @ref=studentsGrid>
+       <PropertyColumn Property="@(l => $"{l.LastName.ToUpperInvariant()} {l.FirstName}")" Title="Etudiant" />
+        <PropertyColumn Property="@(l => l.Category)" Title="Catégorie" Align="Align.Center" />
+        <PropertyColumn Property="@(l => l.Weapon)" Title="Arme" Align="Align.Center" />
+        <PropertyColumn Property="@(l => l.GroupName)" Title="Groupe" />
+        <PropertyColumn Property="@(l => l.State)" Title="Statut" Align="Align.Center" />
+        <TemplateColumn Title="Actions" Align="Align.Right">
+            <button class="btn-icon" @onclick="@(() =>this.OnUpdateStudentClickEventHandler(context))"><i class="oi oi-pencil"></i></button>
+            <button class="btn-icon" @onclick="@(() => this.OnDeleteStudentClickEventHandler(context))"><i class="oi oi-trash"></i></button>
+        </TemplateColumn>
+    </QuickGrid>
+    <Paginator Value="@pagination" />
+</div>
+
+<Dialog Title="Création d'une leçon"
+        ValidateButtonText="@this.ValidateButtonLabel"
+        CancelButtonText="Annuler"
+        OnValidate="this.OnValidCreateOrUpdateFormAsync"
+        @ref="this.studentsCreationFormDialog">
+    <ChildContent>
+        <EditForm Model="this.CreateStudentModel">
+            <DataAnnotationsValidator />
+            <div class="row">
+                <div class="form-group">
+                    <label class="form-label" for="name">Nom</label>
+                    <InputText class="form-control" id="name" @bind-Value="this.CreateStudentModel.Name"></InputText>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="cat">Catégorie</label>
+                    <InputSelect class="form-control" @bind-Value="this.CreateStudentModel.Category" id="cat">
+                        @foreach (var categorie in Enum.GetValues(typeof(CategoryType)))
+                        {
+                            <option value="@categorie">@categorie</option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label class="form-label" for="firstname">Prénom</label>
+                    <InputText class="form-control" id="firstname" @bind-Value="this.CreateStudentModel.FirstName"></InputText>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="state">Statut</label>
+                    <InputSelect class="form-control" @bind-Value="this.CreateStudentModel.State" id="state">
+                        @foreach (var state in Enum.GetValues(typeof(StudentState)))
+                        {
+                            <option value="@state">@state</option>
+                        }
+                    </InputSelect>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label class="form-label" for="email">Email</label>
+                    <input class="form-control" type="email" id="email" @bind="this.CreateStudentModel.EmailAddress"></input>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="isMaster">Maître</label>
+                    <input class="form-control" type="checkbox" id="isMaster" @bind="this.CreateStudentModel.IsMaster" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label class="form-label" for="phone">Telephone</label>
+                    <input class="form-control" type="tel" id="phone" @bind="this.CreateStudentModel.PhoneNumber"></input>
+                </div>
+            </div>
+            <div>
+                <input type="text" id="groupFilter" @oninput="this.OnGroupFilterChangeEventHandler" />
+                @if (this.AvailableGroups.Count > 0)
+                {
+                    <div class="group-search">
+                        @foreach (var group in this.AvailableGroups)
+                        {
+                            <span @onclick="@(() => this.OnGroupClickEventHandler(group.Id))">@group.Title [@group.Weapon]</span>
+                        }
+                    </div>
+                }
+                <div class="row">
+                    @foreach (var groupAdded in this.CreateStudentModel.Groups)
+                    {
+                        <div class="row">
+                            <span>@groupAdded.Title [@groupAdded.Weapon]</span>
+                            <i class="oi oi-x" @onclick="@(() => this.OnGroupDeleteClickEventHandler(groupAdded.Id))"></i>
+                        </div>
+                    }
+                </div>
+            </div>
+            @if (!string.IsNullOrWhiteSpace(this.CreationMessage))
+            {
+                <i class="@this.GetCreationStateCss()">@this.CreationMessage</i>
+            }
+        </EditForm>
+    </ChildContent>
+</Dialog>
+
+<Dialog @ref="this.confirmDeleteDialog"
+        Title="Confirmer la suppression"
+        ValidateButtonText="Confirmer"
+        CancelButtonText="Annuler"
+        OnValidate="this.OnConfirmDeleteStudentClickEventHandler">
+        <p>Supprimer l'escrimeur @this.underDeletionStudent.FirstName @this.underDeletionStudent.LastName.ToUpperInvariant()</p>
+</Dialog>

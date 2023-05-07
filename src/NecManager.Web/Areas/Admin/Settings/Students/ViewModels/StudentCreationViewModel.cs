@@ -1,9 +1,11 @@
-﻿namespace NecManager.Server.Api.Business.Modules.Student.Models;
+﻿namespace NecManager.Web.Areas.Admin.Settings.Students.ViewModels;
+
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 using NecManager.Common.DataEnum;
 
-public sealed class StudentUpdateInput
+public sealed class StudentCreationViewModel
 {
     public int Id { get; set; }
 
@@ -45,5 +47,5 @@ public sealed class StudentUpdateInput
     /// </summary>
     public bool IsMaster { get; set; }
 
-    public List<int> GroupIds { get; set; } = new();
+    public List<StudentGroupViewModel> Groups { get; set; } = new();
 }

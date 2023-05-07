@@ -11,12 +11,94 @@ a, .btn-link {
 .modal-active {
     display: initial;
 }
+.btn-icon {
+    border: 0px;
+    background: none;
+}
 
 .btn-primary {
-    box-shadow: rgba(50, 50, 93, 25%) 0px 2px 5px -1px, rgba(0, 0, 0, 30%) 0px 1px 3px -1px;
-    color: #040303;
-    background-color: #f9f500;
-    border-color: #f9f500;
+    display: inline-block;
+    padding: 10px 25px;
+    text-transform: uppercase;
+    line-height: 1.7em;
+    letter-spacing: 3.5px;
+    color: #000000;
+    background-color: rgba(0,0,0,0);
+    border-style: solid;
+    border-width: 2px 2px 2px 2px;
+    border-color: #000000;
+    border-radius: 0px 0px 0px 0px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0);
+
+    &:hover, &:not(:disabled):not(.disabled):active {
+        color: #fff;
+        background-color: #000;
+        border-color: #000;
+        text-decoration: none;
+
+        &:focus {
+            box-shadow: none;
+        }
+    }
+
+    &:focus {
+        box-shadow: none;
+        outline: none;
+    }
+}
+
+.btn-secondary {
+    display: inline-block;
+    padding: 10px 25px;
+    text-transform: uppercase;
+    line-height: 1.7em;
+    letter-spacing: 3.5px;
+    color: #fff;
+    font-weight: 600;
+    background-color: #000;
+    border-style: solid;
+    border-width: 2px 2px 2px 2px;
+    border-color: #000;
+    border-radius: 0px 0px 0px 0px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0);
+
+    &:hover, :active {
+        color: #000;
+        background-color: #F9F500;
+        border-color: #000;
+        text-decoration: none;
+    }
+
+    &:focus {
+        box-shadow: none;
+        outline: none;
+    }
+}
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    outline: 0;
+    box-shadow: none;
+    border-color: #495057;
+    border: 2px solid;
+}
+
+select {
+    height: 30px;
+    padding: 0 0.75rem;
+
+    &option:hover, option:checked {
+        box-shadow: 0 0 10px 100px #F9F500 inset;
+    }
+
+    &:focus-visible {
+        outline: none;
+    }
+}
+
+input[type="checkbox"] {
+    accent-color: #F9F500;
 }
 
 .btn-outline-primary {
@@ -112,8 +194,21 @@ a, .btn-link {
     margin-right: 0;
     margin-left: 0;
     align-items: center;
+
+    &.start {
+        align-items: flex-start;
+    }
+
+    &.end {
+        align-items: flex-end;
+    }
 }
 
 .error {
     color: red;
+}
+
+.quickgrid[theme=default] {
+    --col-gap: 2rem;
+    width: 100%;
 }

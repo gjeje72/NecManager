@@ -19,7 +19,7 @@ public sealed class LessonAccessLayer : AQueryBaseAccessLayer<NecDbContext, Less
     }
 
     /// <inheritdoc />
-    protected override async Task<IEnumerable<Lesson>> GetCollectionInternalAsync(LessonQuery query, bool isPageable = true)
+    protected override IQueryable<Lesson> GetCollectionInternal(LessonQuery query, bool isPageable = true)
     {
         IQueryable<Lesson> queryable = this.ModelSet.Include(l => l.Trainings);
 
@@ -33,6 +33,6 @@ public sealed class LessonAccessLayer : AQueryBaseAccessLayer<NecDbContext, Less
             queryable = queryable.Where(l => l.Weapon == query.WeaponType);
 
         var collectionInternal = !isPageable ? queryable : queryable.Skip((query.CurrentPage - 1) * query.PageSize).Take(query.PageSize);
-        return await collectionInternal.ToListAsync();
+        return collectionInternal;
     }
 }

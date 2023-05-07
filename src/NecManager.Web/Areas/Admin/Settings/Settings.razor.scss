@@ -1,0 +1,8 @@
+﻿.settings-container {
+    display: grid;
+    grid-template-columns: 45% 45%;
+    row-gap: 2rem;
+    padding: 2rem 10% 2rem 10%;
+    overflow: auto;
+    max-height: calc(100vh - 13rem);
+}

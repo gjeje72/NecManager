@@ -10,7 +10,6 @@ using NecManager.Server.DataAccessLayer.EntityLayer.AccessLayer;
 
 using NecManager.Server.DataAccessLayer.Model.Abstraction;
 
-
 /// <summary>
 ///     Abstraction that provides basic CRUD operations on models data.
 /// </summary>
@@ -31,20 +30,20 @@ public abstract class AQueryBaseAccessLayer<TContext, TEntity, TQueryDto> : Base
     }
 
     /// <inheritdoc />
-    public Task<IEnumerable<TEntity>> GetCollectionAsync(TQueryDto query, bool isPageable = true)
-        => this.GetCollectionInternalAsync(query, isPageable);
+    public async Task<IEnumerable<TEntity>> GetCollectionAsync(TQueryDto query, bool isPageable = true)
+        => await this.GetCollectionInternal(query, isPageable).ToListAsync();
 
     /// <inheritdoc />
     public async Task<PageableResult<TEntity>> GetPageableCollectionAsync(TQueryDto query, bool isPageable = true)
         => new()
         {
-            Items = await this.GetCollectionInternalAsync(query, isPageable),
-            TotalElements = (await this.GetCollectionInternalAsync(query, false)).Count()
+            Items = await this.GetCollectionInternal(query, isPageable).ToListAsync(),
+            TotalElements = await this.GetCollectionInternal(query, false).CountAsync()
         };
 
     /// <inheritdoc />
     public async Task<int> CountCollectionAsync(TQueryDto query, bool isPageable = false)
-        => (await this.GetCollectionInternalAsync(query, isPageable)).Count();
+        => await this.GetCollectionInternal(query, false).CountAsync();
 
     /// <summary>
     ///     Internal method that retrieve a queryable collection of data according to the query.
@@ -52,5 +51,5 @@ public abstract class AQueryBaseAccessLayer<TContext, TEntity, TQueryDto> : Base
     /// <param name="query">Query object to filter data.</param>
     /// <param name="isPageable">Boolean that determines if the result is paged.</param>
     /// <returns>Returns the queryable list of entity.</returns>
-    protected abstract Task<IEnumerable<TEntity>> GetCollectionInternalAsync(TQueryDto query, bool isPageable = true);
+    protected abstract IQueryable<TEntity> GetCollectionInternal(TQueryDto query, bool isPageable = true);
 }

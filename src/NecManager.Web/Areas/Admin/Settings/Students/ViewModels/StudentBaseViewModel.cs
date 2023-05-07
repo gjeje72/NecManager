@@ -1,10 +1,9 @@
-﻿namespace NecManager.Web.Service.Models;
-
-using System.Collections.Generic;
+﻿namespace NecManager.Web.Areas.Admin.Settings.Students.ViewModels;
 
 using NecManager.Common.DataEnum;
+using System.Collections.Generic;
 
-public sealed class StudentBase
+public sealed class StudentBaseViewModel
 {
     public int Id { get; set; }
 
@@ -12,7 +11,7 @@ public sealed class StudentBase
 
     public string FirstName { get; set; } = string.Empty;
 
-    public CategoryType Categorie { get; set; }
+    public CategoryType Category { get; set; }
 
     public WeaponType Weapon { get; set; }
 
@@ -22,7 +21,7 @@ public sealed class StudentBase
 
     public string? GroupName { get; set; }
 
-    public string EmailAddress { get; set; } = string.Empty;
-
     public bool IsMaster { get; set; }
+
+    public string EmailAddress { get; set; } = string.Empty;
 }

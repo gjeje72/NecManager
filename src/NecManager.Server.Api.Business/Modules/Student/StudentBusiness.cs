@@ -84,7 +84,7 @@ internal sealed class StudentBusiness : IStudentBusiness
     {
         // ArgumentNullException.ThrowIfNull(monitoringIds);
 
-        var matchingStudent = await this.studentAccessLayer.GetSingleAsync(x => x.Id == input.StudentId, true).ConfigureAwait(false);
+        var matchingStudent = await this.studentAccessLayer.GetSingleAsync(x => x.Id == input.Id, true, x => x.Include(s => s.StudentGroups)).ConfigureAwait(false);
         if (matchingStudent is null)
             return new(monitoringIds, new(ApiResponseResultState.NotFound, StudentApiErrors.StudentNotFound));
 
@@ -114,7 +114,7 @@ internal sealed class StudentBusiness : IStudentBusiness
         }
         catch (Exception ex)
         {
-            this.logger.LogError(ex, "Error occured while updating student studentId={studentId}", input.StudentId);
+            this.logger.LogError(ex, "Error occured while updating student studentId={studentId}", input.Id);
             return new(monitoringIds, new(StudentApiErrors.StudentUpdateFailure));
         }
 
@@ -153,5 +153,8 @@ internal sealed class StudentBusiness : IStudentBusiness
             State = student.State,
             Weapon = student.StudentGroups?.FirstOrDefault()?.Group?.Weapon ?? WeaponType.None,
             GroupIds = student.StudentGroups?.Select(sg => sg.GroupId) ?? new List<int>(),
+            GroupName = string.Join(", ", student.StudentGroups?.Select(sg => sg.Group?.Title) ?? Enumerable.Empty<string>()),
+            EmailAddress = student.EmailAddress,
+            IsMaster = student.IsMaster,
         };
 }
