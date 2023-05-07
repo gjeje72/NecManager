@@ -40,4 +40,11 @@ internal sealed class StudentServices : ServiceBase, IStudentServices
         var response = await studentClient.PutAsync($"{studentUpdateInput.Id}", studentUpdateInput.ToStringContent(), cancellationToken).ConfigureAwait(false);
         return await response.BuildDataServiceResultAsync().ConfigureAwait(false);
     }
+
+    public async Task<ServiceResult> DeleteStudentAsync(int studentId, CancellationToken cancellationToken = default)
+    {
+        var studentClient = await this.RestHttpService.StudentClient;
+        var response = await studentClient.DeleteAsync($"{studentId}", cancellationToken).ConfigureAwait(false);
+        return await response.BuildDataServiceResultAsync().ConfigureAwait(false);
+    }
 }

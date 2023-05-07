@@ -57,10 +57,8 @@
         <PropertyColumn Property="@(l => l.GroupName)" Title="Groupe" />
         <PropertyColumn Property="@(l => l.State)" Title="Statut" Align="Align.Center" />
         <TemplateColumn Title="Actions" Align="Align.Right">
-@*            <button @onclick="@(() => this.OnUpdateClickEventHandler(context))"><i class="oi oi-pencil"></i></button>
-            <button @onclick="@(() => this.OnDeleteLessonClickEventHandler(context.Id))"><i class="oi oi-trash"></i></button>*@
             <button class="btn-icon" @onclick="@(() =>this.OnUpdateStudentClickEventHandler(context))"><i class="oi oi-pencil"></i></button>
-            <button class="btn-icon"><i class="oi oi-trash"></i></button>
+            <button class="btn-icon" @onclick="@(() => this.OnDeleteStudentClickEventHandler(context))"><i class="oi oi-trash"></i></button>
         </TemplateColumn>
     </QuickGrid>
     <Paginator Value="@pagination" />
@@ -147,4 +145,12 @@
             }
         </EditForm>
     </ChildContent>
+</Dialog>
+
+<Dialog @ref="this.confirmDeleteDialog"
+        Title="Confirmer la suppression"
+        ValidateButtonText="Confirmer"
+        CancelButtonText="Annuler"
+        OnValidate="this.OnConfirmDeleteStudentClickEventHandler">
+        <p>Supprimer l'escrimeur @this.underDeletionStudent.FirstName @this.underDeletionStudent.LastName.ToUpperInvariant()</p>
 </Dialog>

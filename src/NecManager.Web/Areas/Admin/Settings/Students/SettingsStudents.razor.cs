@@ -29,6 +29,7 @@ public partial class SettingsStudents
     private QuickGrid<StudentBaseViewModel> studentsGrid = new();
     private StudentInputQuery StudentInputQuery { get; set; } = new();
     private Dialog? studentsCreationFormDialog;
+    private Dialog? confirmDeleteDialog;
     private StudentCreationViewModel CreateStudentModel = new();
     private string GroupFilter = string.Empty;
     private List<StudentGroupViewModel> Groups { get; set; } = new();
@@ -38,6 +39,7 @@ public partial class SettingsStudents
             && (group.Title.ToUpperInvariant().Contains(this.GroupFilter.ToUpperInvariant())
             || group.Weapon.ToString().ToUpperInvariant().Contains(this.GroupFilter.ToUpperInvariant()))
             ).ToList();
+    private StudentBaseViewModel underDeletionStudent = new();
     private bool isEditMode = false;
     private string ValidateButtonLabel => this.isEditMode ? "Mettre à jour" : "CREER";
     private string CreationMessage = string.Empty;
@@ -182,6 +184,23 @@ public partial class SettingsStudents
         if (this.studentsCreationFormDialog is not null)
             this.studentsCreationFormDialog.ShowDialog();
     }
+    private void OnDeleteStudentClickEventHandler(StudentBaseViewModel student)
+    {
+        this.underDeletionStudent = student;
+
+        if(this.confirmDeleteDialog is not null)
+            this.confirmDeleteDialog.ShowDialog();
+    }
+
+    private async Task OnConfirmDeleteStudentClickEventHandler()
+    {
+        var result = await this.StudentServices.DeleteStudentAsync(this.underDeletionStudent.Id).ConfigureAwait(true);
+        if (result.State == ServiceResultState.Success)
+        {
+            await this.studentsGrid.RefreshDataAsync();
+            this.confirmDeleteDialog!.CloseDialog();
+        }
+    }
 
     private async Task OnWeaponFilterChangeEventHandlerAsync(WeaponType? weaponType)
     {
@@ -251,4 +270,5 @@ public partial class SettingsStudents
 
     private string GetCreationStateCss()
         => this.CreationMessage.StartsWith("Erreur") ? "error" : "success";
+
 }

@@ -10,6 +10,7 @@ using NecManager.Web.Service.Models.Students;
 public interface IStudentServices
 {
     Task<ServiceResult> CreateStudentAsync(StudentCreationInput studentCreateInput, CancellationToken cancellationToken = default);
+    Task<ServiceResult> DeleteStudentAsync(int studentId, CancellationToken cancellationToken = default);
 
     /// <summary>
     ///     Method use to get all existing student basic info.
