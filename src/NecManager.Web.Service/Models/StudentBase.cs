@@ -1,5 +1,6 @@
 ﻿namespace NecManager.Web.Service.Models;
 
+using System;
 using System.Collections.Generic;
 
 using NecManager.Common.DataEnum;
@@ -11,6 +12,8 @@ public sealed class StudentBase
     public string LastName { get; set; } = string.Empty;
 
     public string FirstName { get; set; } = string.Empty;
+
+    public DateTime Birthdate { get; set; } = DateTime.MinValue;
 
     public CategoryType Categorie { get; set; }
 

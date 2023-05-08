@@ -5,42 +5,58 @@
 
 <div class="admin-container">
     <div class="admin-container-actions">
-        <select @onchange="@((arg) => this.OnGroupSelectedChangedEventHandlerAsync(arg, true))">
-            <option value="0" selected disabled>- source -</option>
-            @foreach (var group in this.SourceGroups)
-            {
-                <option value="@group.Id">[@group.Weapon] @group.Title</option>
-            }
-        </select>
-        <span>➡️</span>
-        <select @onchange="@((arg) => this.OnGroupSelectedChangedEventHandlerAsync(arg, false))">
-            <option value="0" selected disabled>- destination -</option>
-            @foreach (var group in this.DestinationGroups)
-            {
-                <option value="@group.Id">[@group.Weapon] @group.Title</option>
-            }
-        </select>
+        <div class="row space-between">
+            <div class="row">
+                <select @onchange="@((arg) => this.OnGroupSelectedChangedEventHandlerAsync(arg, true))">
+                    <option value="0" selected disabled>- source -</option>
+                    @foreach (var group in this.SourceGroups)
+                    {
+                        <option value="@group.Id">[@group.Weapon] @group.Title</option>
+                    }
+                </select>
+                <span>➡️</span>
+                <select @onchange="@((arg) => this.OnGroupSelectedChangedEventHandlerAsync(arg, false))">
+                    <option value="0" selected disabled>- destination -</option>
+                    @foreach (var group in this.DestinationGroups)
+                    {
+                        <option value="@group.Id">[@group.Weapon] @group.Title</option>
+                    }
+                </select>
+            </div>
+            <button class="btn-secondary">Sauvegarder</button>
+        </div>
     </div>
     <div class="migration-container">
         <div class="group1">
             <h2>@this.SelectedSourceGroup.Title</h2>
             <div class="d-flex flex-column">
-                @foreach (var student in this.SelectedSourceGroup.Students.OrderBy(s => s.Categorie))
+                @foreach (var student in this.SelectedSourceGroup.Students.OrderBy(s => s.Category))
                 {
-                    <span>[@student.Categorie] @student.FirstName @student.LastName.ToUpperInvariant()</span>
-                    <button class="btn-icon"><i class="oi oi-arrow-right"></i></button>
+                    <div class="row space-between">
+                        <span class="@this.GetCssForMovedStudent(student.IsUnsavedMove)">[@student.ShowCategoryWithNext] @student.FirstName @student.LastName.ToUpperInvariant()</span>
+                        @if (!this.SelectedDestinationGroup.Students.Any(s => s.Id == student.Id))
+                        {
+                            <button class="btn-icon" @onclick="@(() => this.MoveStudentFromSourceToDestinationGroup(student))">
+                                <i class="oi oi-arrow-right"></i>
+                            </button>
+                        }
+                    </div>
                 }
             </div>
         </div>
-        <div class="to">
-            <span>➡️</span>
-        </div>
         <div class="group2">
-            <h2>Groupe 2</h2>
+            <h2>@this.SelectedDestinationGroup.Title</h2>
             <div class="d-flex flex-column">
-                @foreach (var student in this.SelectedDestinationGroup.Students.OrderBy(s => s.Categorie))
+                @foreach (var student in this.SelectedDestinationGroup.Students.OrderBy(s => s.Category))
                 {
-                    <span>[@student.Categorie] @student.FirstName @student.LastName.ToUpperInvariant()</span>
+                    <div class="row no-gap">
+                        @if (student.IsUnsavedMove)
+                        {
+                            <i class="oi oi-x" @onclick="@(() => this.UndoStudentMove(student))"></i>
+                            <span>🆕</span>
+                        }
+                        <span>[@student.Category] @student.FirstName @student.LastName.ToUpperInvariant()</span>
+                    </div>
                 }
             </div>
         </div>

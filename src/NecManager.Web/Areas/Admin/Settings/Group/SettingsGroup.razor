@@ -43,7 +43,7 @@
                     <div class="student-search">
                         @foreach (var student in this.AvailableStudents)
                         {
-                            <span @onclick="@(() => this.OnStudentClickEventHandler(student.Id))">@student.FirstName @student.LastName [@student.Weapon - @student.Categorie]</span>
+                            <span @onclick="@(() => this.OnStudentClickEventHandler(student.Id))">@student.FirstName @student.LastName [@student.Weapon - @student.Category]</span>
                         }
                     </div>
                 }

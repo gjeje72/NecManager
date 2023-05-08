@@ -61,7 +61,8 @@ public partial class MigrateStudent
                     Id = s.Id,
                     FirstName = s.FirstName,
                     LastName = s.LastName,
-                    Categorie = s.Categorie,
+                    Birthdate = s.Birthdate,
+                    Category = s.Categorie,
                     Weapon = s.Weapon
                 }).ToList() ?? new(),
             };
@@ -77,6 +78,29 @@ public partial class MigrateStudent
 
             await this.InvokeAsync(this.StateHasChanged);
         }
+    }
+
+    private void MoveStudentFromSourceToDestinationGroup(GroupStudentViewModel student)
+    {
+        if (this.SelectedDestinationGroup.Id == 0)
+            return;
+        student.IsUnsavedMove = true;
+        this.SelectedDestinationGroup.Students.Add(student);
+    }
+
+    private void UndoStudentMove(GroupStudentViewModel student)
+    {
+        var sourceStudent = this.SelectedSourceGroup.Students.FirstOrDefault(s => s.Id == student.Id);
+        if (sourceStudent == null)
+            return;
+
+        sourceStudent.IsUnsavedMove = false;
+        this.SelectedDestinationGroup.Students.Remove(student);
+    }
+
+    private string GetCssForMovedStudent(bool isUnsavedMove)
+    {
+        return isUnsavedMove ? "moved" : string.Empty;
     }
 
 }

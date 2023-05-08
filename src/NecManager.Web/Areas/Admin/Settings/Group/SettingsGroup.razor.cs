@@ -101,7 +101,7 @@ public partial class SettingsGroup
                 Id = s.Id,
                 FirstName = s.FirstName,
                 LastName = s.LastName,
-                Categorie = s.Categorie,
+                Category = s.Categorie,
                 Weapon = s.Weapon
             }).ToList() ?? new();
 
@@ -205,7 +205,7 @@ public partial class SettingsGroup
                 Id = s.Id,
                 FirstName = s.FirstName,
                 LastName = s.LastName,
-                Categorie = s.Categorie,
+                Category = s.Categorie,
                 Weapon = s.Weapon
             }).ToList() ?? new();
     }

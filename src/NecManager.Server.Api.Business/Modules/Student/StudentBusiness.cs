@@ -150,6 +150,7 @@ internal sealed class StudentBusiness : IStudentBusiness
             Id = student.Id,
             FirstName = student.FirstName,
             LastName = student.Name,
+            Birthdate = student.BirthDate,
             Categorie = student.BirthDate.ToCategoryType(),
             State = student.State,
             Weapon = student.StudentGroups?.FirstOrDefault()?.Group?.Weapon ?? WeaponType.None,

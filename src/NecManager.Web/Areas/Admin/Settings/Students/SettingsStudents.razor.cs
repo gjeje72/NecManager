@@ -71,6 +71,7 @@ public partial class SettingsStudents
                     FirstName = s.FirstName,
                     LastName = s.LastName,
                     Category = s.Categorie,
+                    Birthdate = s.Birthdate,
                     GroupIds = s.GroupIds,
                     GroupName = s.GroupName,
                     State = s.State,
@@ -103,7 +104,7 @@ public partial class SettingsStudents
         {
             Name = this.CreateStudentModel.Name,
             FirstName = this.CreateStudentModel.FirstName,
-            Category = this.CreateStudentModel.Category,
+            Birthdate = this.CreateStudentModel.Birthdate,
             EmailAddress = this.CreateStudentModel.EmailAddress,
             PhoneNumber = this.CreateStudentModel.PhoneNumber,
             State = this.CreateStudentModel.State,
@@ -133,7 +134,7 @@ public partial class SettingsStudents
             Id = this.CreateStudentModel.Id,
             Name = this.CreateStudentModel.Name,
             FirstName = this.CreateStudentModel.FirstName,
-            Category = this.CreateStudentModel.Category,
+            Birthdate = this.CreateStudentModel.Birthdate,
             EmailAddress = this.CreateStudentModel.EmailAddress,
             PhoneNumber = this.CreateStudentModel.PhoneNumber,
             State = this.CreateStudentModel.State,
@@ -177,7 +178,7 @@ public partial class SettingsStudents
         this.CreateStudentModel.FirstName = student.FirstName;
         this.CreateStudentModel.EmailAddress = student.EmailAddress;
         this.CreateStudentModel.IsMaster = student.IsMaster;
-        this.CreateStudentModel.Category = student.Category;
+        this.CreateStudentModel.Birthdate = student.Birthdate;
         this.CreateStudentModel.State = student.State;
         this.CreateStudentModel.Groups = this.Groups.Where(g => student.GroupIds.Contains(g.Id)).ToList();
 
