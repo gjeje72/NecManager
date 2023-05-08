@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NecManager.Server.DataAccessLayer.EntityLayer;
 
@@ -11,9 +12,10 @@ using NecManager.Server.DataAccessLayer.EntityLayer;
 namespace NecManager.Server.DataAccessLayer.Migrations
 {
     [DbContext(typeof(NecDbContext))]
-    partial class NecDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230508104355_UpdateStudentBirthdate")]
+    partial class UpdateStudentBirthdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

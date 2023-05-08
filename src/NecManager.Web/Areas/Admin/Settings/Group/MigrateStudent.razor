@@ -1,0 +1,48 @@
+﻿@page "/admin/reglages/groupes/migration-escrimeurs"
+
+<TopBar Title="Admin - Groupes - Migration escrimeurs" BackUrl="/admin/reglages/groupes" />
+
+
+<div class="admin-container">
+    <div class="admin-container-actions">
+        <select @onchange="@((arg) => this.OnGroupSelectedChangedEventHandlerAsync(arg, true))">
+            <option value="0" selected disabled>- source -</option>
+            @foreach (var group in this.SourceGroups)
+            {
+                <option value="@group.Id">[@group.Weapon] @group.Title</option>
+            }
+        </select>
+        <span>➡️</span>
+        <select @onchange="@((arg) => this.OnGroupSelectedChangedEventHandlerAsync(arg, false))">
+            <option value="0" selected disabled>- destination -</option>
+            @foreach (var group in this.DestinationGroups)
+            {
+                <option value="@group.Id">[@group.Weapon] @group.Title</option>
+            }
+        </select>
+    </div>
+    <div class="migration-container">
+        <div class="group1">
+            <h2>@this.SelectedSourceGroup.Title</h2>
+            <div class="d-flex flex-column">
+                @foreach (var student in this.SelectedSourceGroup.Students.OrderBy(s => s.Categorie))
+                {
+                    <span>[@student.Categorie] @student.FirstName @student.LastName.ToUpperInvariant()</span>
+                    <button class="btn-icon"><i class="oi oi-arrow-right"></i></button>
+                }
+            </div>
+        </div>
+        <div class="to">
+            <span>➡️</span>
+        </div>
+        <div class="group2">
+            <h2>Groupe 2</h2>
+            <div class="d-flex flex-column">
+                @foreach (var student in this.SelectedDestinationGroup.Students.OrderBy(s => s.Categorie))
+                {
+                    <span>[@student.Categorie] @student.FirstName @student.LastName.ToUpperInvariant()</span>
+                }
+            </div>
+        </div>
+    </div>
+</div>

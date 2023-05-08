@@ -30,9 +30,9 @@ public sealed class Student : ADataObject
     public string EmailAddress { get; set; } = string.Empty;
 
     /// <summary>
-    ///     Gets or sets a categorie.
+    ///     Gets or sets a birthdate.
     /// </summary>
-    public CategoryType Category { get; set; }
+    public DateTime BirthDate { get; set; } = DateTime.MinValue;
 
     /// <summary>
     ///     Gets or sets a state.

@@ -43,13 +43,13 @@
                 </div>
             </div>
         </EditForm>
-        @if(this.CurrentTraining.Id != 0)
-        {   
-        <div class="d-flex flex-column">
-            <h2>LECON</h2>
-            <span>@this.CurrentTraining.Lesson.Title</span>
-            <span>@this.CurrentTraining.Lesson.Description</span>
-            <span>@this.CurrentTraining.Lesson.Content</span>
+        @if (this.CurrentTraining.Id != 0)
+        {
+            <div class="d-flex flex-column">
+                <h2>LECON</h2>
+                <span>@this.CurrentTraining.Lesson.Title</span>
+                <span>@this.CurrentTraining.Lesson.Description</span>
+                <span>@this.CurrentTraining.Lesson.Content</span>
             </div>
         }
         else
@@ -66,8 +66,8 @@
             @foreach (var studentCat in this.CurrentTraining.GroupStudents.GroupBy(gs => gs.Category))
             {
                 <h3 class="categories">@studentCat.Key</h3>
-                @foreach(var student in studentCat)
-                {   
+                @foreach (var student in studentCat)
+                {
                     <div class="row">
                         <input type="checkbox" checked="@this.CurrentTraining.TrainingStudents.Any(ts => ts.Id == student.Id)" @onchange="@((arg) =>this.AddTrainingStudent(student, arg))" />
                         <span>@student.FirstName</span>

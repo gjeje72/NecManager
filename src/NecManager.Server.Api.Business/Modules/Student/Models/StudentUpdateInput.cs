@@ -30,10 +30,7 @@ public sealed class StudentUpdateInput
     [EmailAddress]
     public string EmailAddress { get; set; } = string.Empty;
 
-    /// <summary>
-    ///     Gets or sets a categorie.
-    /// </summary>
-    public CategoryType Category { get; set; }
+    public DateTime Birthdate { get; set; } = DateTime.MinValue;
 
     /// <summary>
     ///     Gets or sets a student state.

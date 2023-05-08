@@ -1,0 +1,20 @@
+﻿.migration-container {
+    display: grid;
+    grid-template-areas: "group1 to group2";
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: calc(100vh - 12rem);
+
+    .group1{
+        grid-area: group1;
+    }
+
+    .group2 {
+        grid-area: group2;
+    }
+
+    .to {
+        grid-area: to;
+    }
+}
+
+

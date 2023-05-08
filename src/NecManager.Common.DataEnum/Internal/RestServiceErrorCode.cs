@@ -22,6 +22,7 @@ public enum RestServiceErrorCode
     StudentNotFound = 5001,
     StudentUpdateFailure = 5002,
     StudentDeletionFailure = 5003,
+    StudentsUpdateCategoryFailure = 5004,
 
     GroupDeletionFailure = 6000,
     GroupNotFound = 6001,

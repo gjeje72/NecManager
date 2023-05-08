@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 
 using NecManager.Common;
 using NecManager.Common.DataEnum.Internal;
+using NecManager.Common.Extensions;
 using NecManager.Server.Api.Business.Modules.Group.Models;
 using NecManager.Server.Api.Business.Modules.Student.Models;
 using NecManager.Server.Api.Business.Modules.Training.Models;
@@ -199,7 +200,7 @@ internal sealed class GroupBusiness : IGroupBusiness
                     Id = student.Id,
                     FirstName = student.FirstName,
                     LastName = student.Name,
-                    Categorie = student.Category,
+                    Categorie = student.BirthDate.ToCategoryType(),
                     Weapon = group.Weapon,
                     GroupName = group.Title ?? string.Empty,
                 }

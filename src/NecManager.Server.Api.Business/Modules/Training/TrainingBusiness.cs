@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using NecManager.Common;
 using NecManager.Common.DataEnum;
 using NecManager.Common.DataEnum.Internal;
+using NecManager.Common.Extensions;
 using NecManager.Server.Api.Business.Modules.Training.Models;
 using NecManager.Server.DataAccessLayer.EntityLayer.Abstractions;
 using NecManager.Server.DataAccessLayer.Model;
@@ -259,8 +260,8 @@ internal class TrainingBusiness : ITrainingBusiness
             Weapon = matchingTraining.Lesson?.Weapon ?? WeaponType.None,
             IsIndividual = matchingTraining.PersonTrainings.Count() == 1 && (matchingTraining.PersonTrainings.FirstOrDefault()?.IsIndividual ?? false),
             MasterName = matchingTraining.MasterName ?? string.Empty,
-            GroupStudents = matchingTraining.Group?.StudentGroups.Select(sg => new TrainingStudentBase() { Id = sg.StudentId, FirstName = sg.Student?.FirstName ?? string.Empty, Name = sg.Student?.Name ?? string.Empty, Category = sg.Student?.Category ?? CategoryType.None }).ToList() ?? new List<TrainingStudentBase>(),
-            TrainingStudents = matchingTraining.PersonTrainings.Select(pt => new TrainingStudentBase() { Id = pt.StudentId, FirstName = pt.Student?.FirstName ?? string.Empty, Name = pt.Student?.Name ?? string.Empty, Category = pt.Student?.Category ?? CategoryType.None }).ToList(),
+            GroupStudents = matchingTraining.Group?.StudentGroups.Select(sg => new TrainingStudentBase() { Id = sg.StudentId, FirstName = sg.Student?.FirstName ?? string.Empty, Name = sg.Student?.Name ?? string.Empty, Category = sg.Student?.BirthDate.ToCategoryType() ?? CategoryType.None }).ToList() ?? new List<TrainingStudentBase>(),
+            TrainingStudents = matchingTraining.PersonTrainings.Select(pt => new TrainingStudentBase() { Id = pt.StudentId, FirstName = pt.Student?.FirstName ?? string.Empty, Name = pt.Student?.Name ?? string.Empty, Category = pt.Student?.BirthDate.ToCategoryType() ?? CategoryType.None }).ToList(),
             Lesson = new()
             {
                 Id = matchingTraining.Lesson?.Id ?? 0,

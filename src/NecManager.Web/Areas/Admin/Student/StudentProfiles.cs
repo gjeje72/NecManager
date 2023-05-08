@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using AutoMapper;
 
 using NecManager.Common.DataEnum;
+using NecManager.Web.Areas.Admin.Settings.Group.ViewModels;
 using NecManager.Web.Areas.Admin.Student.ViewModel;
 using NecManager.Web.Service.Models;
 using NecManager.Web.Service.Models.Groups;
