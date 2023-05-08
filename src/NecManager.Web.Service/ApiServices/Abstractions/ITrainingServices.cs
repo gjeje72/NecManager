@@ -12,13 +12,15 @@ public interface ITrainingServices
 {
     Task<ServiceResult<PageableResult<TrainingBase>>> GetAllTrainingsAsync(TrainingInputQuery trainingQuery, CancellationToken cancellationToken = default);
 
+    Task<ServiceResult<TrainingDetails>> GetTrainingByIdAsync(int trainingId, CancellationToken cancellationToken = default);
+
     Task<ServiceResult> CreateTrainingAsync(TrainingCreationInput creationInput, CancellationToken cancellationToken = default);
 
     Task<ServiceResult> CreateRangeTrainingsAsync(List<TrainingCreationInput> trainingCreationInputs, CancellationToken cancellationToken = default);
 
-    Task<ServiceResult> DeleteTrainingAsync(int id, CancellationToken cancellationToken = default);
+    Task<ServiceResult> AddStudentsInTrainingAsync(TrainingUpdateStudentInput updateInput, CancellationToken cancellationToken = default);
 
     Task<ServiceResult> UpdateTrainingAsync(TrainingUpdateInput updateInput, CancellationToken cancellationToken = default);
-    Task<ServiceResult<TrainingDetails>> GetTrainingByIdAsync(int trainingId, CancellationToken cancellationToken = default);
-    Task<ServiceResult> AddStudentsInTrainingAsync(TrainingUpdateStudentInput updateInput, CancellationToken cancellationToken = default);
+
+    Task<ServiceResult> DeleteTrainingAsync(int id, CancellationToken cancellationToken = default);
 }
