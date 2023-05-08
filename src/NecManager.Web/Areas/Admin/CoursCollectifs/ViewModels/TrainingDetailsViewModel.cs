@@ -1,9 +1,10 @@
-﻿namespace NecManager.Server.Api.Business.Modules.Training.Models;
-using System;
+﻿namespace NecManager.Web.Areas.Admin.CoursCollectifs.ViewModels;
 
 using NecManager.Common.DataEnum;
+using System.Collections.Generic;
+using System;
 
-public sealed class TrainingDetails
+public class TrainingDetailsViewModel
 {
     public int Id { get; set; }
 
@@ -41,9 +42,9 @@ public sealed class TrainingDetails
 
     public string? MasterName { get; set; }
 
-    public List<TrainingStudentBase> TrainingStudents { get; set; } = new();
+    public List<TrainingStudentViewModel> TrainingStudents { get; set; } = new();
 
-    public List<TrainingStudentBase> GroupStudents { get; set; } = new();
+    public List<TrainingStudentViewModel> GroupStudents { get; set; } = new();
 
-    public TrainingLesson Lesson { get; set; } = new();
+    public TrainingLessonViewModel Lesson { get; set; } = new();
 }

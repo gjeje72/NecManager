@@ -28,6 +28,14 @@ internal sealed class TrainingServices : ServiceBase, ITrainingServices
     }
 
     /// <inheritdoc/>
+    public async Task<ServiceResult<TrainingDetails>> GetTrainingByIdAsync(int trainingId,  CancellationToken cancellationToken = default)
+    {
+        var trainingClient = await this.RestHttpService.TrainingClient.ConfigureAwait(false);
+        var response = await trainingClient.GetAsync($"{trainingId}", cancellationToken).ConfigureAwait(false);
+        return await response.BuildDataServiceResultAsync<TrainingDetails>().ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
     public async Task<ServiceResult> CreateTrainingAsync(TrainingCreationInput creationInput, CancellationToken cancellationToken = default)
     {
         var trainingClient = await this.RestHttpService.TrainingClient.ConfigureAwait(false);
@@ -48,6 +56,13 @@ internal sealed class TrainingServices : ServiceBase, ITrainingServices
     {
         var trainingClient = await this.RestHttpService.TrainingClient.ConfigureAwait(false);
         var response = await trainingClient.PutAsync($"{updateInput.Id}", updateInput.ToStringContent(), cancellationToken).ConfigureAwait(false);
+        return await response.BuildDataServiceResultAsync().ConfigureAwait(false);
+    }
+
+    public async Task<ServiceResult> AddStudentsInTrainingAsync(TrainingUpdateStudentInput updateInput, CancellationToken cancellationToken = default)
+    {
+        var trainingClient = await this.RestHttpService.TrainingClient.ConfigureAwait(false);
+        var response = await trainingClient.PutAsync($"{updateInput.TrainingId}/add-students", updateInput.ToStringContent(), cancellationToken).ConfigureAwait(false);
         return await response.BuildDataServiceResultAsync().ConfigureAwait(false);
     }
 

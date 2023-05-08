@@ -47,14 +47,14 @@ internal class TrainingBusiness : ITrainingBusiness
     }
 
     /// <inheritdoc />
-    public async Task<ApiResponse<TrainingBase>> GetTrainingByIdAsync(ServiceMonitoringDefinition monitoringIds, int trainingId)
+    public async Task<ApiResponse<TrainingDetails>> GetTrainingByIdAsync(ServiceMonitoringDefinition monitoringIds, int trainingId)
     {
         //ArgumentNullException.ThrowIfNull(monitoringIds);
 
-        var matchingTraining = await this.trainingAccessLayer.GetSingleAsync(x => x.Id == trainingId, false, x => x.Include(t => t.Group!).Include(t => t.PersonTrainings!).Include(t => t.Lesson!)).ConfigureAwait(false);
+        var matchingTraining = await this.trainingAccessLayer.GetSingleAsync(x => x.Id == trainingId, false, x => x.Include(t => t.Group!).ThenInclude(g => g.StudentGroups).ThenInclude(sg => sg.Student).Include(t => t.PersonTrainings!).ThenInclude(pt => pt.Student).Include(t => t.Lesson!)).ConfigureAwait(false);
         return matchingTraining is null
             ? (new(monitoringIds, new(ApiResponseResultState.NotFound, ApiResponseError.LessonApiErrors.LessonNotFound)))
-            : (new(monitoringIds, new(this.MapTrainingToTrainingBase(matchingTraining))));
+            : (new(monitoringIds, new(this.MapTrainingToTrainingDetails(matchingTraining))));
     }
 
     /// <inheritdoc />
@@ -164,6 +164,7 @@ internal class TrainingBusiness : ITrainingBusiness
         if (!await this.studentAccessLayer.ExistsRangeAsync(input.StudentsIds))
             return new(monitoringIds, new(ApiResponseResultState.NotFound, TrainingApiErrors.TrainingNotFound));
 
+        matchingTraining.PersonTrainings.Clear();
         foreach (var studentId in input.StudentsIds)
         {
             matchingTraining.MasterName = input.MasterName;
@@ -241,6 +242,36 @@ internal class TrainingBusiness : ITrainingBusiness
             IsIndividual = matchingTraining.PersonTrainings.Count() == 1 && (matchingTraining.PersonTrainings.FirstOrDefault()?.IsIndividual ?? false),
             MasterName = matchingTraining.MasterName ?? string.Empty,
         };
+
+    private TrainingDetails MapTrainingToTrainingDetails(Training matchingTraining)
+        => new TrainingDetails()
+        {
+            Id = matchingTraining.Id,
+            GroupId = matchingTraining.GroupId,
+            LessonId = matchingTraining.LessonId,
+            Date = matchingTraining.Date,
+            StartTime = matchingTraining.StartTime,
+            EndTime = matchingTraining.EndTime,
+            LessonName = matchingTraining.Lesson?.Title ?? string.Empty,
+            GroupName = matchingTraining.PersonTrainings.FirstOrDefault()?.IsIndividual ?? false
+                        ? GetGroupNameIfIndividualTraining(matchingTraining)
+                        : matchingTraining.Group?.Title,
+            Weapon = matchingTraining.Lesson?.Weapon ?? WeaponType.None,
+            IsIndividual = matchingTraining.PersonTrainings.Count() == 1 && (matchingTraining.PersonTrainings.FirstOrDefault()?.IsIndividual ?? false),
+            MasterName = matchingTraining.MasterName ?? string.Empty,
+            GroupStudents = matchingTraining.Group?.StudentGroups.Select(sg => new TrainingStudentBase() { Id = sg.StudentId, FirstName = sg.Student?.FirstName ?? string.Empty, Name = sg.Student?.Name ?? string.Empty, Category = sg.Student?.Category ?? CategoryType.None }).ToList() ?? new List<TrainingStudentBase>(),
+            TrainingStudents = matchingTraining.PersonTrainings.Select(pt => new TrainingStudentBase() { Id = pt.StudentId, FirstName = pt.Student?.FirstName ?? string.Empty, Name = pt.Student?.Name ?? string.Empty, Category = pt.Student?.Category ?? CategoryType.None }).ToList(),
+            Lesson = new()
+            {
+                Id = matchingTraining.Lesson?.Id ?? 0,
+                Title = matchingTraining.Lesson?.Title ?? string.Empty,
+                Description = matchingTraining.Lesson?.Description ?? string.Empty,
+                Content = matchingTraining.Lesson?.Content ?? string.Empty,
+                Difficulty = matchingTraining.Lesson?.Difficulty ?? DifficultyType.None,
+                Weapon = matchingTraining.Lesson?.Weapon ?? WeaponType.None,
+            },
+        };
+
     private static string GetGroupNameIfIndividualTraining(Training matchingTraining)
         => $"{matchingTraining.PersonTrainings.FirstOrDefault()?.Student?.FirstName ?? string.Empty} {matchingTraining.PersonTrainings.FirstOrDefault()?.Student?.Name ?? string.Empty}";
 }
