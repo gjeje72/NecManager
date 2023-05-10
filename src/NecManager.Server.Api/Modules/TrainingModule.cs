@@ -1,5 +1,6 @@
 ﻿namespace NecManager.Server.Api.Modules;
 
+using Microsoft.AspNetCore.Http.Headers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
@@ -8,8 +9,10 @@ using Microsoft.Extensions.DependencyInjection;
 using NecManager.Common;
 using NecManager.Server.Api.Business.Modules.Training;
 using NecManager.Server.Api.Business.Modules.Training.Models;
+using NecManager.Server.Api.Business.Modules.Training.Models.History;
 using NecManager.Server.Api.ResponseHelpers;
 using NecManager.Server.Api.ResponseHelpers.Extensions;
+using NecManager.Server.DataAccessLayer.Model;
 
 public sealed class TrainingModule : IModule
 {
@@ -31,8 +34,15 @@ public sealed class TrainingModule : IModule
                 .WithName("Get a training by its identifier.")
                 .WithTags("Trainings");
 
+        _ = endpoints.MapGet("/trainings/history",
+            async (ApiRequestHeaders requestHeaders, [FromServices] ITrainingBusiness trainingService, /*BindAsync*/ TrainingHistoryQuery input)
+                => Results.Extensions.ApiResponse(await trainingService.GetTrainingHistoryAsync(requestHeaders, input.Id, input.IsStudent)))
+                .ProducesApiResponse<TrainingsHistory>()
+                .WithName("Get trainings history.")
+                .WithTags("Trainings");
+
         _ = endpoints.MapPost("/trainings",
-             //[Authorize] async (ApiRequestHeaders requestHeaders, [FromServices] ITrainingBusiness trainingService, TrainingCreationInput input)
+        //[Authorize] async (ApiRequestHeaders requestHeaders, [FromServices] ITrainingBusiness trainingService, TrainingCreationInput input)
              async (ApiRequestHeaders requestHeaders, [FromServices] ITrainingBusiness trainingService, [FromBody] TrainingCreationInput input)
                 => Results.Extensions.ApiResponseEmpty(await trainingService.CreateTrainingAsync(requestHeaders, input)))
                 .ProducesApiResponseEmpty()

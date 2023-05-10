@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using NecManager.Common;
 using NecManager.Web.Service.Models.Query;
 using NecManager.Web.Service.Models.Trainings;
+using NecManager.Web.Service.Models.Trainings.History;
 
 public interface ITrainingServices
 {
@@ -23,4 +24,5 @@ public interface ITrainingServices
     Task<ServiceResult> UpdateTrainingAsync(TrainingUpdateInput updateInput, CancellationToken cancellationToken = default);
 
     Task<ServiceResult> DeleteTrainingAsync(int id, CancellationToken cancellationToken = default);
+    Task<ServiceResult<TrainingsHistory>> GetTrainingHistoryAsync(TrainingHistoryQuery query, CancellationToken cancellationToken = default);
 }

@@ -1,6 +1,7 @@
 ﻿@page "/admin/cours-collectifs"
 @using NecManager.Common.DataEnum;
 @using NecManager.Common.Extensions;
+@using NecManager.Web.Components.Modal
 
 <TopBar Title="Cours collectifs" />
 
@@ -60,7 +61,7 @@
     <div class="attendance-background">
         <div class="attendance-content">
             <div class="row space-between">
-                <h2 class="title">APPEL</h2>
+                <h2 class="title" title="voir l'historique" @onclick="@this.OnShowHistoryClickedEventHandlerAsync">APPEL<i class="oi oi-clock hidden"></i></h2>
                 <button class="btn-tertiary" @onclick="@this.OnValidateTrainingStudentClickedEventHandlerAsync">@this.ValidateButtonText</button>
             </div>
             @foreach (var studentCat in this.CurrentTraining.GroupStudents.GroupBy(gs => gs.Category))
@@ -78,3 +79,45 @@
         </div>
     </div>
 </div>
+
+@if (this.ShowHistory)
+{
+    <div class="overlay">
+        <div class="history-container">
+            <button class="btn-icon close" @onclick="@(() => this.ShowHistory = false)"><i class="oi oi-x"></i></button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Eleve</th>
+                        <th>Assiduité</th>
+                        @foreach (var date in this.History.Trainings.Select(t => t.Date).Distinct())
+                        {
+                            <th>@date.ToString("dd MMM")</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var student in this.History.GroupStudents)
+                    {
+                        <tr>
+                            <td>@student.Name @student.FirstName</td>
+                            <td>@(this.History.Trainings.Count(t => t.TrainingStudentsIds.Any(s => s == student.Id)) * 100 / this.History.Trainings.Count(t => t.Date <= new DateTime(2023, 9, 16)))%</td>
+                            @foreach (var date in this.History.Trainings.Select(t => t.Date).Distinct())
+                            {
+                                @if (this.History.Trainings.Any(t => t.Date == date && t.TrainingStudentsIds.Any(id => id == student.Id)))
+                                {
+                                    <td>✔️</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+}

@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Components;
@@ -24,7 +23,8 @@ public partial class DailyTrainings
     private TrainingDetailsViewModel CurrentTraining = new();
     private TrainingInputQuery trainingInputQuery = new();
     private string ValidateButtonText = "Valider";
-
+    private bool ShowHistory = false;
+    private TrainingsHistoryViewModel History { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -111,7 +111,7 @@ public partial class DailyTrainings
         };
 
         var (state, _) = await this.TrainingServices.AddStudentsInTrainingAsync(updateStudentInput).ConfigureAwait(true);
-        if(state == ServiceResultState.Success)
+        if (state == ServiceResultState.Success)
         {
             this.ValidateButtonText = "✔️";
         }
@@ -131,6 +131,36 @@ public partial class DailyTrainings
         await this.RefreshTrainingsListAsync().ConfigureAwait(true);
     }
 
+    private async Task OnShowHistoryClickedEventHandlerAsync()
+    {
+        if (this.CurrentTraining.GroupId == null)
+            return;
+
+        var (state, history, _) = await this.TrainingServices.GetTrainingHistoryAsync(new() { Id = (int)this.CurrentTraining.GroupId, IsStudent = false }).ConfigureAwait(true);
+        if (state == ServiceResultState.Success && history is not null)
+        {
+            this.History = new()
+            {
+                GroupId = history.GroupId,
+                GroupName = history.GroupName,
+                GroupStudents = history.GroupStudents.Select(gs => new TrainingStudentViewModel()
+                {
+                    Id = gs.Id,
+                    Name = gs.Name,
+                    FirstName = gs.FirstName,
+                    Category = gs.Category
+                }).ToList(),
+                Trainings = history.Trainings.Select(t => new TrainingHistoryViewModel()
+                {
+                    Date = t.Date,
+                    IsIndividual = t.IsIndividual,
+                    TrainingStudentsIds = t.TrainingStudentsIds,
+                }).ToList()
+            };
+            this.ShowHistory = true;
+        }
+    }
+
     private void AddTrainingStudent(TrainingStudentViewModel student, ChangeEventArgs arg)
     {
         _ = bool.TryParse(arg.Value?.ToString(), out var isSelected);
@@ -141,7 +171,7 @@ public partial class DailyTrainings
         else
         {
             var studentsToRemove = this.CurrentTraining.TrainingStudents.Where(x => x.Id == student.Id).ToList();
-            foreach(var studentToRemove in studentsToRemove)
+            foreach (var studentToRemove in studentsToRemove)
             {
                 this.CurrentTraining.TrainingStudents.Remove(studentToRemove);
             }

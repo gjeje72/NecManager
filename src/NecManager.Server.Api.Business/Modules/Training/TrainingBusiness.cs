@@ -1,5 +1,7 @@
 ﻿namespace NecManager.Server.Api.Business.Modules.Training;
 
+using System.Text.RegularExpressions;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -8,6 +10,7 @@ using NecManager.Common.DataEnum;
 using NecManager.Common.DataEnum.Internal;
 using NecManager.Common.Extensions;
 using NecManager.Server.Api.Business.Modules.Training.Models;
+using NecManager.Server.Api.Business.Modules.Training.Models.History;
 using NecManager.Server.DataAccessLayer.EntityLayer.Abstractions;
 using NecManager.Server.DataAccessLayer.Model;
 
@@ -56,6 +59,20 @@ internal class TrainingBusiness : ITrainingBusiness
         return matchingTraining is null
             ? (new(monitoringIds, new(ApiResponseResultState.NotFound, ApiResponseError.LessonApiErrors.LessonNotFound)))
             : (new(monitoringIds, new(this.MapTrainingToTrainingDetails(matchingTraining))));
+    }
+
+    public async Task<ApiResponse<TrainingsHistory>> GetTrainingHistoryAsync(ServiceMonitoringDefinition monitoringIds, int id, bool isStudent = false)
+    {
+        var matchingTrainings = new PageableResult<Training>();
+
+        if (isStudent)
+            matchingTrainings = await this.trainingAccessLayer.GetPageableCollectionAsync(new(10, 1, null, null, null, null, null, id, null, false, null), false);
+        else
+        matchingTrainings = await this.trainingAccessLayer.GetPageableCollectionAsync(new(10, 1, null, null, id, null, null, null, null, false, null), false);
+
+        return (matchingTrainings is null || matchingTrainings.Items is null)
+            ? (new(monitoringIds, new(ApiResponseResultState.NotFound, ApiResponseError.LessonApiErrors.LessonNotFound)))
+            : (new(monitoringIds, new(this.MapTrainingsToTrainingsHistory(matchingTrainings.Items))));
     }
 
     /// <inheritdoc />
@@ -272,6 +289,26 @@ internal class TrainingBusiness : ITrainingBusiness
                 Weapon = matchingTraining.Lesson?.Weapon ?? WeaponType.None,
             },
         };
+
+    private TrainingsHistory MapTrainingsToTrainingsHistory(IEnumerable<Training> trainings)
+    {
+        var group = trainings.FirstOrDefault(x => x.GroupId != null)?.Group;
+        if (group is null)
+            return new();
+
+        return new TrainingsHistory()
+        {
+            GroupId = group.Id,
+            GroupName = group.Title,
+            GroupStudents = group.StudentGroups.Select(pt => new TrainingStudentBase() { Id = pt.StudentId, FirstName = pt.Student?.FirstName ?? string.Empty, Name = pt.Student?.Name ?? string.Empty, Category = pt.Student?.BirthDate.ToCategoryType() ?? CategoryType.None }).ToList() ?? new(),
+            Trainings = trainings.Select(x => new TrainingHistory()
+            {
+                Date = x.Date,
+                IsIndividual = x.PersonTrainings.FirstOrDefault()?.IsIndividual ?? false && x.PersonTrainings.Count == 1,
+                TrainingStudentsIds = x.PersonTrainings.Select(pt => pt.StudentId).ToList(),
+            }).ToList() ?? new(),
+        };
+    }
 
     private static string GetGroupNameIfIndividualTraining(Training matchingTraining)
         => $"{matchingTraining.PersonTrainings.FirstOrDefault()?.Student?.FirstName ?? string.Empty} {matchingTraining.PersonTrainings.FirstOrDefault()?.Student?.Name ?? string.Empty}";

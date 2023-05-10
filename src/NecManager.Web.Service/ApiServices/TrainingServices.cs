@@ -10,6 +10,7 @@ using NecManager.Web.Service.Provider;
 using NecManager.Web.Service.Models.Trainings;
 using NecManager.Web.Service.Extensions;
 using System.Collections.Generic;
+using NecManager.Web.Service.Models.Trainings.History;
 
 internal sealed class TrainingServices : ServiceBase, ITrainingServices
 {
@@ -33,6 +34,14 @@ internal sealed class TrainingServices : ServiceBase, ITrainingServices
         var trainingClient = await this.RestHttpService.TrainingClient.ConfigureAwait(false);
         var response = await trainingClient.GetAsync($"{trainingId}", cancellationToken).ConfigureAwait(false);
         return await response.BuildDataServiceResultAsync<TrainingDetails>().ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    public async Task<ServiceResult<TrainingsHistory>> GetTrainingHistoryAsync(TrainingHistoryQuery query, CancellationToken cancellationToken = default)
+    {
+        var trainingClient = await this.RestHttpService.TrainingClient.ConfigureAwait(false);
+        var response = await trainingClient.GetAsync($"history{query.AsQueryParams}", cancellationToken).ConfigureAwait(false);
+        return await response.BuildDataServiceResultAsync<TrainingsHistory>().ConfigureAwait(false);
     }
 
     /// <inheritdoc/>
