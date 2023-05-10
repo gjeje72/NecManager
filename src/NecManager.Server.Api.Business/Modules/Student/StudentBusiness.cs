@@ -91,7 +91,7 @@ internal sealed class StudentBusiness : IStudentBusiness
 
         try
         {
-            matchingStudent.StudentGroups = new List<StudentGroup>();
+            matchingStudent.StudentGroups.Clear();
             if (input.GroupIds.Count > 0)
             {
                 foreach (var groupId in input.GroupIds)

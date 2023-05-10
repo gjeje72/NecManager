@@ -6,6 +6,8 @@ using NecManager.Common.DataEnum;
 using NecManager.Common.DataEnum.Internal;
 using NecManager.Web.Areas.Admin.Settings.Group.ViewModels;
 using NecManager.Web.Service.ApiServices.Abstractions;
+using NecManager.Web.Service.Models.Groups;
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -77,6 +79,38 @@ public partial class MigrateStudent
                 this.SelectedDestinationGroup = group;
 
             await this.InvokeAsync(this.StateHasChanged);
+        }
+    }
+
+    private async Task OnSaveClickedEventHandler()
+    {
+        var group1ToUpdate = new GroupUpdateInput
+        {
+            GroupId = this.SelectedSourceGroup.Id,
+            Title = this.SelectedSourceGroup.Title,
+            Weapon = this.SelectedSourceGroup.Weapon, 
+            Categories = this.SelectedSourceGroup.Categories.Select(c => (int)c).ToList(),
+            StudentsIds = this.SelectedSourceGroup.Students.Where(s => s.IsUnsavedMove == false).Select(s => s.Id).ToList(),
+        };
+
+        var group2ToUpdate = new GroupUpdateInput
+        {
+            GroupId = this.SelectedDestinationGroup.Id,
+            Title = this.SelectedDestinationGroup.Title,
+            Weapon = this.SelectedDestinationGroup.Weapon,
+            Categories = this.SelectedDestinationGroup.Categories.Select(c => (int)c).ToList(),
+            StudentsIds = this.SelectedDestinationGroup.Students.Select(s => s.Id).ToList(),
+        };
+
+        var (state, _) = await this.GroupServices.UpdateGroupAsync(group1ToUpdate).ConfigureAwait(true);
+        if (state == ServiceResultState.Success)
+        {
+            var (state2, _) = await this.GroupServices.UpdateGroupAsync(group2ToUpdate).ConfigureAwait(true);
+            if (state2 == ServiceResultState.Success)
+            {
+                this.SelectedSourceGroup = new();
+                this.SelectedDestinationGroup = new();
+            }
         }
     }
 
