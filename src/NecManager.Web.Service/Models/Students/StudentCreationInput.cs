@@ -34,9 +34,9 @@ public sealed class StudentCreationInput
     public string EmailAddress { get; set; } = string.Empty;
 
     /// <summary>
-    ///     Gets or sets a categorie.
+    ///     Gets or sets a Birthdate.
     /// </summary>
-    public CategoryType Category { get; set; }
+    public DateTime Birthdate { get; set; }
 
     /// <summary>
     ///     Gets or sets a student state.

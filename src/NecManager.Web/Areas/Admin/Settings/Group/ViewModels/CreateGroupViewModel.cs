@@ -1,9 +1,8 @@
-﻿namespace NecManager.Web.Areas.Admin.Student.ViewModel;
+﻿namespace NecManager.Web.Areas.Admin.Settings.Group.ViewModels;
 
 using System.Collections.Generic;
 
 using NecManager.Common.DataEnum;
-using NecManager.Web.Areas.Admin.Settings.Group.ViewModels;
 
 public sealed class CreateGroupViewModel
 {

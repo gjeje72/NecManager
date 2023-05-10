@@ -1,0 +1,21 @@
+﻿.migration-container {
+    display: grid;
+    grid-template-areas: "group1 group2";
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 100%;
+    column-gap: 2rem;
+
+    .group1 {
+        grid-area: group1;
+        padding: 2rem;
+
+        .moved {
+            text-decoration: line-through;
+        }
+    }
+
+    .group2 {
+        grid-area: group2;
+        padding: 2rem;
+    }
+}

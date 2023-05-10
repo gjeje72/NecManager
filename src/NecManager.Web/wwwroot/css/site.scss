@@ -205,6 +205,10 @@ input[type="checkbox"] {
     &.space-between {
         justify-content: space-between;
     }
+
+    &.no-gap {
+        column-gap: .5rem;
+    }
 }
 
 .error {

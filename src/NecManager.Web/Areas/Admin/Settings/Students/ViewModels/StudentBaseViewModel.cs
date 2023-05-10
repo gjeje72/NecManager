@@ -1,6 +1,8 @@
 ﻿namespace NecManager.Web.Areas.Admin.Settings.Students.ViewModels;
 
 using NecManager.Common.DataEnum;
+
+using System;
 using System.Collections.Generic;
 
 public sealed class StudentBaseViewModel
@@ -12,6 +14,8 @@ public sealed class StudentBaseViewModel
     public string FirstName { get; set; } = string.Empty;
 
     public CategoryType Category { get; set; }
+
+    public DateTime Birthdate { get; set; } = DateTime.MinValue;
 
     public WeaponType Weapon { get; set; }
 

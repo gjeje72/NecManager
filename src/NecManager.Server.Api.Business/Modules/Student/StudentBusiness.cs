@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using NecManager.Common;
 using NecManager.Common.DataEnum;
 using NecManager.Common.DataEnum.Internal;
+using NecManager.Common.Extensions;
 using NecManager.Server.Api.Business.Modules.Student.Models;
 using NecManager.Server.DataAccessLayer.EntityLayer.Abstractions;
 using NecManager.Server.DataAccessLayer.Model;
@@ -62,7 +63,7 @@ internal sealed class StudentBusiness : IStudentBusiness
             FirstName = creationInput.FirstName,
             Name = creationInput.Name,
             EmailAddress = creationInput.EmailAddress,
-            Category = creationInput.Category,
+            BirthDate = creationInput.Birthdate,
             PhoneNumber = creationInput.PhoneNumber,
             IsMaster = creationInput.IsMaster,
             State = creationInput.State,
@@ -90,7 +91,7 @@ internal sealed class StudentBusiness : IStudentBusiness
 
         try
         {
-            matchingStudent.StudentGroups = new List<StudentGroup>();
+            matchingStudent.StudentGroups.Clear();
             if (input.GroupIds.Count > 0)
             {
                 foreach (var groupId in input.GroupIds)
@@ -106,7 +107,7 @@ internal sealed class StudentBusiness : IStudentBusiness
             matchingStudent.Name = input.Name;
             matchingStudent.FirstName = input.FirstName;
             matchingStudent.State = input.State;
-            matchingStudent.Category = input.Category;
+            matchingStudent.BirthDate = input.Birthdate;
             matchingStudent.PhoneNumber = input.PhoneNumber;
             matchingStudent.EmailAddress = input.EmailAddress;
 
@@ -149,7 +150,8 @@ internal sealed class StudentBusiness : IStudentBusiness
             Id = student.Id,
             FirstName = student.FirstName,
             LastName = student.Name,
-            Categorie = student.Category,
+            Birthdate = student.BirthDate,
+            Categorie = student.BirthDate.ToCategoryType(),
             State = student.State,
             Weapon = student.StudentGroups?.FirstOrDefault()?.Group?.Weapon ?? WeaponType.None,
             GroupIds = student.StudentGroups?.Select(sg => sg.GroupId) ?? new List<int>(),

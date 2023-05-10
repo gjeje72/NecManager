@@ -64,7 +64,7 @@
     <Paginator Value="@pagination" />
 </div>
 
-<Dialog Title="Création d'une leçon"
+<Dialog Title="Création d'un escrimeur"
         ValidateButtonText="@this.ValidateButtonLabel"
         CancelButtonText="Annuler"
         OnValidate="this.OnValidCreateOrUpdateFormAsync"
@@ -78,13 +78,8 @@
                     <InputText class="form-control" id="name" @bind-Value="this.CreateStudentModel.Name"></InputText>
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="cat">Catégorie</label>
-                    <InputSelect class="form-control" @bind-Value="this.CreateStudentModel.Category" id="cat">
-                        @foreach (var categorie in Enum.GetValues(typeof(CategoryType)))
-                        {
-                            <option value="@categorie">@categorie</option>
-                        }
-                    </InputSelect>
+                    <label class="form-label" for="birth">Date Naissance</label>
+                    <InputDate class="form-control" @bind-Value="this.CreateStudentModel.Birthdate" id="birth"/>
                 </div>
             </div>
             <div class="row">

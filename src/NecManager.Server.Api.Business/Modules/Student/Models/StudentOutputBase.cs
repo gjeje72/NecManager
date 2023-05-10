@@ -10,6 +10,8 @@ public sealed class StudentOutputBase
 
     public string FirstName { get; set; } = string.Empty;
 
+    public DateTime Birthdate { get; set; } = DateTime.MinValue;
+
     public CategoryType Categorie { get; set; }
 
     public WeaponType Weapon { get; set; }

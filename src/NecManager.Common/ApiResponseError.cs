@@ -49,6 +49,7 @@ public record ApiResponseError(RestServiceErrorCode ErrorCode, string ErrorMessa
     {
         public static readonly ApiResponseError StudentNotFound = new(RestServiceErrorCode.StudentNotFound, "Student not found.");
         public static readonly ApiResponseError StudentUpdateFailure = new(RestServiceErrorCode.StudentUpdateFailure, "Update student failed.");
+        public static readonly ApiResponseError StudentsUpdateCategoryFailure = new(RestServiceErrorCode.StudentsUpdateCategoryFailure, "Update students category failed.");
         public static readonly ApiResponseError StudentDeletionFailure = new(RestServiceErrorCode.StudentDeletionFailure, "Delete student failed.");
 
     }

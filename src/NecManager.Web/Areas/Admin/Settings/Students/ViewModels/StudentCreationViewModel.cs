@@ -1,5 +1,6 @@
 ﻿namespace NecManager.Web.Areas.Admin.Settings.Students.ViewModels;
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -33,9 +34,9 @@ public sealed class StudentCreationViewModel
     public string EmailAddress { get; set; } = string.Empty;
 
     /// <summary>
-    ///     Gets or sets a categorie.
+    ///     Gets or sets a birthdate.
     /// </summary>
-    public CategoryType Category { get; set; }
+    public DateTime Birthdate { get; set; }
 
     /// <summary>
     ///     Gets or sets a student state.
