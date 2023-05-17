@@ -21,12 +21,14 @@ public sealed class Student : ADataObject
     /// <summary>
     ///     Gets or sets the phone number.
     /// </summary>
+    [MaxLength(20)]
     public string PhoneNumber { get; set; } = string.Empty;
 
     /// <summary>
     ///     Gets or sets the email address.
     /// </summary>
     [EmailAddress]
+    [MaxLength(200)]
     public string EmailAddress { get; set; } = string.Empty;
 
     /// <summary>

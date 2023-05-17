@@ -16,6 +16,7 @@ public class Group : ADataObject
     /// <summary>
     ///     Gets or sets a collection of categories.
     /// </summary>
+    [MaxLength(200)]
     public string? Categories { get; set; }
 
     /// <summary>

@@ -1,6 +1,7 @@
 ﻿namespace NecManager.Server.DataAccessLayer.Model;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 using NecManager.Server.DataAccessLayer.Model.Abstraction;
 
@@ -18,6 +19,7 @@ public sealed class Training : ADataObject
     /// </summary>
     public decimal EndTime { get; set; }
 
+    [MaxLength(200)]
     public string? MasterName { get; set; }
 
     public ICollection<PersonTraining> PersonTrainings { get; set; } = new HashSet<PersonTraining>();

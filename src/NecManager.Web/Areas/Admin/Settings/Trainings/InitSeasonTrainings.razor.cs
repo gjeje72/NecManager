@@ -70,7 +70,7 @@ public partial class InitSeasonTrainings
                     StartTime = (decimal)startTime.TimeOfDay.TotalHours,
                     EndTime = (decimal)endTime.TimeOfDay.TotalHours,
                     IsIndividual = false,
-                    LessonId = 7,
+                    LessonId = 1,
                     GroupId = this.SeasonTrainingCreation.GroupId,
                     MasterName = this.SeasonTrainingCreation.MasterName,
                 });

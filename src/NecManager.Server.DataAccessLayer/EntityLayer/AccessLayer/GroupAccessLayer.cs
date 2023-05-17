@@ -3,9 +3,9 @@
 using NecManager.Server.DataAccessLayer.EntityLayer.Abstractions;
 using NecManager.Server.DataAccessLayer.Model;
 
-public class GroupAccessLayer : BaseAccessLayer<NecDbContext, Group>, IGroupAccessLayer
+public class GroupAccessLayer : BaseAccessLayer<NecLiteDbContext, Group>, IGroupAccessLayer
 {
-    public GroupAccessLayer(NecDbContext context)
+    public GroupAccessLayer(NecLiteDbContext context)
         : base(context)
     {
     }

@@ -10,9 +10,9 @@ using NecManager.Server.DataAccessLayer.EntityLayer.Abstractions.Query;
 using NecManager.Server.DataAccessLayer.Model;
 using NecManager.Server.DataAccessLayer.Model.Query;
 
-public class StudentAccessLayer : AQueryBaseAccessLayer<NecDbContext, Student, StudentQuery>, IStudentAccessLayer
+public class StudentAccessLayer : AQueryBaseAccessLayer<NecLiteDbContext, Student, StudentQuery>, IStudentAccessLayer
 {
-    public StudentAccessLayer(NecDbContext context)
+    public StudentAccessLayer(NecLiteDbContext context)
         : base(context)
     {
     }
