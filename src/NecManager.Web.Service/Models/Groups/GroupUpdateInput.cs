@@ -25,7 +25,7 @@ public sealed class GroupUpdateInput
     /// <summary>
     ///     Gets or sets a collection of students.
     /// </summary>
-    public List<int> StudentsIds { get; set; } = new();
+    public List<string> StudentsIds { get; set; } = new();
 
-    public int MasterId { get; set; }
+    public string MasterId { get; set; } = string.Empty;
 }

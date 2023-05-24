@@ -1,10 +1,11 @@
 ﻿namespace NecManager.Server.DataAccessLayer.Model;
 using System.ComponentModel.DataAnnotations;
 
-using NecManager.Common.DataEnum;
-using NecManager.Server.DataAccessLayer.Model.Abstraction;
+using Microsoft.AspNetCore.Identity;
 
-public sealed class Student : ADataObject
+using NecManager.Common.DataEnum;
+
+public sealed class Student : IdentityUser
 {
     /// <summary>
     ///     Gets or sets the name.
@@ -17,12 +18,6 @@ public sealed class Student : ADataObject
     /// </summary>
     [MaxLength(100)]
     public string FirstName { get; set; } = string.Empty;
-
-    /// <summary>
-    ///     Gets or sets the phone number.
-    /// </summary>
-    [MaxLength(20)]
-    public string PhoneNumber { get; set; } = string.Empty;
 
     /// <summary>
     ///     Gets or sets the email address.

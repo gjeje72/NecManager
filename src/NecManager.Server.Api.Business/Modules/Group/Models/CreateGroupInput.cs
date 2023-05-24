@@ -26,5 +26,5 @@ public sealed class CreateGroupInput
     /// </summary>
     public List<StudentOutputBase> Students { get; set; } = new();
 
-    public int MasterId { get; set; }
+    public string MasterId { get; set; } = string.Empty;
 }

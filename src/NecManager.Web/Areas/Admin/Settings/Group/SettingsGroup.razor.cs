@@ -210,7 +210,7 @@ public partial class SettingsGroup
             }).ToList() ?? new();
     }
 
-    private void OnStudentClickEventHandler(int studentId)
+    private void OnStudentClickEventHandler(string studentId)
     {
         if (this.ModelForm.Students is not null && !this.ModelForm.Students.Any(u => u.Id == studentId))
         {
@@ -220,7 +220,7 @@ public partial class SettingsGroup
         }
     }
 
-    private void OnStudentDeleteClickEventHandler(int studentId)
+    private void OnStudentDeleteClickEventHandler(string studentId)
     {
         var student = this.ModelForm.Students.FirstOrDefault(s => s.Id == studentId);
         if (student is not null)

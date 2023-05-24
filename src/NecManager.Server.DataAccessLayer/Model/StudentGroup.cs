@@ -7,7 +7,7 @@ public sealed class StudentGroup : ADataObject
     /// <summary>
     ///     Gets or sets the student id.
     /// </summary>
-    public int StudentId { get; set; }
+    public string StudentId { get; set; } = string.Empty;
 
     /// <summary>
     ///     Gets or sets the navigation property for student.

@@ -21,7 +21,7 @@ public sealed class TrainingInputQuery : APageableQuery
 
     public int? Season { get; set; }
 
-    public int? StudentId { get; set; }
+    public string? StudentId { get; set; }
 
     public string? Filter { get; set; }
 
@@ -60,7 +60,7 @@ public sealed class TrainingInputQuery : APageableQuery
         { nameof(this.GroupId), this.GroupId.ToString() ?? string.Empty },
         { nameof(this.Date), this.Date.ToString() ?? string.Empty },
         { nameof(this.Season), this.Season.ToString() ?? string.Empty },
-        { nameof(this.StudentId), this.StudentId.ToString() ?? string.Empty },
+        { nameof(this.StudentId), this.StudentId ?? string.Empty },
         { nameof(this.OnlyIndividual), this.OnlyIndividual.ToString() ?? string.Empty },
         { nameof(this.MasterName), this.MasterName ?? string.Empty },
         { nameof(this.Filter), this.Filter ?? string.Empty },

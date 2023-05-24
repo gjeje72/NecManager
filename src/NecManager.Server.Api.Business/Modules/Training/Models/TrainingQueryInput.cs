@@ -21,7 +21,7 @@ public sealed record TrainingQueryInput(
     int? GroupId = null,
     DateTime? Date = null,
     int? Season = null,
-    int? StudentId = null,
+    string? StudentId = null,
     string? Filter = null,
     bool OnlyIndividual = false,
     string? MasterName = null) : PageableQuery(PageSize, CurrentPage)
@@ -38,11 +38,11 @@ public sealed record TrainingQueryInput(
         _ = int.TryParse(httpContext.Request.Query["pageSize"], out var pageSize);
         _ = int.TryParse(httpContext.Request.Query["groupId"], out var groupId);
         _ = int.TryParse(httpContext.Request.Query["season"], out var season);
-        _ = int.TryParse(httpContext.Request.Query["studentId"], out var studentId);
         DifficultyType? difficultyType = Enum.TryParse<DifficultyType>(httpContext.Request.Query["difficultyType"], out var parsedDifficultyType) ? parsedDifficultyType : null;
         WeaponType? weaponType = Enum.TryParse<WeaponType>(httpContext.Request.Query["weaponType"], out var parsedWeaponType) ? parsedWeaponType : null;
         DateTime? date = DateTime.TryParse(httpContext.Request.Query["date"], out var parsedDate) ? parsedDate : null;
         bool onlyIndividual = bool.TryParse(httpContext.Request.Query["onlyIndividual"], out var parsedOnlyInd) ? parsedOnlyInd : false;
+        var studentId = httpContext.Request.Query["studentId"];
         string? masterName = httpContext.Request.Query["masterName"];
         string? filter = httpContext.Request.Query["filter"];
 
@@ -54,7 +54,7 @@ public sealed record TrainingQueryInput(
             groupId == 0 ? null : groupId,
             date,
             season == 0 ? null : season,
-            studentId == 0 ? null : studentId,
+            studentId,
             filter,
             onlyIndividual,
             masterName));

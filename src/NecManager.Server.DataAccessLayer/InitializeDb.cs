@@ -37,7 +37,10 @@ internal sealed class InitializeDb : IHostedService
     {
         using var scope = this.scopeFactory.CreateScope();
         if (!this.env.IsDevelopment())
+        {
             await scope.ServiceProvider.GetRequiredService<NecLiteDbContext>().Database.MigrateAsync(cancellationToken).ConfigureAwait(false);
+            await scope.ServiceProvider.GetRequiredService<NecDbContext>().Database.MigrateAsync(cancellationToken).ConfigureAwait(false);
+        }
     }
 
     /// <summary>

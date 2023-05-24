@@ -318,10 +318,10 @@ public partial class SettingsTrainings : ComponentBase
     private void GroupSelectChangedEventHandler(int? groupId)
        => this.UnderCreationTraining.GroupId = groupId;
 
-    private void StudentSelectChangedEventHandler(int? studentId)
+    private void StudentSelectChangedEventHandler(string? studentId)
     {
         if(studentId is not null)
-            this.UnderCreationTraining.Students = new() { new() { Id = (int)studentId } };
+            this.UnderCreationTraining.Students = new() { new() { Id = studentId } };
 
         this.UnderCreationTraining.StudentId = studentId;
     }

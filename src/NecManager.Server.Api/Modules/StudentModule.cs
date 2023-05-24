@@ -9,8 +9,6 @@ using NecManager.Common;
 using NecManager.Server.Api.Business;
 using NecManager.Server.Api.Business.Modules.Student;
 using NecManager.Server.Api.Business.Modules.Student.Models;
-using NecManager.Server.Api.Business.Modules.Training;
-using NecManager.Server.Api.Business.Modules.Training.Models;
 using NecManager.Server.Api.ResponseHelpers;
 using NecManager.Server.Api.ResponseHelpers.Extensions;
 
@@ -29,14 +27,14 @@ public sealed class StudentModule : IModule
     {
         endpoints.MapGet("/students",
             async (ApiRequestHeaders header, [FromServices] IStudentBusiness studentService, /*BindAsync*/ StudentQueryInput query)
-            //[Authorize] async (ApiRequestHeaders header, [FromServices] IStudentBusiness studentService, /*BindAsync*/ StudentQueryInput query)
+                //[Authorize] async (ApiRequestHeaders header, [FromServices] IStudentBusiness studentService, /*BindAsync*/ StudentQueryInput query)
                 => Results.Extensions.ApiResponse(await studentService.SearchStudents(header, query)))
                 .ProducesApiResponse<PageableResult<StudentOutputBase>>()
                 .WithName("Get all students")
                 .WithTags("Students");
 
         _ = endpoints.MapGet("/students/{studentId:int}",
-             async (ApiRequestHeaders requestHeaders, [FromServices] IStudentBusiness studentService, [FromRoute] int studentId)
+             async (ApiRequestHeaders requestHeaders, [FromServices] IStudentBusiness studentService, [FromRoute] string studentId)
                 //[Authorize] async (ApiRequestHeaders requestHeaders, [FromServices] ITrainingBusiness trainingService, [FromRoute] int trainingId)
                 => Results.Extensions.ApiResponse(await studentService.GetStudentByIdAsync(requestHeaders, studentId)))
                 .ProducesApiResponse<StudentOutputBase>()
@@ -60,7 +58,7 @@ public sealed class StudentModule : IModule
 
         _ = endpoints.MapDelete("/students/{studentId:int}",
              //[Authorize] async (ApiRequestHeaders requestHeaders, [FromServices] IStudentBusiness studentService, [FromRoute] int studentId)
-             async (ApiRequestHeaders requestHeaders, [FromServices] IStudentBusiness studentService, [FromRoute] int studentId)
+             async (ApiRequestHeaders requestHeaders, [FromServices] IStudentBusiness studentService, [FromRoute] string studentId)
                 => Results.Extensions.ApiResponseEmpty(await studentService.DeleteStudentAsync(requestHeaders, studentId)))
                 .ProducesApiResponseEmpty()
                 .WithName("Delete an existing student")

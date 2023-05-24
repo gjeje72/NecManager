@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 public sealed class StudentBaseViewModel
 {
-    public int Id { get; set; }
+    public string Id { get; set; } = string.Empty;
 
     public string LastName { get; set; } = string.Empty;
 

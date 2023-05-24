@@ -31,5 +31,5 @@ public class TrainingCreationViewModel
 
     public string StudentFilter { get; set; } = string.Empty;
 
-    public int? StudentId { get; set; }
+    public string? StudentId { get; set; }
 }

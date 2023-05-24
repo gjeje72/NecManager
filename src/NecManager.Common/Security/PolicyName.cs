@@ -9,4 +9,9 @@ public static class PolicyName
     ///     Gets the admin policy name.
     /// </summary>
     public const string IsAdmin = "IsAdmin";
+
+    /// <summary>
+    ///     Gets the user policy name.
+    /// </summary>
+    public const string IsUser = "IsUser";
 }

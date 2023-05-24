@@ -8,7 +8,7 @@ public sealed class PersonTraining : ADataObject
 
     public Training? Training { get; set; }
 
-    public int StudentId { get; set; }
+    public string StudentId { get; set; } = string.Empty;
 
     public Student? Student { get; set; }
 

@@ -6,6 +6,6 @@ public sealed class TrainingHistory
 
     public bool IsIndividual { get; set; }
 
-    public List<int> TrainingStudentsIds { get; set; } = new();
+    public List<string> TrainingStudentsIds { get; set; } = new();
 
 }

@@ -45,11 +45,11 @@ internal sealed class StudentBusiness : IStudentBusiness
     }
 
     /// <inheritdoc />
-    public async Task<ApiResponse<StudentOutputBase>> GetStudentByIdAsync(ServiceMonitoringDefinition monitoringIds, int trainingId)
+    public async Task<ApiResponse<StudentOutputBase>> GetStudentByIdAsync(ServiceMonitoringDefinition monitoringIds, string studentId)
     {
         //ArgumentNullException.ThrowIfNull(monitoringIds);
 
-        var matchingStudent = await this.studentAccessLayer.GetSingleAsync(x => x.Id == trainingId, false, x => x.Include(t => t.StudentGroups!).ThenInclude(sg => sg.Group!)).ConfigureAwait(false);
+        var matchingStudent = await this.studentAccessLayer.GetSingleAsync(x => x.Id == studentId, false, x => x.Include(t => t.StudentGroups!).ThenInclude(sg => sg.Group!)).ConfigureAwait(false);
         return matchingStudent is null
             ? (new(monitoringIds, new(ApiResponseResultState.NotFound, ApiResponseError.StudentApiErrors.StudentNotFound)))
             : (new(monitoringIds, new(this.MapStudentToStudentOutputBase(matchingStudent))));
@@ -123,7 +123,7 @@ internal sealed class StudentBusiness : IStudentBusiness
     }
 
     /// <inheritdoc />
-    public async Task<ApiResponseEmpty> DeleteStudentAsync(ServiceMonitoringDefinition monitoringIds, int studentId)
+    public async Task<ApiResponseEmpty> DeleteStudentAsync(ServiceMonitoringDefinition monitoringIds, string studentId)
     {
         //ArgumentNullException.ThrowIfNull(monitoringIds);
 

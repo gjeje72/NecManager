@@ -12,9 +12,9 @@ public static class DataServiceExtension
 {
     public static IServiceCollection AddData(this IServiceCollection services, IConfiguration configuration)
     {
-        //services.AddDbContext<NecDbContext>(option =>
-        //    option.UseSqlServer(configuration.GetConnectionString("Main"), opt => opt.MigrationsAssembly("NecManager.Server.DataAccessLayer"))
-        //);
+        services.AddDbContext<NecDbContext>(option =>
+            option.UseSqlServer(configuration.GetConnectionString("Main"), opt => opt.MigrationsAssembly("NecManager.Server.DataAccessLayer"))
+        );
 
         services.AddDbContext<NecLiteDbContext>(option =>
             option.UseSqlite(configuration.GetConnectionString("MainLite"), opt => opt.MigrationsAssembly("NecManager.Server.DataAccessLayer"))

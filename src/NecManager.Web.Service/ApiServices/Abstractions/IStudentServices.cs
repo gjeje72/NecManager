@@ -19,5 +19,5 @@ public interface IStudentServices
 
     Task<ServiceResult> UpdateStudentAsync(StudentUpdateInput studentUpdateInput, CancellationToken cancellationToken = default);
 
-    Task<ServiceResult> DeleteStudentAsync(int studentId, CancellationToken cancellationToken = default);
+    Task<ServiceResult> DeleteStudentAsync(string studentId, CancellationToken cancellationToken = default);
 }

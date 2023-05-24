@@ -3,7 +3,7 @@ using System.Reflection;
 
 using Microsoft.AspNetCore.Http;
 
-public sealed record TrainingHistoryQuery(int Id, bool IsStudent)
+public sealed record TrainingHistoryQuery(int Id, string StudentId)
 {
     /// <summary>
     ///     Method which bind query parameters to query object.
@@ -14,9 +14,9 @@ public sealed record TrainingHistoryQuery(int Id, bool IsStudent)
     public static ValueTask<TrainingHistoryQuery?> BindAsync(HttpContext httpContext, ParameterInfo parameter)
     {
         _ = int.TryParse(httpContext.Request.Query["id"], out var id);
-        _ = bool.TryParse(httpContext.Request.Query["isStudent"], out var isStudent);
+        var studentId = httpContext.Request.Query["studentId"];
 
         return ValueTask.FromResult<TrainingHistoryQuery?>(new(
-            id, isStudent));
+            id, studentId));
     }
 }

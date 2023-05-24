@@ -61,14 +61,11 @@ internal class TrainingBusiness : ITrainingBusiness
             : (new(monitoringIds, new(this.MapTrainingToTrainingDetails(matchingTraining))));
     }
 
-    public async Task<ApiResponse<TrainingsHistory>> GetTrainingHistoryAsync(ServiceMonitoringDefinition monitoringIds, int id, bool isStudent = false)
+    public async Task<ApiResponse<TrainingsHistory>> GetTrainingHistoryAsync(ServiceMonitoringDefinition monitoringIds, int? groupId, string? studentId)
     {
         var matchingTrainings = new PageableResult<Training>();
 
-        if (isStudent)
-            matchingTrainings = await this.trainingAccessLayer.GetPageableCollectionAsync(new(10, 1, null, null, null, null, null, id, null, false, null), false);
-        else
-        matchingTrainings = await this.trainingAccessLayer.GetPageableCollectionAsync(new(10, 1, null, null, id, null, null, null, null, false, null), false);
+        matchingTrainings = await this.trainingAccessLayer.GetPageableCollectionAsync(new(10, 1, null, null, groupId, null, null, studentId, null, false, null), false);
 
         return (matchingTrainings is null || matchingTrainings.Items is null)
             ? (new(monitoringIds, new(ApiResponseResultState.NotFound, ApiResponseError.LessonApiErrors.LessonNotFound)))

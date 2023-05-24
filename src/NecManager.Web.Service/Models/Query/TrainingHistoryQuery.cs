@@ -8,7 +8,7 @@ public sealed class TrainingHistoryQuery : APageableQuery
 {
     public int Id { get; set; }
 
-    public bool IsStudent { get; set; } = false;
+    public string StudentId { get; set; } = string.Empty;
 
     /// <inheritdoc />
     protected override Dictionary<string, string> QueryParameters
@@ -35,6 +35,6 @@ public sealed class TrainingHistoryQuery : APageableQuery
     private Dictionary<string, string> QueryStudentsParameters => new()
     {
         { nameof(this.Id), this.Id.ToString(CultureInfo.InvariantCulture) },
-        { nameof(this.IsStudent), this.IsStudent.ToString() ?? string.Empty },
+        { nameof(this.StudentId), this.StudentId },
     };
 }

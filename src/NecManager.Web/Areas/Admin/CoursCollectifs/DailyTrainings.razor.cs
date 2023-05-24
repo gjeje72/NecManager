@@ -136,7 +136,7 @@ public partial class DailyTrainings
         if (this.CurrentTraining.GroupId == null)
             return;
 
-        var (state, history, _) = await this.TrainingServices.GetTrainingHistoryAsync(new() { Id = (int)this.CurrentTraining.GroupId, IsStudent = false }).ConfigureAwait(true);
+        var (state, history, _) = await this.TrainingServices.GetTrainingHistoryAsync(new() { Id = (int)this.CurrentTraining.GroupId, StudentId = string.Empty }).ConfigureAwait(true);
         if (state == ServiceResultState.Success && history is not null)
         {
             this.History = new()

@@ -36,7 +36,7 @@ public sealed class TrainingModule : IModule
 
         _ = endpoints.MapGet("/trainings/history",
             async (ApiRequestHeaders requestHeaders, [FromServices] ITrainingBusiness trainingService, /*BindAsync*/ TrainingHistoryQuery input)
-                => Results.Extensions.ApiResponse(await trainingService.GetTrainingHistoryAsync(requestHeaders, input.Id, input.IsStudent)))
+                => Results.Extensions.ApiResponse(await trainingService.GetTrainingHistoryAsync(requestHeaders, input.Id, input.StudentId)))
                 .ProducesApiResponse<TrainingsHistory>()
                 .WithName("Get trainings history.")
                 .WithTags("Trainings");

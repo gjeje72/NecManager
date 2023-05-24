@@ -1,5 +1,6 @@
 ﻿namespace NecManager.Server.DataAccessLayer.EntityLayer;
 
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 using NecManager.Server.DataAccessLayer.Model;
@@ -7,7 +8,7 @@ using NecManager.Server.DataAccessLayer.Model;
 /// <summary>
 ///     Represents the Nec Database.
 /// </summary>
-public class NecLiteDbContext : DbContext
+public class NecLiteDbContext : IdentityDbContext<Student>
 {
     public NecLiteDbContext(DbContextOptions<NecLiteDbContext> options)
         : base(options)

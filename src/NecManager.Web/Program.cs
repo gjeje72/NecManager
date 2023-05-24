@@ -9,16 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using NecManager.Web;
-using NecManager.Web.Areas.Identity.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("NecManagerWebContextConnection") ?? throw new InvalidOperationException("Connection string 'NecManagerWebContextConnection' not found.");
-
-builder.Services.AddDbContext<NecManagerWebContext>(options =>
-    options.UseSqlServer(connectionString));
-
-builder.Services.AddDefaultIdentity<NecManagerWebUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<NecManagerWebContext>();
 
 builder.Services.AddQuickGridEntityFrameworkAdapter();
 

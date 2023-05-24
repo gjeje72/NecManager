@@ -7,7 +7,7 @@ using NecManager.Common.DataEnum;
 
 public sealed class StudentBase
 {
-    public int Id { get; set; }
+    public string Id { get; set; } = string.Empty;
 
     public string LastName { get; set; } = string.Empty;
 

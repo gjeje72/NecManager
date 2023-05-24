@@ -5,7 +5,7 @@ public sealed class TrainingUpdateStudentInput
 {
     public int TrainingId { get; set; }
 
-    public List<int> StudentsIds { get; set; } = new();
+    public List<string> StudentsIds { get; set; } = new();
 
     public string? MasterName { get; set; }
 
