@@ -39,7 +39,7 @@ public partial class InitSeasonTrainings
         DateTime currentDate = this.SeasonTrainingCreation.StartDate;
         while (currentDate <= this.SeasonTrainingCreation.EndDate)
         {
-            if (selectedDays.Contains(currentDate.DayOfWeek) && !this.SeasonTrainingCreation.ExcludedDates.Contains(currentDate))
+            if (selectedDays.Contains(currentDate.DayOfWeek) && !this.SeasonTrainingCreation.ExcludedDates.Any(ed => ed.Month == currentDate.Month && ed.Day == currentDate.Day))
             {
                 var startTime = currentDate.DayOfWeek switch
                 {
