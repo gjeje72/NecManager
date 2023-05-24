@@ -1,0 +1,8 @@
+﻿@if (hasLoaded)
+{
+    <CascadingValue Value="@this">@ChildContent</CascadingValue>
+}
+else
+{
+    <p>Loading ...</p>
+}

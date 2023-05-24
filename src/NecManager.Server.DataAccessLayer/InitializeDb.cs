@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using NecManager.Server.DataAccessLayer.EntityLayer;
+using NecManager.Server.DataAccessLayer.Seeders;
 
 /// <summary>
 ///     This class is used to initialize the database.
@@ -41,6 +42,8 @@ internal sealed class InitializeDb : IHostedService
             await scope.ServiceProvider.GetRequiredService<NecLiteDbContext>().Database.MigrateAsync(cancellationToken).ConfigureAwait(false);
             await scope.ServiceProvider.GetRequiredService<NecDbContext>().Database.MigrateAsync(cancellationToken).ConfigureAwait(false);
         }
+
+        await scope.ServiceProvider.GetRequiredService<UserSeeder>().EnsureSeedDataAsync().ConfigureAwait(false);
     }
 
     /// <summary>

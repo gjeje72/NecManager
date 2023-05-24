@@ -1,9 +1,11 @@
 ﻿namespace NecManager.Web;
 
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 using NecManager.Web.Service.Extensions;
+using NecManager.Web.Service.Identity;
 
 /// <summary>
 ///     Static class which define services for DI.
@@ -18,6 +20,9 @@ internal static class WebExtensions
     {
         services.AddHttpContextAccessor();
         services.AddScoped<HttpContextAccessor>();
+
+        services.AddScoped<ICustomAuthentificationStateProvider, AuthenticationProvider>();
+        services.AddScoped(provider => (AuthenticationStateProvider)provider.GetRequiredService<ICustomAuthentificationStateProvider>());
 
         services.AddServiceClient();
 

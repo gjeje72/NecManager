@@ -1,17 +1,11 @@
-﻿
-using System;
-
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using NecManager.Web;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("NecManagerWebContextConnection") ?? throw new InvalidOperationException("Connection string 'NecManagerWebContextConnection' not found.");
 
 builder.Services.AddQuickGridEntityFrameworkAdapter();
 

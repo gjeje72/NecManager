@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NecManager.Server.DataAccessLayer.EntityLayer;
 using NecManager.Server.DataAccessLayer.EntityLayer.Abstractions;
 using NecManager.Server.DataAccessLayer.EntityLayer.AccessLayer;
+using NecManager.Server.DataAccessLayer.Seeders;
 
 public static class DataServiceExtension
 {
@@ -20,6 +21,7 @@ public static class DataServiceExtension
             option.UseSqlite(configuration.GetConnectionString("MainLite"), opt => opt.MigrationsAssembly("NecManager.Server.DataAccessLayer"))
         );
 
+        services.AddScoped<UserSeeder>();
         services.AddHostedService<InitializeDb>();
 
         services.AddTransient<IGroupAccessLayer, GroupAccessLayer>();

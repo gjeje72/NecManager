@@ -6,9 +6,15 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 
 using NecManager.Web.Service.Extensions;
+using NecManager.Web.Service.Identity;
 
 internal sealed class RestHttpService
 {
+    /// <summary>
+    ///     Constant which define the authentication http client name.
+    /// </summary>
+    public const string AuthClientName = "Auth";
+
     /// <summary>
     ///     Constant which define the student http client name.
     /// </summary>
@@ -33,8 +39,7 @@ internal sealed class RestHttpService
 
     private readonly IConfiguration configuration;
 
-    /* TODO a implémenter avec l'authentification */
-    //private readonly ICustomAuthentificationStateProvider apiAuthenticationStateProvider;
+    private readonly ICustomAuthentificationStateProvider apiAuthenticationStateProvider;
 
     private string serviceFunctionalId = string.Empty;
 
@@ -44,10 +49,11 @@ internal sealed class RestHttpService
     /// <param name="factory">The http client factory.</param>
     /// <param name="configuration">The application configuration.</param>
     /// <param name="authStateProvider">The authentication state provider.</param>
-    public RestHttpService(IHttpClientFactory factory, IConfiguration configuration)
+    public RestHttpService(IHttpClientFactory factory, IConfiguration configuration, ICustomAuthentificationStateProvider authStateProvider)
     {
         this.factory = factory;
         this.configuration = configuration;
+        this.apiAuthenticationStateProvider = authStateProvider;
     }
 
     public Task<HttpClient> StudentClient => this.CreateAuthenticatedClientAsync(StudentClientName);
@@ -57,6 +63,11 @@ internal sealed class RestHttpService
     public Task<HttpClient> LessonClient => this.CreateAuthenticatedClientAsync(LessonClientName);
 
     public Task<HttpClient> TrainingClient => this.CreateAuthenticatedClientAsync(TrainingClientName);
+
+    /// <summary>
+    ///     Gets an user http client for auth calls.
+    /// </summary>
+    public Task<HttpClient> AuthClient => this.CreateAuthenticatedClientAsync(AuthClientName);
 
     /// <summary>
     ///     Method which set the functional id.
@@ -72,9 +83,20 @@ internal sealed class RestHttpService
         var technicalId = new Guid(this.configuration.GetValue<string>("TechnicalId"));
         client.DefaultRequestHeaders.AddMonitoringIds(new(this.serviceFunctionalId, technicalId));
 
-        return client;
-        /* TODO a implémenter avec l'authentification */
-        //return await this.WithAuthenticationHeaderIfAnyAsync(client);
+        return await this.WithAuthenticationHeaderIfAnyAsync(client);
     }
 
+    /// <summary>
+    ///     Adds a default authentication header with token from <seealso cref="LcsAuthenticationProvider" />.
+    /// </summary>
+    /// <remarks>If token is not available, the authorization header is set to null.</remarks>
+    private async Task<HttpClient> WithAuthenticationHeaderIfAnyAsync(HttpClient client)
+    {
+        var token = await this.apiAuthenticationStateProvider.GetTokenAsync();
+        client.DefaultRequestHeaders.Authorization = !string.IsNullOrWhiteSpace(token)
+                                                         ? new("Bearer", token)
+                                                         : null;
+
+        return client;
+    }
 }

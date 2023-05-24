@@ -16,7 +16,7 @@ using NecManager.Server.DataAccessLayer.ServiceExtension;
 
 public class StudentAccessLayer : IStudentAccessLayer
 {
-    public StudentAccessLayer(NecLiteDbContext context)
+    public StudentAccessLayer(NecDbContext context)
     {
         this.Context = context;
         this.ModelSet = this.Context.Set<Student>();

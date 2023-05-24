@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using NecManager.Server.Api.Business.Modules.Group;
+using NecManager.Server.Api.Business.Modules.Identity;
 using NecManager.Server.Api.Business.Modules.Lesson;
 using NecManager.Server.Api.Business.Modules.Student;
 using NecManager.Server.Api.Business.Modules.Training;
@@ -25,6 +26,13 @@ public static class BusinessExtension
         services.TryAddTransient<IGroupBusiness, GroupBusiness>();
         services.TryAddTransient<ILessonBusiness, LessonBusiness>();
         services.TryAddTransient<ITrainingBusiness, TrainingBusiness>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddIdentityBusiness(this IServiceCollection services)
+    {
+        services.TryAddTransient<IIdentityService, IdentityService>();
 
         return services;
     }

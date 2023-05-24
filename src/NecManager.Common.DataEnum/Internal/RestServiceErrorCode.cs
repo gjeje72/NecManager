@@ -1,6 +1,11 @@
 ﻿namespace NecManager.Common.DataEnum.Internal;
 public enum RestServiceErrorCode
 {
+    AuthenticationFailure = 7,
+
+    UserResourceBlocked = 115,
+    UserResourceRefreshTokenBadRequest = 125,
+
     CreateError = 1000,
 
     GetError = 2000,

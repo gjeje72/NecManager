@@ -1,0 +1,40 @@
+﻿<div class="login-page">
+    <div class="login-form">
+        <div class="login-form-header">
+            <span class="login-form-header-label">Login to</span>
+            <span class="login-form-header-bold">NEC MANAGER</span>
+        </div>
+        <div class="login-form-content">
+            @if (this.ShowErrors)
+            {
+                <div class="alert alert-danger" role="alert">
+                    <p>@this.Error</p>
+                </div>
+            }
+            <EditForm id="login-form" Model="this.Model" OnValidSubmit="this.HandleLogin">
+                <DataAnnotationsValidator />
+
+                <div class="d-flex flex-column flex-self-scroll">
+                    <div class="form-group">
+                        <label for="email" class="control-label">Username / Email</label>
+                        <InputText Id="email" class="form-control" @bind-Value="this.Model.Email" placeholder="Username / Email" />
+                        <ValidationMessage For="@(() => this.Model.Email)" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="control-label">Password</label>
+                        <InputText Id="password" type="password" class="form-control" @bind-Value="this.Model.Password" placeholder="Password" />
+                        <ValidationMessage For="@(() => this.Model.Password)" />
+                    </div>
+                    <div class="forgot">
+                        <NavLink href="@($"/reset-password-request")">Reset Password ?</NavLink>
+                    </div>
+                </div>
+                <div class="navigation d-flex justify-content-center">
+                    <button form="login-form" type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+

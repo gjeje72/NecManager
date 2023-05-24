@@ -30,7 +30,7 @@ public static class SecurityExtension
             opt.SignIn.RequireConfirmedEmail = true;
             opt.SignIn.RequireConfirmedPhoneNumber = false;
             opt.User.RequireUniqueEmail = true;
-            opt.Password.RequireNonAlphanumeric = false;
+            opt.Password.RequireNonAlphanumeric = true;
             opt.Password.RequireDigit = true;
             opt.Password.RequireLowercase = true;
             opt.Password.RequireUppercase = true;

@@ -17,6 +17,8 @@ public static class ServicesExtension
     {
         services.TryAddScoped<HttpClient>();
         services.TryAddTransient<RestHttpService>();
+
+        services.AddBackendHttpClient(RestHttpService.AuthClientName, "auth/");
         services.AddBackendHttpClient(RestHttpService.StudentClientName, "students/");
         services.AddBackendHttpClient(RestHttpService.GroupClientName, "groups/");
         services.AddBackendHttpClient(RestHttpService.LessonClientName, "lessons/");
@@ -26,6 +28,7 @@ public static class ServicesExtension
         services.TryAddTransient<IGroupServices, GroupServices>();
         services.TryAddTransient<ILessonServices, LessonServices>();
         services.TryAddTransient<ITrainingServices, TrainingServices>();
+        services.TryAddTransient<IAuthService, AuthService>();
 
         return services;
     }

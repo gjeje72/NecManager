@@ -11,9 +11,9 @@ using NecManager.Server.DataAccessLayer.EntityLayer.Abstractions.Query;
 using NecManager.Server.DataAccessLayer.Model;
 using NecManager.Server.DataAccessLayer.Model.Query;
 
-public sealed class LessonAccessLayer : AQueryBaseAccessLayer<NecLiteDbContext, Lesson, LessonQuery>, ILessonAccessLayer
+public sealed class LessonAccessLayer : AQueryBaseAccessLayer<NecDbContext, Lesson, LessonQuery>, ILessonAccessLayer
 {
-    public LessonAccessLayer(NecLiteDbContext context)
+    public LessonAccessLayer(NecDbContext context)
         : base(context)
     {
     }

@@ -3,6 +3,7 @@
 using NecManager.Server.Api.Business.TokenProviders;
 using NecManager.Server.Api.Modules;
 using NecManager.Server.Api.Security;
+using NecManager.Server.DataAccessLayer.EntityLayer;
 
 var builder = WebApplication.CreateBuilder(args);
 

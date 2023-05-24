@@ -7,9 +7,9 @@ using NecManager.Server.DataAccessLayer.EntityLayer.Abstractions.Query;
 using NecManager.Server.DataAccessLayer.Model;
 using NecManager.Server.DataAccessLayer.Model.Query;
 
-public sealed class TrainingAccessLayer : AQueryBaseAccessLayer<NecLiteDbContext, Training, TrainingQuery>, ITrainingAccessLayer
+public sealed class TrainingAccessLayer : AQueryBaseAccessLayer<NecDbContext, Training, TrainingQuery>, ITrainingAccessLayer
 {
-    public TrainingAccessLayer(NecLiteDbContext context)
+    public TrainingAccessLayer(NecDbContext context)
         : base(context)
     {
     }

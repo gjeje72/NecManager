@@ -7,17 +7,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Areas\Master\**" />
-	  <Compile Remove="Areas\Student\**" />
-	  <Content Remove="Areas\Master\**" />
-	  <Content Remove="Areas\Student\**" />
-	  <EmbeddedResource Remove="Areas\Master\**" />
-	  <EmbeddedResource Remove="Areas\Student\**" />
-	  <None Remove="Areas\Master\**" />
-	  <None Remove="Areas\Student\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="11.0.0" />
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
 		<PackageReference Include="LibSassBuilder" Version="3.0.0" />
@@ -38,6 +27,21 @@
 		<ProjectReference Include="..\NecManager.Common.Logger\NecManager.Common.Logger.csproj" />
 		<ProjectReference Include="..\NecManager.Common\NecManager.Common.csproj" />
 		<ProjectReference Include="..\NecManager.Web.Service\NecManager.Web.Service.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Ressources\ValidationMessage.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>ValidationMessage.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Ressources\ValidationMessage.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>ValidationMessage.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 </Project>

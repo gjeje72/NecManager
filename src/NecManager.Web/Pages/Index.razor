@@ -1,4 +1,14 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.Authentication;
+@using Microsoft.AspNetCore.Http;
+@using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Mvc;
+@using Microsoft.Extensions.Logging;
+@using NecManager.Web.Areas.Auth.Components
+@using NecManager.Web.Areas.Identity.Pages.Account;
+@using System.ComponentModel.DataAnnotations;
+@using System.Security.Policy;
+@using NecManager.Web.Components
 
 <TopBar Title="Connexion" IsBackArrowHidden="true" />
 
@@ -6,3 +16,11 @@
     <NavLink href="/admin" Match="NavLinkMatch.Prefix">Admin</NavLink>
     <NavLink href="/student" Match="NavLinkMatch.Prefix">Student</NavLink>
 </div>
+
+<AuthorizeView>
+    <Authorized>
+        <UserHomePageRedirect />
+    </Authorized>
+</AuthorizeView>
+
+<Login />

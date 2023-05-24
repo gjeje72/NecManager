@@ -51,6 +51,15 @@ public record ApiResponseError(RestServiceErrorCode ErrorCode, string ErrorMessa
         public static readonly ApiResponseError StudentUpdateFailure = new(RestServiceErrorCode.StudentUpdateFailure, "Update student failed.");
         public static readonly ApiResponseError StudentsUpdateCategoryFailure = new(RestServiceErrorCode.StudentsUpdateCategoryFailure, "Update students category failed.");
         public static readonly ApiResponseError StudentDeletionFailure = new(RestServiceErrorCode.StudentDeletionFailure, "Delete student failed.");
-
     }
+
+    public static class Auth
+    {
+        public static readonly ApiResponseError AuthenticationFailed = new(RestServiceErrorCode.AuthenticationFailure, "Your email or password is invalid.");
+
+        public static readonly ApiResponseError LoginUserBlocked = new(RestServiceErrorCode.UserResourceBlocked, "Can't SignIn, the user has been desactivated. Please contact an administrator.");
+    }
+
+    public static readonly ApiResponseError RefreshTokenError = new(RestServiceErrorCode.UserResourceRefreshTokenBadRequest, "Incorrect details provided to refresh the user Token.");
+
 }
