@@ -119,12 +119,12 @@ internal sealed class GroupBusiness : IGroupBusiness
 
         try
         {
+            matchingGroup.StudentGroups.Clear();
             if (input.StudentsIds.Count > 0)
             {
                 if (!await this.studentAccessLayer.ExistsRangeAsync(input.StudentsIds))
                     return new(monitoringIds, new(ApiResponseResultState.NotFound, StudentApiErrors.StudentNotFound));
 
-                matchingGroup.StudentGroups.Clear();
                 foreach (var studentId in input.StudentsIds.Distinct())
                 {
                     matchingGroup.StudentGroups.Add(new() { StudentId = studentId, IsResponsiveMaster = studentId == input.MasterId });
