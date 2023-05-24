@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
+using NecManager.Common.Security;
 using NecManager.Web;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,8 @@ void ServiceCollection(IServiceCollection services)
     // TODO builder.Host.UseCommonLogger();
     services.AddWebServices();
     services.AddLocalization();
+
+    services.AddAuthorization(CommonAuthorizationHelper.PoliciesOptions);
 
 
     // Add services to the container.

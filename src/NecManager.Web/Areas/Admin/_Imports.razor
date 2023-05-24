@@ -1,1 +1,2 @@
-﻿@attribute [Authorize]
+﻿@using NecManager.Common.Security;
+@attribute [Authorize(Policy = PolicyName.IsAdmin)]

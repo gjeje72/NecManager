@@ -12,11 +12,6 @@
 
 <TopBar Title="Connexion" IsBackArrowHidden="true" />
 
-<div class="d-flex flex-column">
-    <NavLink href="/admin" Match="NavLinkMatch.Prefix">Admin</NavLink>
-    <NavLink href="/student" Match="NavLinkMatch.Prefix">Student</NavLink>
-</div>
-
 <AuthorizeView>
     <Authorized>
         <UserHomePageRedirect />

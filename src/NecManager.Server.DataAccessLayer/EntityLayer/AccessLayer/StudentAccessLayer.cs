@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 
@@ -35,15 +36,29 @@ public class StudentAccessLayer : IStudentAccessLayer
     /// <inheritdoc/>
     public async Task<string> AddAsync(Student model)
     {
+        this.ManageIdentityUser(model);
         var result = this.ModelSet.Add(model);
         _ = await this.Context.SaveChangesAsync().ConfigureAwait(false);
 
         return result.Entity.Id;
     }
 
+    private void ManageIdentityUser(Student model)
+    {
+        var passwordHasher = new PasswordHasher<Student>();
+        model.PasswordHash = passwordHasher.HashPassword(model, "P@ssword1234");
+        model.UserName = $"{model.Name.ToLowerInvariant()}-{model.FirstName.ToLowerInvariant()}";
+        model.NormalizedUserName = $"{model.Name.ToLowerInvariant()}-{model.FirstName.ToLowerInvariant()}";
+        model.Email = model.EmailAddress;
+    }
+
     /// <inheritdoc/>
     public async Task<int> AddRangeAsync(IEnumerable<Student> students)
     {
+        foreach(var student in students)
+        {
+            this.ManageIdentityUser(student);
+        }
         this.ModelSet.AddRange(students);
         return await this.Context.SaveChangesAsync().ConfigureAwait(false);
     }

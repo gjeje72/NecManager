@@ -20,12 +20,12 @@ public partial class TokenStateProvider
     /// <summary>
     ///     Constante d'authentification de Token.
     /// </summary>
-    private const string authToken = "DlService-Lcs-authToken";
+    private const string authToken = "NecManager-authToken";
 
     /// <summary>
     ///     Constante d'authentification de Token expiré.
     /// </summary>
-    private const string authTokenExpires = "DlService-Lcs-authTokenExpires";
+    private const string authTokenExpires = "NecManager-authTokenExpires";
 
     /// <summary>
     ///     gets or set if it s loaded.

@@ -37,7 +37,7 @@ public static class SecurityExtension
             opt.Password.RequiredLength = 6;
         })
         .AddRoles<IdentityRole>()
-        .AddEntityFrameworkStores<NecLiteDbContext>()
+        .AddEntityFrameworkStores<NecDbContext>()
         .AddDefaultTokenProviders()
         .AddTokenProvider<EmailConfirmationTokenProvider<Student>>("emailconfirmation");
 

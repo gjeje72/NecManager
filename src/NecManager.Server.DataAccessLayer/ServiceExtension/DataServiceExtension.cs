@@ -17,11 +17,12 @@ public static class DataServiceExtension
             option.UseSqlServer(configuration.GetConnectionString("Main"), opt => opt.MigrationsAssembly("NecManager.Server.DataAccessLayer"))
         );
 
-        services.AddDbContext<NecLiteDbContext>(option =>
-            option.UseSqlite(configuration.GetConnectionString("MainLite"), opt => opt.MigrationsAssembly("NecManager.Server.DataAccessLayer"))
-        );
+        //services.AddDbContext<NecLiteDbContext>(option =>
+        //    option.UseSqlite(configuration.GetConnectionString("MainLite"), opt => opt.MigrationsAssembly("NecManager.Server.DataAccessLayer"))
+        //);
 
         services.AddScoped<UserSeeder>();
+        services.AddScoped<LessonSeeder>();
         services.AddHostedService<InitializeDb>();
 
         services.AddTransient<IGroupAccessLayer, GroupAccessLayer>();
