@@ -11,7 +11,6 @@ using NecManager.Common.DataEnum.Internal;
 using NecManager.Web.Areas.Admin.Settings.Trainings.ViewModels;
 using NecManager.Web.Service.ApiServices.Abstractions;
 using NecManager.Web.Service.Models.Groups;
-using NecManager.Web.Service.Models.Trainings;
 
 public partial class InitSeasonTrainings
 {
@@ -63,7 +62,7 @@ public partial class InitSeasonTrainings
                     DayOfWeek.Sunday => this.SeasonTrainingCreation.SundayEndTime,
                     _ => throw new NotImplementedException(),
                 };
-                
+
                 this.SeasonTrainingCreation.Trainings.Add(new()
                 {
                     Date = currentDate,

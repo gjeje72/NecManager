@@ -19,9 +19,11 @@
                 <a href="https://www.instagram.com/necescrime/" target="_blank" title="vers instagram">
                     <img src="/images/icons/icon-instagram.png" width="24" height="24" />
                 </a>
-                <a title="déconnection">
-                    <img src="/images/icons/icon-logout.png" width="24" height="24" onclick="@(() => this.SignoutUser())" />
-                </a>
+                <AuthorizeView>
+                    <a title="déconnection">
+                        <img src="/images/icons/icon-logout.png" width="24" height="24" onclick="@(() => this.SignoutUser())" />
+                    </a>
+                </AuthorizeView>
             </div>
         </div>
     </footer>
@@ -34,8 +36,12 @@
     [Inject]
     private ICustomAuthentificationStateProvider AuthState { get; set; } = null!;
 
+    [Inject]
+    private NavigationManager NavigationManager { get; set; } = null!;
+
     private void SignoutUser()
     {
         this.AuthState.LogOutUser();
+        this.NavigationManager.NavigateTo("/");
     }
 }
