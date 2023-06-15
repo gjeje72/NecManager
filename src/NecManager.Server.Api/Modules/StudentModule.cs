@@ -34,7 +34,7 @@ public sealed class StudentModule : IModule
                 .WithName("Get all students")
                 .WithTags("Students");
 
-        _ = endpoints.MapGet("/students/{studentId:int}",
+        _ = endpoints.MapGet("/students/{studentId}",
              [Authorize(Policy = PolicyName.IsAdmin)] async (ApiRequestHeaders requestHeaders, [FromServices] IStudentBusiness studentService, [FromRoute] string studentId)
                 => Results.Extensions.ApiResponse(await studentService.GetStudentByIdAsync(requestHeaders, studentId)))
                 .ProducesApiResponse<StudentOutputBase>()
@@ -48,14 +48,14 @@ public sealed class StudentModule : IModule
                 .WithName("Create a new student")
                 .WithTags("Students");
 
-        _ = endpoints.MapPut("/students/{studentId:int}",
-             [Authorize(Policy = PolicyName.IsAdmin)] async (ApiRequestHeaders requestHeaders, [FromServices] IStudentBusiness studentService, [FromRoute] int studentId, [FromBody] StudentUpdateInput input)
+        _ = endpoints.MapPut("/students/{studentId}",
+             [Authorize(Policy = PolicyName.IsAdmin)] async (ApiRequestHeaders requestHeaders, [FromServices] IStudentBusiness studentService, [FromRoute] string studentId, [FromBody] StudentUpdateInput input)
                 => Results.Extensions.ApiResponseEmpty(await studentService.UpdateStudentAsync(requestHeaders, input)))
                 .ProducesApiResponseEmpty()
                 .WithName("Update an existing student")
                 .WithTags("Students");
 
-        _ = endpoints.MapDelete("/students/{studentId:int}",
+        _ = endpoints.MapDelete("/students/{studentId}",
             [Authorize(Policy = PolicyName.IsAdmin)] async (ApiRequestHeaders requestHeaders, [FromServices] IStudentBusiness studentService, [FromRoute] string studentId)
                 => Results.Extensions.ApiResponseEmpty(await studentService.DeleteStudentAsync(requestHeaders, studentId)))
                 .ProducesApiResponseEmpty()
