@@ -45,4 +45,9 @@ public sealed class Student : IdentityUser
     ///     Gets or sets a group id.
     /// </summary>
     public ICollection<StudentGroup> StudentGroups { get; set; } = new HashSet<StudentGroup>();
+
+    /// <summary>
+    ///     Get or set a collection of all teams.
+    /// </summary>
+    public ICollection<Team> Teams { get; set; } = new HashSet<Team>();    
 }

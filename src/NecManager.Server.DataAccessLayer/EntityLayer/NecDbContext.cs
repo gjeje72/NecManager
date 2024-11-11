@@ -21,6 +21,21 @@ public class NecDbContext : IdentityDbContext<Student>
     public DbSet<Student> Students => this.Set<Student>();
 
     /// <summary>
+    ///     Get the matchs set.
+    /// </summary>
+    public DbSet<MatchResult> Matchs => this.Set<MatchResult>();
+
+    /// <summary>
+    ///     Get the team set.
+    /// </summary>
+    public DbSet<Team> Teams => this.Set<Team>();
+
+    /// <summary>
+    ///     Get the tournament set.
+    /// </summary>
+    public DbSet<Tournament> Tournaments => this.Set<Tournament>();
+
+    /// <summary>
     ///     Gets the group set.
     /// </summary>
     public DbSet<Group> Groups => this.Set<Group>();
