@@ -4,9 +4,21 @@ public enum Round
 {
     None = 0,
 
-    M1 = 1,
+    First5vs4 = 1,
 
-    M2 = 2,
+    First3vs2 = 2,
 
-    Title = 3,
+    First4vs3 = 4,
+
+    First2vs1 = 5,
+
+    Second4vs3 = 6,
+
+    Second2vs1 = 7,
+
+    Second4vs2 = 8,
+
+    Second3vs5 = 9,
+
+    Second3vs2 = 10,
 }
