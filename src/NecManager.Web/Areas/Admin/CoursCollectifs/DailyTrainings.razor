@@ -101,7 +101,7 @@
                     {
                         <tr>
                             <td>@student.Name @student.FirstName</td>
-                            <td>@(this.History.Trainings.Count(t => t.TrainingStudentsIds.Any(s => s == student.Id)) * 100 / this.History.Trainings.Count(t => t.Date <= new DateTime(2023, 9, 16)))%</td>
+                            <td>@(this.History.Trainings.Count(t => t.TrainingStudentsIds.Any(s => s == student.Id)) * 100 / this.History.Trainings.Count())%</td>
                             @foreach (var date in this.History.Trainings.Select(t => t.Date).Distinct())
                             {
                                 @if (this.History.Trainings.Any(t => t.Date == date && t.TrainingStudentsIds.Any(id => id == student.Id)))

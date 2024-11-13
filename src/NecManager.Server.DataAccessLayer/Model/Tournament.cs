@@ -21,7 +21,5 @@ public sealed class Tournament : ADataObject
 
     public int Rank5Id { get; set; }
 
-    mettre à jour la migration !
-
     public ICollection<MatchResult> Matchs { get; set; } = new HashSet<MatchResult>();
 }
